@@ -3,6 +3,28 @@ let yelp_search_url = 'https://api.yelp.com/v3/businesses/search'
 let cors_helper = 'https://cors-anywhere.herokuapp.com'
 let returnData = ''
 console.log('in indes.js')
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    let requestObj = {
+        'url': cors_helper + '/' + yelp_search_url,
+        'data': {term: 'food', location: '77006'},
+        headers: {'Authorization': token},
+        error: function(jqXHR, testStatus, errorThrown) {
+            console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
+        }
+    }//request obj
+    
+    $.ajax(requestObj)
+        .then(function (response) {
+            console.log('response = ', response)
+            console.log(response.businesses[0].name)
+            returnData = response
+            return returnData
+        }) 
+        .then(giveDerrickObject)
+})//DOMContentLoaded
+
 function submitSearch () {
     let restaurantSearch = document.getElementById('search-bar').value
     console.log(restaurantSearch)
@@ -25,8 +47,7 @@ function submitSearch () {
         }) 
         .then(renderRestaurant)
         .then(renderFinal)
-        console.log(returnData)
-        .then(giveDerrickObject)
+        
 }//submit Search
 
 function renderRestaurant (restaurant) {
@@ -58,6 +79,22 @@ function saveToRestaurantList () {
 
 } //saveToRestaurantList
 
-function giveDerrickObject () {
-console.log()
+function giveDerrickObject (responseData) {
+// console.log(responseData.businesses.name)
+// console.log(responseData.businesses[i].coordinates)
+
+let filteredRestuarantData = responseData.businesses.map( function (filterData) {
+    let filterDataObject = {
+        'Restaurantname': filterData.name,
+        'restaurantCord': {
+            'lat': filterData.coordinates.latitude,
+            'long': filterData.coordinates.longitude,
+        },
+        'categories': filterData.categories,
+    }
+    console.log(filterDataObject)
+})
+
+return filteredRestuarantData
 }
+
