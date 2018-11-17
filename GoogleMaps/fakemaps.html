@@ -20,8 +20,8 @@
         var map, infoWindow;
         function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 6
+        //   center: {lat: -34.397, lng: 150.644},
+          zoom: 12
         });
         infoWindow = new google.maps.InfoWindow;
 
@@ -34,7 +34,7 @@
             };
 
             infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
+            infoWindow.setContent('This is us');
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {
@@ -44,6 +44,52 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
+      //Array of markers
+      var markers = [
+            {coords:{lat:29.7604, lng:-95.3698},
+            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            content: '<h1>H Town</h1>'
+            },
+            {coords:{lat:29.7528, lng:-95.3390},
+            content: '<h1>Digi Crafts</h1>'
+            },
+            {coords:{lat:29.7352, lng:-95.5023},
+            content: '<h1>Da Crib</h1>'
+            }
+        ];
+
+        //Loop through markers array
+        for (var i = 0;i < markers.length; i++){
+            addMarker(markers[i]);
+        }
+
+
+
+        // Add Marker Function
+        function addMarker (props){
+            var marker = new google.maps.Marker({
+                position: props.coords,
+                content: props.title,
+                map: map,
+                //icon: props.iconImage
+                });
+            //Check for customIcon
+            if (props.iconImage){
+                //Set icon image
+                marker.setIcon(props.iconImage);
+            }
+            //Check for content
+            if (props.content){
+                var infoWindow = new google.maps.InfoWindow({
+                content: props.content
+            });
+
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+            });
+            }
+        }
+      
       }
 
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -54,7 +100,16 @@
         infoWindow.open(map);
       }
         
-        // function initMap () {
+        
+
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTwCq753PLmJuRXRjGHrq58SHvjLAIgz8&callback=initMap">
+    </script>
+</body>
+</html> 
+
+<!-- // function initMap () {
         //     var options = {
         //         zoom: 12,
         //         center: {lat:29.7604, lng:-95.3698}
@@ -84,58 +139,4 @@
 
         //     marker.addListener('click', function(){
         //         infoWindow.open(map, marker);
-        //     })
-
-        // Array of markers
-        var markers = [
-            {coords:{lat:29.7604, lng:-95.3698},
-            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-            content: '<h1>H Town</h1>'
-            },
-            {coords:{lat:29.7528, lng:-95.3390},
-            content: '<h1>Digi Crafts</h1>'
-            },
-            {coords:{lat:29.7352, lng:-95.5023},
-            content: '<h1>Da Crib</h1>'
-            }
-        ];
-
-        //Loop through markers array
-        for (var i = 0;i < markers.length; i++){
-            addMarker(markers[i]);
-        }
-
-
-
-        // Add Marker Function
-        function addMarker (props){
-            var marker = new google.maps.Marker({
-                position: props.coords,
-                map: map,
-                //icon: props.iconImage
-                });
-            //Check for customIcon
-            if (props.iconImage){
-                //Set icon image
-                marker.setIcon(props.iconImage);
-            }
-            //Check for content
-            if (props.content){
-                var infoWindow = new google.maps.InfoWindow({
-                content: props.content
-            });
-
-            marker.addListener('click', function(){
-                infoWindow.open(map, marker);
-            });
-            }
-        }
-
-        }
-
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTwCq753PLmJuRXRjGHrq58SHvjLAIgz8&callback=initMap">
-    </script>
-</body>
-</html>
+        //     }) -->
