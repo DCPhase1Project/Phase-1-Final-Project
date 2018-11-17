@@ -14,7 +14,7 @@ console.log('test message sample')
 // // -----------------------------------------------------------------------------
 
 // const exerciseFiles = glob.sync('/*.js')
-// const modulesDir = 'project-modules/' 
+// const modulesDir = 'project-modules/'
 // const utf8 = 'utf8'
 // const squigglyLine = '// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
 // const exportsComment = '\n\n\n\n\n' +

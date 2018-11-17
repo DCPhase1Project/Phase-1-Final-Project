@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "node tests/test.js" 
+    "test": "standard && node tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/schizaetrix/Phase-1-Final-Project/issues"
   },
-  "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme"
+  "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme",
+  "devDependencies": {
+    "standard": "^12.0.1"
+  }
 }
