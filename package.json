@@ -7,11 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-<<<<<<< HEAD
-    "test": "node tests/test.js" 
-=======
-    "test": "node tests/test.js"
->>>>>>> 118016d94d79c4a0d6a17eba282da0898075f5b6
+    "test": "echo \"Error: no test specified\" && exit 1" 
   },
   "repository": {
     "type": "git",
