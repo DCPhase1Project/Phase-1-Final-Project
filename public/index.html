@@ -8,6 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script>
@@ -48,6 +49,7 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="map" role="tabpanel" aria-labelledby="map-tab">
+                    <div id="google-map"></div>
                     <div class="jumbotron" style="height: 55vh; margin: 5px;">
                         <h1 class="display-4">Map Section</h1>
                         <p class="lead">The embedded Google Map will go here</p>
@@ -76,40 +78,17 @@
                     <div class="col-12 search" style="padding: 20px;">
                         <form id="search-form">
                             <div class="input-group input-group-lg">
-                                <input id="search" class="form-control search-bar" placeholder="Search for a restaurant in Houston...">	
+                                <input id="search-bar" class="form-control" placeholder="Search for a restaurant in Houston...">	
                                 <button onclick="submitSearch()" class="btn btn-primary input-group-btn" type="button">Search</button>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row renderingContainer">
                     <div class="col-12 results">
                         <div id="restaurant-container" style="padding: 20px;">
                             <div class="restaurant row justify-content-center">
-                                <div class="card" style="width: 16rem; margin: 5px;">
-                                    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 16rem; margin: 5px;">
-                                    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 16rem; margin: 5px;">
-                                    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                </div>
-                                <div class="card" style="width: 16rem; margin: 5px;">
-                                    <img class="card-img-top" src=".../100px180/?text=Image cap" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -117,5 +96,6 @@
             </div>
         </div>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
