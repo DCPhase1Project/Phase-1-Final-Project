@@ -21,5 +21,8 @@
   "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme",
   "devDependencies": {
     "standard": "^12.0.1"
-  }
+  },
+    "standard": {
+      "globals": ["$"]
+    }
 }

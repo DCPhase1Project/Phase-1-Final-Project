@@ -1,13 +1,21 @@
 let token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
-let yelp_search_url = 'https://api.yelp.com/v3/businesses/search'
-let cors_helper = 'https://cors-anywhere.herokuapp.com'
+let yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
+let corsHelper = 'https://cors-anywhere.herokuapp.com'
 let returnData = ''
-console.log('in indes.js')
+
+let currentLat = 29.752948 // values from Derrick
+let currentLong = -95.339069 // values from Derrick
+
+console.log('in index.js')
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Event Listeners
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 document.addEventListener('DOMContentLoaded', function () {
   let requestObj = {
-    'url': cors_helper + '/' + yelp_search_url,
-    'data': { term: 'food', location: '77006' },
+    'url': corsHelper + '/' + yelpSearchURL,
+    'data': { term: 'food', latitude: currentLat, longitude: currentLong },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
       console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
@@ -24,12 +32,22 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(giveDerrickObject)
 })// DOMContentLoaded
 
+document.getElementById('searchButton').addEventListener('click', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
+
+document.getElementById('search-form').addEventListener('submit', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
+
 function submitSearch () {
   let restaurantSearch = document.getElementById('search-bar').value
   console.log(restaurantSearch)
 
   let requestObj = {
-    'url': cors_helper + '/' + yelp_search_url,
+    'url': corsHelper + '/' + yelpSearchURL,
     'data': { term: restaurantSearch, location: '77006' },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
