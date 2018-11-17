@@ -1,11 +1,3 @@
-language: bash
-sudo: required
-services:
-- docker
-script:
--env
-- if ["$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-  make deploy; else make lint_the_things; fi
-
-notifications:
-    email: false
+language: node_js
+node_js:
+  - "8.12"
