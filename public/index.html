@@ -9,8 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    
     <script>
     // Initialize Firebase
     var config = {
@@ -27,14 +27,16 @@
     <title>Web App Design</title>
 </head>
 <body>
+    <!--     Page Header    -->
     <div class="container col">
-        <div class="row justify-content-end" style="margin: 5px;">
-            <button class="btn btn-primary" style="margin-right: 5px;" type="submit">Account Login</button>
-            <button class="btn btn-primary" type="submit">Create an Account</button>
+        <div class="row d-flex" style="margin: 5px;">
+            <a href=""><img src="../img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
+            <h3 class="mr-auto p-2">AppName</h3>
+            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Account Login</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Create an Account</button>
         </div>
-        <div class="row justify-content-center">
-            <h1 class="display-4">App Name Goes Here</h1>
-        </div>
+
+        <!--     Tabs   -->
         <div class="map-section" style="height: 60vh; margin: 5px;">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -47,6 +49,8 @@
                     <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab" aria-controls="visit" aria-selected="false">Restaurants to Visit</a>
                 </li>
             </ul>
+
+            <!--     Tabs Content    -->
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="map" role="tabpanel" aria-labelledby="map-tab">
                     <div id="google-map"></div>
@@ -69,6 +73,8 @@
                 </div>
             </div>
         </div>
+
+        <!--     Search Form      -->
         <div class="search-section" style="background-color: lightgray; padding: 5px; margin: 10px;">
             <div class="container">
                 <div class="row justify-content-center" style="padding-top: 20px;">
@@ -79,11 +85,13 @@
                         <form id="search-form">
                             <div class="input-group input-group-lg">
                                 <input id="search-bar" class="form-control" placeholder="Search for a restaurant in Houston...">	
-                                <button onclick="submitSearch()" class="btn btn-primary input-group-btn" type="button">Search</button>
+                                <button id="searchButton" class="btn btn-primary input-group-btn" type="button">Search</button>
                             </div>
                         </form>
                     </div>
                 </div>
+
+                <!--        Results Container        -->
                 <div class="row renderingContainer">
                     <div class="col-12 results">
                         <div id="restaurant-container" style="padding: 20px;">
