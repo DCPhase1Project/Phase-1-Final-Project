@@ -1,8 +1,11 @@
 {
+  "author": "",
   "name": "phase-1-final-project",
   "version": "1.0.0",
   "description": "[![Build Status](https://travis-ci.com/DCPhase1Project/Phase-1-Final-Project.svg?branch=master)](https://travis-ci.com/DCPhase1Project/Phase-1-Final-Project)",
   "main": "index.js",
+  "license": "ISC",
+  "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme",
   "directories": {
     "test": "tests"
   },
@@ -13,16 +16,16 @@
     "type": "git",
     "url": "git+https://github.com/schizaetrix/Phase-1-Final-Project.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/schizaetrix/Phase-1-Final-Project/issues"
   },
-  "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme",
   "devDependencies": {
     "standard": "^12.0.1"
   },
-    "standard": {
-      "globals": ["$"]
-    }
+  "standard": {
+    "globals": ["$"]
+  },
+  "dependencies": {
+    "uglify-js": "^3.4.9"
+  }
 }

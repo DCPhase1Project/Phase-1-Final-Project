@@ -1,84 +1,94 @@
-const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
-const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
-const corsHelper = 'https://cors-anywhere.herokuapp.com'
-let returnData = ''
+window.MYAPP = window.MYAPP || {}
 
-const defaultSearch = 'food'
-let searchTerm = defaultSearch // initial search term
+;(function () {
+  const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
+  const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
+  const corsHelper = 'https://cors-anywhere.herokuapp.com'
+  let returnData = ''
 
-let currentLat = 29.752948 // values from Derrick
-let currentLong = -95.339069 // values from Derrick
+  const defaultSearch = 'food'
+  let searchTerm = defaultSearch // initial search term
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Event Listeners
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  let currentLocation = {
+    lat: 29.752948,
+    lng: -95.339069
+  } // default digitalcrafts location
 
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('initializing index.js v2.0')
-  requestResponseObject()
-})// DOMContentLoaded
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Event Listeners
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-document.getElementById('searchButton').addEventListener('click', function (evt) {
-  evt.preventDefault()
-  submitSearch()
-})
+  document.addEventListener('DOMContentLoaded', function () {
+    console.log('initializing index.js v3.0')
+    requestResponseObject()
+  })// DOMContentLoaded
 
-document.getElementById('search-form').addEventListener('submit', function (evt) {
-  evt.preventDefault()
-  submitSearch()
-})
+  document.getElementById('searchButton').addEventListener('click', function (evt) {
+    evt.preventDefault()
+    submitSearch()
+  })
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Create Response Object
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  document.getElementById('search-form').addEventListener('submit', function (evt) {
+    evt.preventDefault()
+    submitSearch()
+  })
 
-function requestResponseObject () {
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Create Response Object
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  function requestResponseObject () {
   // if there's no search value then default search value
-  if (document.getElementById('search-bar').value) {
-    searchTerm = document.getElementById('search-bar').value
-  } else {
-    searchTerm = defaultSearch
-  }
-  // create requestObj
-  let requestObj = {
-    'url': corsHelper + '/' + yelpSearchURL,
-    'data': { term: searchTerm, latitude: currentLat, longitude: currentLong, categories: 'food' },
-    headers: { 'Authorization': token },
-    error: function (jqXHR, testStatus, errorThrown) {
-      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
+    if (document.getElementById('search-bar').value) {
+      searchTerm = document.getElementById('search-bar').value
+    } else {
+      searchTerm = defaultSearch
     }
+    console.log('requesting', searchTerm, 'data from the server...')
+
+    // create requestObj
+    let requestObj = {
+      'url': corsHelper + '/' + yelpSearchURL,
+      'data': {
+        term: searchTerm,
+        latitude: currentLocation.lat,
+        longitude: currentLocation.lng,
+        categories: 'food'
+      },
+      headers: { 'Authorization': token },
+      error: function (jqXHR, testStatus, errorThrown) {
+        console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
+      }
+    }
+    // ajax request the object
+    $.ajax(requestObj)
+      .then(function (response) {
+        returnData = response
+        return returnData
+      })
+      .then(renderRestaurant)
+      .then(renderFinal)
   }
-  // ajax request the object
-  $.ajax(requestObj)
-    .then(function (response) {
-      // console.log('response = ', response)
-      // console.log(response.businesses[0].name)
-      returnData = response
-      return returnData
-    })
-    // .then(giveDerrickObject)
-    .then(renderRestaurant)
-    .then(renderFinal)
-}
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Search Functionality
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function submitSearch () {
-  let restaurantSearch = document.getElementById('search-bar').value
-  console.log(restaurantSearch)
-  requestResponseObject()
-}// submit Search
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Search Functionality
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  function submitSearch () {
+    let restaurantSearch = document.getElementById('search-bar').value
+    console.log('searching for', restaurantSearch)
+    requestResponseObject()
+  }// submit Search
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Rendering
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Rendering
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function renderRestaurant (restaurant) {
-  // console.log('this is my Restaurant Data', restaurant)
-  let restaurantHTML = restaurant.businesses.map(function (currentRestaurant) {
+  function renderRestaurant (restaurant) {
+    renderMap(restaurant)
+    console.log('creating cards innerHTML...')
+    let restaurantHTML = restaurant.businesses.map(function (currentRestaurant) {
     // console.log(currentRestaurant)
-    let restaurantHTMLString = `
+      let restaurantHTMLString = `
             <div class="card bg-dark text-white">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <div class="card-body">
@@ -89,35 +99,38 @@ function renderRestaurant (restaurant) {
                 </div>
             </div>
         `
-    return restaurantHTMLString
-  })// map function
+      return restaurantHTMLString
+    })// map function
 
-  return restaurantHTML.join('')
-}// renderRestaurant
+    return restaurantHTML.join('')
+  }// renderRestaurant
 
-function renderFinal (htmlString) {
-  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
-}
+  function renderFinal (htmlString) {
+    console.log('rendering restaurant cards...')
+    document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
+  }
 
-function saveToRestaurantList () {
+  function saveToRestaurantList () {
+    console.log('saving restaurant to list...')
   // todo: save restaurants to list
-}
+  }
 
-function giveDerrickObject (responseData) {
-// console.log(responseData.businesses.name)
-// console.log(responseData.businesses[i].coordinates)
+  function renderMap (responseData) {
+    console.log('filtering restaurant data...')
 
-  let filteredRestuarantData = responseData.businesses.map(function (filterData) {
-    let filterDataObject = {
-      'Restaurantname': filterData.name,
-      'restaurantCord': {
-        'lat': filterData.coordinates.latitude,
-        'long': filterData.coordinates.longitude
-      },
-      'categories': filterData.categories
-    }
-    console.log(filterDataObject)
-  })
-
-  return filteredRestuarantData
-}
+    let filteredRestuarantData = responseData.businesses.map(function (filterData) {
+      let filterDataObject = {
+        'restaurantName': filterData.name,
+        'restaurantCord': {
+          'lat': filterData.coordinates.latitude,
+          'lng': filterData.coordinates.longitude
+        },
+        'categories': filterData.categories
+      }
+      return filterDataObject
+    })
+    console.log('sending filtered data to render map...')
+    window.MYAPP.createMarkers(filteredRestuarantData)
+    return responseData
+  }
+})()
