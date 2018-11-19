@@ -20,7 +20,7 @@ let currentLocation = {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('initializing index.js v2.0')
+  console.log('initializing index.js v3.0')
   requestResponseObject()
 })// DOMContentLoaded
 
