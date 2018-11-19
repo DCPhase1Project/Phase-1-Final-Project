@@ -13,9 +13,7 @@ let searchTerm = defaultSearch // initial search term
 let currentLocation = {
   lat: 29.752948,
   lng: -95.339069
-}
-let currentLat = currentLocation.lat// values from map
-let currentLong = currentLocation.lng// values from map
+} //default digitalcrafts location
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
@@ -47,10 +45,17 @@ function requestResponseObject () {
   } else {
     searchTerm = defaultSearch
   }
+  console.log('requesting',searchTerm,'data from the server...')
+
   // create requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
-    'data': { term: searchTerm, latitude: currentLat, longitude: currentLong, categories: 'food' },
+    'data': { 
+      term: searchTerm,
+      latitude: currentLocation.lat,
+      longitude: currentLocation.lng,
+      categories: 'food'
+    },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
       console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
@@ -59,10 +64,7 @@ function requestResponseObject () {
   // ajax request the object
   $.ajax(requestObj)
     .then(function (response) {
-      // console.log('response = ', response)
-      // console.log(response.businesses[0].name)
       returnData = response
-      
       return returnData
     })
     .then(renderRestaurant)
@@ -74,7 +76,7 @@ function requestResponseObject () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function submitSearch () {
   let restaurantSearch = document.getElementById('search-bar').value
-  console.log(restaurantSearch)
+  console.log('searching for',restaurantSearch)
   requestResponseObject()
 }// submit Search
 
@@ -84,7 +86,7 @@ function submitSearch () {
 
 function renderRestaurant (restaurant) {
   renderMap(restaurant)
-  // console.log('this is my Restaurant Data', restaurant)
+  console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.businesses.map(function (currentRestaurant) {
     // console.log(currentRestaurant)
     let restaurantHTMLString = `
@@ -105,34 +107,33 @@ function renderRestaurant (restaurant) {
 }// renderRestaurant
 
 function renderFinal (htmlString) {
+  console.log('rendering restaurant cards...')
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
 }
 
 function saveToRestaurantList () {
+  console.log('saving restaurant to list...')
   // todo: save restaurants to list
 }
 
 function renderMap (responseData) {
-// console.log(responseData.businesses.name)
-// console.log(responseData.businesses[i].coordinates)
+  console.log('filtering restaurant data...')
 
   let filteredRestuarantData = responseData.businesses.map(function (filterData) {
     let filterDataObject = {
       'restaurantName': filterData.name,
-      'coords': {
+      'restaurantCord': {
         'lat': filterData.coordinates.latitude,
-        'long': filterData.coordinates.longitude
+        'lng': filterData.coordinates.longitude
       },
       'categories': filterData.categories
     }
     return filterDataObject
   })
-  console.log('filteredRestuarantData')
-  console.log(filteredRestuarantData)
+  console.log('sending filtered data to render map...')
   window.MYAPP.createMarkers(filteredRestuarantData)
   return responseData
 }
-
 
 
 })()
