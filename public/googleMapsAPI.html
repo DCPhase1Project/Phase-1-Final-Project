@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Clustering</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+      html, body {
+        height: 95%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Southeastern United States Capital</h1>
+    <button type="button" id="hideBtn" style="display:inline;" onclick="hideBtn()">Hide State Capitals</button>
+    <button type="button" id="showBtn" style="display:none;" onclick="showBtn()">Show State Capitals</button>
+    <div id="map"></div>
+    <script>
+      var map
+      var markers = []
+
+      function initMap() {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: {lat: 33.588, lng: -86.602}
+        });
+
+        markers = capitalsSEUS.map(function(location) {
+          return new google.maps.Marker({
+            position: {lat: location.lat, lng: location.lon},
+            map: map
+          });
+        });
+
+        // var markerCluster = new MarkerClusterer(map, markers,
+        //       {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+      }
+
+      function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          console.log(markers[i], map);
+          markers[i].setMap(map);
+        }
+      }
+
+      function hideBtn() {
+        setMapOnAll(null)
+        document.getElementById('hideBtn').style.display = 'none'
+        document.getElementById('showBtn').style.display = 'inline'
+      }
+
+      function showBtn() {
+        setMapOnAll(map)
+        document.getElementById('hideBtn').style.display = 'inline'
+        document.getElementById('showBtn').style.display = 'none'
+      }
+
+      var capitalsSEUS = [
+          {"lat":32.361538, "lon":-86.279118, "state":"Alabama", "city":"Montgomery"},
+          {"lat":34.736009, "lon":-92.331122, "state":"Arkansas", "city":"Little Rock"},
+          {"lat":30.4518, "lon":-84.27277, "state":"Florida", "city":"Tallahassee"},
+          {"lat":33.76, "lon":-84.39, "state":"Georgia", "city":"Atlanta"},
+          {"lat":38.197274,"lon":-84.86311, "state":"Kentucky", "city":"Frankfort"},
+          {"lat":30.45809,"lon":-91.140229, "state":"Louisiana", "city":"Baton Rouge"},
+          {"lat":32.32, "lon":-90.207, "state":"Mississippi", "city":"Jackson"},
+          {"lat":35.771, "lon":-78.638, "state":"North Carolina", "city":"Raleigh"},
+          {"lat":34, "lon":-81.035, "state":"South Carolina", "city":"Columbia"},
+          {"lat":36.165, "lon":-86.784, "state":"Tennessee", "city":"Nashville"},
+          {"lat":37.54, "lon":-77.46, "state":"Virginia", "city":"Richmond"},
+          {"lat":38.349497, "lon":-81.633294, "state":"West Virginia", "city":"Charleston"},
+          ]
+
+
+
+
+// findCenter(capitalsSEUS)
+// var sum = 0
+
+//     function findCenter (arrayOfMarkers){
+//       var count = arrayOfMarkers.length + 1
+//       var latSum = arrayOfMarkers.forEach(sumOfLat)
+//       var longSum = arrayOfMarkers.forEach(sumOfLon)
+//       var centerLat = latSum / count
+//       var centerLong = longSum / count
+      
+//       console.log('{lat:'+ centerLat +', lng:' + centerLong + '}')
+//       return '{lat:'+ centerLat +', lng:' + centerLong + '}'
+//     }
+    
+    
+
+//     function sumOfLat (item){
+//       sum += item.lat
+//       console.log(item.lat)
+//       return sum
+//     }
+
+//       function sumOfLon (item){
+//       sum += item
+//       return sum
+//     }
+
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiILepcPT5d4cdCJBc7MVtYaPl5ZsHiQs&callback=initMap">
+    </script>
+  </body>
+</html>
