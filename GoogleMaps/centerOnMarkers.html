@@ -26,62 +26,78 @@
         infoWindow = new google.maps.InfoWindow;
 
         // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+        // if (navigator.geolocation) {
+        //   navigator.geolocation.getCurrentPosition(function(position) {
+        //     var pos = {
+        //       lat: position.coords.latitude,
+        //       lng: position.coords.longitude
+        //     };
 
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('This is us');
-            infoWindow.open(map);
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
+        //     infoWindow.setPosition(pos);
+        //     infoWindow.setContent('This is us');
+        //     infoWindow.open(map);
+        //     map.setCenter(pos);
+        //   }, function() {
+        //     handleLocationError(true, infoWindow, map.getCenter());
+        //   });
+        // } else {
+        //   // Browser doesn't support Geolocation
+        //   handleLocationError(false, infoWindow, map.getCenter());
+        // }
       //Array of markers
       var markers = [
-            {coords:{lat:29.7604, lng:-95.3698},
-            iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-            content: '<h1>H Town</h1>'
+            // {coords:{lat:29.7604, lng:-95.3698},
+            // iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            // content: '<h1>H Town</h1>'
+            // },
+            // {coords:{lat:29.7528, lng:-95.3390},
+            // content: '<h1>Digi Crafts</h1>'
+            // },
+            // {coords:{lat:29.7352, lng:-95.5023},
+            // content: '<h1>Da Crib</h1>'
+            // }
+            {Restaurantname: "Georgia James",
+            restaurantCord: {lat: 29.7450251168537, lng: -95.393044911325}
             },
-            {coords:{lat:29.7528, lng:-95.3390},
-            content: '<h1>Digi Crafts</h1>'
+            {Restaurantname: "Le Chateau",
+            restaurantCord: {lat: 29.7274, lng: -95.38615}
             },
-            {coords:{lat:29.7352, lng:-95.5023},
-            content: '<h1>Da Crib</h1>'
-            }
+            {Restaurantname: "Snooze, an A.M. Eatery",
+            restaurantCord: {lat: 29.74395, lng: -95.39092}
+            },
         ];
+        
+        bounds  = new google.maps.LatLngBounds();
 
         //Loop through markers array
         for (var i = 0;i < markers.length; i++){
             addMarker(markers[i]);
+            
         }
-
+        
+        map.fitBounds(bounds);
+        map.panToBounds(bounds);
 
 
         // Add Marker Function
         function addMarker (props){
             var marker = new google.maps.Marker({
-                position: props.coords,
-                content: props.title,
+                position: props.restaurantCord,
+                content: props.Restaurantname,
                 map: map,
                 //icon: props.iconImage
                 });
+            loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+            bounds.extend(loc);
             //Check for customIcon
             if (props.iconImage){
                 //Set icon image
                 marker.setIcon(props.iconImage);
             }
             //Check for content
-            if (props.content){
+            if (props.Restaurantname){
                 var infoWindow = new google.maps.InfoWindow({
-                content: props.content
+                content: props.Restaurantname
             });
 
             marker.addListener('click', function(){
