@@ -12,34 +12,79 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     
-    <script>
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyDZOaVFZL8mufS3bMoyoFZGUJK6Nob5bpw",
-        authDomain: "phase-1-final-project.firebaseapp.com",
-        databaseURL: "https://phase-1-final-project.firebaseio.com",
-        projectId: "phase-1-final-project",
-        storageBucket: "",
-        messagingSenderId: "835794979231"
-    };
-    firebase.initializeApp(config);
-    </script>
-    
     <title>Web App Design</title>
 </head>
 <body>
-    <!--     Page Header    -->
+    <!--    Page Header    -->
     <div>
         <div class="row d-flex" style="margin: 5px;">
             <a href=""><img src="../img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
             <h3 class="mr-auto p-2">AppName</h3>
-            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Account Login</button>
-            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Create an Account</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" data-toggle="modal" data-target="#login-modal">Account Login</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Create an Account</button>
+            <span class="d-none h5" id="user-greeting" style="margin-top: 10px; margin-right: 15px;">Hello User!</span>
+            <button class="btn btn-primary d-none p-2 align-self-start mr-1" id="logout-button">Log Out</button>
         </div>
 
-        <!--     Jumbotron Section   -->
+        <!--    Modal Section    -->
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="logInToAccount" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="logInToAccount">Log in to your account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="login-email">Email address</label>
+                                <input type="email" class="form-control" id="login-email" placeholder="Enter your email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" class="form-control" id="login-password" placeholder="Enter your password">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="modal-login" data-dismiss="modal">Log In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="new-acct-modal" tabindex="-1" role="dialog" aria-labelledby="createAccount" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createAccount">Create a new account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="new-acct-email">Email address</label>
+                                <input type="email" class="form-control" id="new-acct-email" placeholder="Enter your email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-acct-password">Password</label>
+                                <input type="password" class="form-control" id="new-acct-password" placeholder="Enter your password">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="modal-new-acct" data-dismiss="modal">Create Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--    Jumbotron Section    -->
         <div class="jumbotron-section" style="height: 60vh;">
-            <!--       Tabs         -->
+            <!--     Tabs       -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active show" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="map" aria-selected="true">Map</a>
@@ -91,7 +136,7 @@
                     </div>
                 </div>
 
-                <!--        Results Container        -->
+                <!--      Results Container      -->
                 <div class="row renderingContainer">
                     <div class="col-12 results">
                         <div id="restaurant-container" style="padding: 20px;">
@@ -108,6 +153,7 @@
     <script src="mapStyle.js"></script>
     <script src="map.js"></script>
     <script src="index.js"></script>
+    <script src="firebase.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiILepcPT5d4cdCJBc7MVtYaPl5ZsHiQs&callback=MYAPP.initMap">
     </script>
