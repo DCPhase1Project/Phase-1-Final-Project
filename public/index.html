@@ -22,7 +22,8 @@
             <h3 class="mr-auto p-2">AppName</h3>
             <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" data-toggle="modal" data-target="#login-modal">Account Login</button>
             <button class="btn btn-primary p-2 align-self-start mr-1" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Create an Account</button>
-            <button class="btn btn-primary d-none p-2 align-self-start mr-1" id="logout-button" type="submit">Log Out</button>
+            <span class="d-none h5" id="user-greeting" style="margin-top: 10px; margin-right: 15px;">Hello User!</span>
+            <button class="btn btn-primary d-none p-2 align-self-start mr-1" id="logout-button">Log Out</button>
         </div>
 
         <!--    Modal Section    -->
@@ -38,17 +39,17 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="input-email">Email address</label>
-                                <input type="email" class="form-control" id="input-email" placeholder="Enter your email address">
+                                <label for="login-email">Email address</label>
+                                <input type="email" class="form-control" id="login-email" placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
-                                <label for="input-password">Password</label>
-                                <input type="password" class="form-control" id="input-password" placeholder="Enter your password">
+                                <label for="login-password">Password</label>
+                                <input type="password" class="form-control" id="login-password" placeholder="Enter your password">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="modal-login" data-dismiss="modal">Log In</button>
                     </div>
                 </div>
             </div>
@@ -65,17 +66,17 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="input-email">Email address</label>
-                                <input type="email" class="form-control" id="input-email" placeholder="Enter your email address">
+                                <label for="new-acct-email">Email address</label>
+                                <input type="email" class="form-control" id="new-acct-email" placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
-                                <label for="input-password">Password</label>
-                                <input type="password" class="form-control" id="input-password" placeholder="Enter your password">
+                                <label for="new-acct-password">Password</label>
+                                <input type="password" class="form-control" id="new-acct-password" placeholder="Enter your password">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="modal-new-acct" data-dismiss="modal">Create Account</button>
                     </div>
                 </div>
             </div>
