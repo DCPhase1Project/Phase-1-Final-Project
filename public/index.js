@@ -9,7 +9,7 @@ window.MYAPP = window.MYAPP || {}
   const defaultSearch = 'food'
   let searchTerm = defaultSearch // initial search term
 
-  let currentLocation = {
+  let userLocation = {
     lat: 29.752948,
     lng: -95.339069
   } // default digitalcrafts location
@@ -51,8 +51,8 @@ window.MYAPP = window.MYAPP || {}
       'url': corsHelper + '/' + yelpSearchURL,
       'data': {
         term: searchTerm,
-        latitude: currentLocation.lat,
-        longitude: currentLocation.lng,
+        latitude: userLocation.lat,
+        longitude: userLocation.lng,
         categories: 'food'
       },
       headers: { 'Authorization': token },

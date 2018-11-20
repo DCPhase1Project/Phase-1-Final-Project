@@ -1,7 +1,8 @@
 window.MYAPP = window.MYAPP || {}
 
 ;(function () {
-  var map, infoWindow
+  var map
+  // var InfoWindow
   var markers = []
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,44 +15,40 @@ window.MYAPP = window.MYAPP || {}
       zoom: 16,
       styles: mapStyle
     })
-    infoWindow = new google.maps.InfoWindow()
-    getCurrentLocation()
+    userMarker = new google.maps.Marker();
+    getUserLocation()
   } // initMap
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Get Current Location
+  // Get User Location & Update Marker
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  function getCurrentLocation () {
+  function getUserLocation () {
     console.log('getting current location...')
+
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        infoWindow.setPosition(pos)
-        infoWindow.setContent('Location found')
-        infoWindow.open(map)
-        map.setCenter(pos)
-        return pos
-      }, function () {
-        handleLocationError(true, infoWindow, map.getCenter())
-      })
+      navigator.geolocation.watchPosition(updatePosition);
     } else {
-      // Browser doesn't support Geolocation
-      handleLocationError(false, infoWindow, map.getCenter())
+      console.alert ('Geolocation is not supported by this browser')
     }
-
-    function handleLocationError (browserHasGeolocation, infoWindow, pos) {
-      infoWindow.setPosition(pos)
-      infoWindow.setContent(browserHasGeolocation
-        ? 'Error: The Geolocation service failed.'
-        : 'Error: Your browser doesn\'t support geolocation.')
-      infoWindow.open(map)
-    }
+    return null
   }
+
+  function updatePosition (position) {
+    var userPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+    
+    if (typeof getUserLocation.userMarker == 'undefined') {
+      getUserLocation.userMarker = new google.maps.Marker({
+        position:userPos,
+        map:map,
+        icon:'img/locationMarker.svg',
+        clickable: false
+      });
+    }
+    getUserLocation.userMarker.setPosition(userPos);
+  }
+  
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Add & Remove Markers
@@ -110,5 +107,5 @@ window.MYAPP = window.MYAPP || {}
   window.MYAPP.initMap = initMap
   window.MYAPP.createMarkers = createMarkers
   window.MYAPP.setMapOnAll = setMapOnAll
-  window.MYAPP.getCurrentLocation = getCurrentLocation
+  window.MYAPP.getUserLocation = getUserLocation
 })()
