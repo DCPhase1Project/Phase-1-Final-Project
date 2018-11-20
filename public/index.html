@@ -12,19 +12,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     
-    <script>
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyDZOaVFZL8mufS3bMoyoFZGUJK6Nob5bpw",
-        authDomain: "phase-1-final-project.firebaseapp.com",
-        databaseURL: "https://phase-1-final-project.firebaseio.com",
-        projectId: "phase-1-final-project",
-        storageBucket: "",
-        messagingSenderId: "835794979231"
-    };
-    firebase.initializeApp(config);
-    </script>
-    
     <title>Web App Design</title>
 </head>
 <body>
@@ -33,8 +20,9 @@
         <div class="row d-flex" style="margin: 5px;">
             <a href=""><img src="../img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
             <h3 class="mr-auto p-2">AppName</h3>
-            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Account Login</button>
-            <button class="btn btn-primary p-2 align-self-start mr-1" type="submit">Create an Account</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" type="submit">Account Login</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" id="new-acct-button" type="submit">Create an Account</button>
+            <button class="btn btn-primary p-2 align-self-start mr-1" id="logout-button" type="submit">Log Out</button>
         </div>
 
         <!--     Jumbotron Section   -->
@@ -108,6 +96,7 @@
     <script src="mapStyle.js"></script>
     <script src="map.js"></script>
     <script src="index.js"></script>
+    <script src="firebase.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiILepcPT5d4cdCJBc7MVtYaPl5ZsHiQs&callback=MYAPP.initMap">
     </script>
