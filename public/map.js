@@ -3,6 +3,10 @@ window.MYAPP = window.MYAPP || {}
 ;(function () {
   var map, infoWindow
   var markers = []
+  var pos = {
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Init Map
@@ -11,12 +15,18 @@ window.MYAPP = window.MYAPP || {}
   function initMap () {
     console.log('initializing map...')
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
+      zoom: 14,
       styles: mapStyle
     })
     infoWindow = new google.maps.InfoWindow()
     getCurrentLocation()
-  } // initMap
+
+  //   var centerControlDiv = document.createElement('div')
+  //   var centerControl = new CenterControl(centerControlDiv, map)
+
+  //   centerControlDiv.index = 1
+  //   map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv)
+  // }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get Current Location
@@ -27,10 +37,6 @@ window.MYAPP = window.MYAPP || {}
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
         infoWindow.setPosition(pos)
         infoWindow.setContent('Location found')
         infoWindow.open(map)
@@ -67,8 +73,8 @@ window.MYAPP = window.MYAPP || {}
     for (var i = 0; i < locationsForMap.length; i++) {
       markers.push(addMarker(locationsForMap[i], bounds))
     }
-    map.fitBounds(bounds)
-    map.panToBounds(bounds)
+    // map.fitBounds(bounds)
+    // map.panToBounds(bounds)
     return markers
   }
 
@@ -106,9 +112,42 @@ window.MYAPP = window.MYAPP || {}
     }
   }
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Add 'Center On User Button'
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // function CenterControl (controlDiv, map) {
+  //   // Set CSS for the control border.
+  //   var controlUI = document.createElement('div')
+  //   controlUI.style.backgroundColor = '#fff'
+  //   controlUI.style.border = '2px solid #fff'
+  //   controlUI.style.borderRadius = '3px'
+  //   controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)'
+  //   controlUI.style.cursor = 'pointer'
+  //   controlUI.style.marginBottom = '22px'
+  //   controlUI.style.textAlign = 'center'
+  //   controlUI.title = 'Click to recenter the map'
+  //   controlDiv.appendChild(controlUI)
+
+  //   // Set CSS for the control interior.
+  //   var controlText = document.createElement('div')
+  //   controlText.style.color = 'rgb(25,25,25)'
+  //   controlText.style.fontFamily = 'Roboto,Arial,sans-serif'
+  //   controlText.style.fontSize = '16px'
+  //   controlText.style.lineHeight = '38px'
+  //   controlText.style.paddingLeft = '5px'
+  //   controlText.style.paddingRight = '5px'
+  //   controlText.innerHTML = 'Center Map'
+  //   controlUI.appendChild(controlText)
+
+  //   // Setup the click event listeners: simply set the map to Chicago.
+  //   controlUI.addEventListener('click', function () {
+  //     map.setCenter(pos)
+  //   })
+  // }
+
   // export the initMap function so it may be called outside of this module
   window.MYAPP.initMap = initMap
   window.MYAPP.createMarkers = createMarkers
   window.MYAPP.setMapOnAll = setMapOnAll
   window.MYAPP.getCurrentLocation = getCurrentLocation
-})()
+})
