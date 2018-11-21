@@ -1,4 +1,4 @@
-window.MYAPP.mapStyle =
+var mapStyle =
   [
     {
       'elementType': 'geometry',

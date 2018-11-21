@@ -5,26 +5,26 @@
   "description": "[![Build Status](https://travis-ci.com/DCPhase1Project/Phase-1-Final-Project.svg?branch=master)](https://travis-ci.com/DCPhase1Project/Phase-1-Final-Project)",
   "main": "index.js",
   "license": "ISC",
-  "homepage": "https://github.com/schizaetrix/Phase-1-Final-Project#readme",
+  "homepage": "https://github.com/DCPhase1Project//Phase-1-Final-Project#readme",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "standard && node tests/test.js"
+    "test": "node tests/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/schizaetrix/Phase-1-Final-Project.git"
+    "url": "git+https://github.com/DCPhase1Project//Phase-1-Final-Project.git"
   },
   "bugs": {
-    "url": "https://github.com/schizaetrix/Phase-1-Final-Project/issues"
+    "url": "https://github.com/DCPhase1Project//Phase-1-Final-Project/issues"
   },
   "devDependencies": {
     "standard": "^12.0.1"
   },
   "standard": {
     "globals": [
-      "$", "firebase", "google"
+      "$", "firebase", "google", "localStorage", "mapStyles"
     ]
   },
   "dependencies": {
