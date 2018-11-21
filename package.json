@@ -10,7 +10,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "standard && node tests/test.js"
+    "test": "node tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   },
   "standard": {
     "globals": [
-      "$", "firebase", "google", "localStorage"
+      "$", "firebase", "google", "localStorage", "mapStyles"
     ]
   },
   "dependencies": {
