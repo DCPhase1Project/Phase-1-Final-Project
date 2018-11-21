@@ -1,4 +1,4 @@
-const mapStyle =
+window.MYAPP.mapStyle =
   [
     {
       'elementType': 'geometry',

@@ -24,7 +24,7 @@
   },
   "standard": {
     "globals": [
-      "$"
+      "$", "firebase", "google"
     ]
   },
   "dependencies": {
