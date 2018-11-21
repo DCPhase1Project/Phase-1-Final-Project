@@ -4,7 +4,8 @@ window.MYAPP = window.MYAPP || {}
   const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
   const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
   const corsHelper = 'https://cors-anywhere.herokuapp.com'
-  let returnData = ''
+  var returnData = ''
+  var restaurantData = []
 
   const defaultSearch = 'food'
   let searchTerm = defaultSearch // initial search term
@@ -63,12 +64,16 @@ window.MYAPP = window.MYAPP || {}
     // ajax request the object
     $.ajax(requestObj)
       .then(function (response) {
-        returnData = response
-        return returnData
+        restaurantData = response.businesses
+        console.log(restaurantData)
+        //setting object in local storage
+        localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
+        return response
       })
       .then(renderRestaurant)
       .then(renderFinal)
-  }
+
+  }//requestResponseObject
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Search Functionality
@@ -85,17 +90,20 @@ window.MYAPP = window.MYAPP || {}
 
   function renderRestaurant (restaurant) {
     renderMap(restaurant)
+    // saveToFavoriteRestaurant(restaurant)
+    // saveToRestaurantToVisitList(restaurant)
     console.log('creating cards innerHTML...')
     let restaurantHTML = restaurant.businesses.map(function (currentRestaurant) {
-    // console.log(currentRestaurant)
-      let restaurantHTMLString = `
+        //TODO: Save current resturant to firebase????
+        let restaurantHTMLString = `
             <div class="card bg-dark text-white">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <div class="card-body">
                     <div class="row">
                         <h5 class="card-title">${currentRestaurant.name}</h5>
                     </div>
-                    <button onclick="saveToRestaurantList('${currentRestaurant.id}')" type="submit" class="btn btn-primary btn-lg btn-block">Add to Restaurant list</button>
+                    <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Favorite's list</button>
+                    <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Restaurant list</button>
                 </div>
             </div>
         `
@@ -108,17 +116,12 @@ window.MYAPP = window.MYAPP || {}
   function renderFinal (htmlString) {
     console.log('rendering restaurant cards...')
     document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
-  }
+  }//renderFinal
 
-  function saveToRestaurantList () {
-    console.log('saving restaurant to list...')
-  // todo: save restaurants to list
-  }
-
-  function renderMap (responseData) {
+  function renderMap (response) {
     console.log('filtering restaurant data...')
 
-    let filteredRestuarantData = responseData.businesses.map(function (filterData) {
+    let filteredRestuarantData = response.businesses.map(function (filterData) {
       let filterDataObject = {
         'restaurantName': filterData.name,
         'restaurantCord': {
@@ -131,6 +134,36 @@ window.MYAPP = window.MYAPP || {}
     })
     console.log('sending filtered data to render map...')
     window.MYAPP.createMarkers(filteredRestuarantData)
-    return responseData
+    return response
   }
-})()
+})()//function
+
+function saveToFavoriteRestaurant (restaurantID) {
+    console.log('saving restaurant to favorite list...')
+    // console.log(JSON.parse(restaurant))
+    console.log(restaurantID)
+
+    //calling restaurant objects in local storage
+    let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+    let clickedRestaurantData = data.find(function (currentRestaurant) {
+       return currentRestaurant.id === restaurantID
+    })//restaurant
+    console.log(clickedRestaurantData)
+
+    // updated firebase
+    const update = {}
+      const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+      const userID = localStorage.getItem('userID')
+      if (userID) { 
+      update['/favorites/' + userID + '/' + newFavoritesKey] = clickedRestaurantData
+      firebase.database().ref().update(update)
+    }//if
+  }//saveToRestaurantList
+
+function saveToRestaurantToVisitList (restaurant) {
+    console.log('saving restaurant to visit list...')
+    
+    
+
+}//Visit List

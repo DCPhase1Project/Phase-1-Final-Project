@@ -51,6 +51,8 @@ btnLogout.addEventListener('click', e => {
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser) {
         console.log(firebaseUser)
+        //setting User to local storeage
+        localStorage.setItem('userID', firebaseUser.uid)
         loginBtn.classList.add('d-none')
         newAcctBtn.classList.add('d-none')
         btnLogout.classList.remove('d-none')
