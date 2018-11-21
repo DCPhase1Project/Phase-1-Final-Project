@@ -3,7 +3,6 @@ window.MYAPP = window.MYAPP || {}
 ;(function () {
   var map, infoWindow
   var markers = []
-  var mapStyle = window.MYAPP.mapStyle
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Init Map
@@ -12,7 +11,7 @@ window.MYAPP = window.MYAPP || {}
   function initMap () {
     console.log('initializing map...')
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
+      zoom: 14,
       styles: mapStyle
     })
     infoWindow = new google.maps.InfoWindow()
@@ -68,8 +67,8 @@ window.MYAPP = window.MYAPP || {}
     for (var i = 0; i < locationsForMap.length; i++) {
       markers.push(addMarker(locationsForMap[i], bounds))
     }
-    map.fitBounds(bounds)
-    map.panToBounds(bounds)
+    // map.fitBounds(bounds)
+    // map.panToBounds(bounds)
     return markers
   }
 
