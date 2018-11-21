@@ -49,17 +49,20 @@ btnLogout.addEventListener('click', e => {
 // Check for login state change
 // Manage visibility of elements based on login state
 firebase.auth().onAuthStateChanged(firebaseUser => {
-  if (firebaseUser) {
-    console.log(firebaseUser)
-    loginBtn.classList.add('d-none')
-    newAcctBtn.classList.add('d-none')
-    btnLogout.classList.remove('d-none')
-    userGreeting.classList.remove('d-none')
-  } else {
-    console.log('not logged in')
-    loginBtn.classList.remove('d-none')
-    newAcctBtn.classList.remove('d-none')
-    btnLogout.classList.add('d-none')
-    userGreeting.classList.add('d-none')
-  }
+
+    if(firebaseUser) {
+        console.log(firebaseUser)
+        //setting User to local storeage
+        localStorage.setItem('userID', firebaseUser.uid)
+        loginBtn.classList.add('d-none')
+        newAcctBtn.classList.add('d-none')
+        btnLogout.classList.remove('d-none')
+        userGreeting.classList.remove('d-none')
+    } else {
+        console.log('not logged in')
+        loginBtn.classList.remove('d-none')
+        newAcctBtn.classList.remove('d-none')
+        btnLogout.classList.add('d-none')
+        userGreeting.classList.add('d-none')
+    }
 })
