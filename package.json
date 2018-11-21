@@ -29,3 +29,9 @@
     "uglify-js": "^3.4.9"
   }
 }
+"deploy":{
+  "provider": "firebase",
+  "token":{
+    "secure": "YOUR ENCRYPTED token"
+  }
+}
