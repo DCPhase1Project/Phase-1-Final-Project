@@ -23,15 +23,11 @@
     "standard": "^12.0.1"
   },
   "standard": {
-    "globals": ["$"]
+    "globals": [
+      "$"
+    ]
   },
   "dependencies": {
     "uglify-js": "^3.4.9"
-  }
-}
-"deploy":{
-  "provider": "firebase",
-  "token":{
-    "secure": "YOUR ENCRYPTED token"
   }
 }
