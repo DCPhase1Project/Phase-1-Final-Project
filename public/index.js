@@ -122,7 +122,9 @@ function renderRestaurant (restaurant) {
     document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
   }//renderFinal
 
+
   function renderMap (response) {
+
     console.log('filtering restaurant data...')
 
     let filteredRestuarantData = response.map(function (filterData) {

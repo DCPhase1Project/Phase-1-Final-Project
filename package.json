@@ -23,7 +23,9 @@
     "standard": "^12.0.1"
   },
   "standard": {
-    "globals": ["$"]
+    "globals": [
+      "$", "firebase", "google"
+    ]
   },
   "dependencies": {
     "uglify-js": "^3.4.9"
