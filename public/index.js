@@ -68,7 +68,7 @@ window.MYAPP = window.MYAPP || {}
         console.log(restaurantData)
         //setting object in local storage
         localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
-        return response
+        return response.businesses
       })
       .then(renderRestaurant)
       .then(renderFinal)
@@ -88,12 +88,16 @@ window.MYAPP = window.MYAPP || {}
   // Rendering
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  function renderRestaurant (restaurant) {
+  
+})()//function
+
+function renderRestaurant (restaurant) {
     renderMap(restaurant)
+    console.log(restaurant)
     // saveToFavoriteRestaurant(restaurant)
     // saveToRestaurantToVisitList(restaurant)
     console.log('creating cards innerHTML...')
-    let restaurantHTML = restaurant.businesses.map(function (currentRestaurant) {
+    let restaurantHTML = restaurant.map(function (currentRestaurant) {
         //TODO: Save current resturant to firebase????
         let restaurantHTMLString = `
             <div class="card bg-dark text-white">
@@ -121,7 +125,7 @@ window.MYAPP = window.MYAPP || {}
   function renderMap (response) {
     console.log('filtering restaurant data...')
 
-    let filteredRestuarantData = response.businesses.map(function (filterData) {
+    let filteredRestuarantData = response.map(function (filterData) {
       let filterDataObject = {
         'restaurantName': filterData.name,
         'restaurantCord': {
@@ -136,7 +140,6 @@ window.MYAPP = window.MYAPP || {}
     window.MYAPP.createMarkers(filteredRestuarantData)
     return response
   }
-})()//function
 
 function saveToFavoriteRestaurant (restaurantID) {
     console.log('saving restaurant to favorite list...')
@@ -156,19 +159,9 @@ function saveToFavoriteRestaurant (restaurantID) {
       const newFavoritesKey = firebase.database().ref().child('favorites').push().key
       const userID = localStorage.getItem('userID')
       if (userID) { 
-      update['/favorites/' + userID + '/' + newFavoritesKey] = clickedRestaurantData
+      update['/favorites/' + userID + '/'+ clickedRestaurantData.id] = clickedRestaurantData
       firebase.database().ref().update(update)
     }//if
-
-    //read data from firebase
-    firebase.database().ref().on('value', function(snapshot) {
-        let myData = snapshot.val().favorites
-        //setting firebaseFavoritesList to localStorage
-        localStorage.setItem('firebaseFavoritesList', myData)
-        console.log(myData);
-        }, function (error) {
-        console.log("Error: " + error.code);
-    });
 
   }//saveToRestaurantList
 
@@ -186,18 +179,64 @@ function saveToRestaurantToVisitList (restaurantID) {
       const newVisitKey = firebase.database().ref().child('toVisit').push().key
       const userID = localStorage.getItem('userID')
       if (userID) { 
-      update['/RestaurantsToVisit/' + userID + '/' + newVisitKey] = clickedRestaurantData
+      update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
       firebase.database().ref().update(update)
     }//if
 
-    //read data from firebase
-    firebase.database().ref().on('value', function(snapshot) {
-        let myData = snapshot.val().RestaurantsToVisit
-        //setting firebaseFavoritesList to localStorage
-        localStorage.setItem('firebaseToVisitList', myData)
-        console.log(myData);
-        }, function (error) {
-        console.log("Error: " + error.code);
-    });
+
 
 }//Visit List
+
+function renderFavorites () {
+
+    let favorites = []
+
+    //read data from firebase
+    firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function(snapshot) {
+        let myData = snapshot.val()
+        //setting firebaseFavoritesList to localStorage
+        if (myData) {
+            favorites = Object.values(myData)
+            console.log(favorites)
+            renderMap(favorites)
+        } else {
+            renderMap([])
+        } //if
+    }, function (error) {
+            console.log("Error: " + error.code)
+    })//read Data
+
+}//favorites
+
+function renderToVisit () {
+
+    let toVisit = []
+
+    //read data from firebase
+    firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function(snapshot) {
+        let myData = snapshot.val()
+        //setting firebaseFavoritesList to localStorage
+        if (myData) {
+            toVisit = Object.values(myData)
+            console.log(toVisit)
+            renderMap(toVisit)
+        } else {
+            renderMap([])
+        }//if
+        }, function (error) {
+        console.log("Error: " + error.code)
+    })//read Data
+
+}//Visit
+
+function renderNearByRestaurants () {
+    let data = JSON.parse(localStorage.getItem('restaurantData'))
+    renderMap(data)
+}//rerenderMap
+
+function renderFavoritesHTML () {
+    console.log('renderFavorites')
+    let data = JSON.parse(localStorage.getItem('restaurantData'))
+    renderRestaurant(data)
+}
+
