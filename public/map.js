@@ -67,8 +67,8 @@ window.MYAPP = window.MYAPP || {}
     for (var i = 0; i < locationsForMap.length; i++) {
       markers.push(addMarker(locationsForMap[i], bounds))
     }
-    // map.fitBounds(bounds)
-    // map.panToBounds(bounds)
+    map.fitBounds(bounds)
+    map.panToBounds(bounds)
     return markers
   }
 
