@@ -110,10 +110,10 @@ window.MYAPP = window.MYAPP || {}
     document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
   }
 
-  function saveToRestaurantList () {
-    console.log('saving restaurant to list...')
-  // todo: save restaurants to list
-  }
+  // function saveToRestaurantList () {
+  //   console.log('saving restaurant to list...')
+  // // todo: save restaurants to list
+  // }
 
   function renderMap (responseData) {
     console.log('filtering restaurant data...')
