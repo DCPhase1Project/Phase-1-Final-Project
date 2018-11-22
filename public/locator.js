@@ -13,7 +13,6 @@ function getCoarseLocation () {
 
   $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
     currentLocationCoarse = json
-    console.log('currentLocationCoarse here', currentLocationCoarse.city + ', ' + currentLocationCoarse.stateProv)
 
     // Set Map Properties
     geocoder.geocode({ 'address': currentLocationCoarse.city + ', ' + currentLocationCoarse.stateProv }, function (results, status) {
@@ -23,7 +22,7 @@ function getCoarseLocation () {
         alert('Geocode was not successful for the following reason: ' + status)
       }
     })
-
+    return currentLocationCoarse
     // Set Search Properties
   })
 }

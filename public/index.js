@@ -9,7 +9,6 @@ var restaurantData = []
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-// copied to locator
 let currentLocation = {
   lat: 29.752948,
   lng: -95.339069
@@ -21,7 +20,13 @@ let currentLocation = {
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('initializing index.js v3.0')
-  requestResponseObject()
+  
+    requestResponseObject(currentLocation)
+  
+  
+  
+  
+  
 })// DOMContentLoaded
 
 document.getElementById('searchButton').addEventListener('click', function (evt) {
@@ -38,7 +43,7 @@ document.getElementById('search-form').addEventListener('submit', function (evt)
 // Create Response Object
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function requestResponseObject () {
+function requestResponseObject (center,radius) {
   // if there's no search value then default search value
   if (document.getElementById('search-bar').value) {
     searchTerm = document.getElementById('search-bar').value
@@ -52,8 +57,8 @@ function requestResponseObject () {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
       term: searchTerm,
-      latitude: currentLocation.lat,
-      longitude: currentLocation.lng,
+      latitude: center.lat,
+      longitude: center.lng,
       categories: 'food'
     },
     headers: { 'Authorization': token },
