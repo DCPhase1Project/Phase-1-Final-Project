@@ -35,17 +35,15 @@ window.MYAPP = window.MYAPP || {}
     submitSearch()
   })
 
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Splash Screen Functions
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  function hideSplashScreen (){
-    window.setTimeout(function(){$('#splashLogo').fadeOut(2000)},1000)
-    window.setTimeout(function(){$('#splashScreen').fadeOut(1000)},2000)
-    window.setTimeout(function(){$('body').css('overflow-y','auto')},2200)
+  function hideSplashScreen () {
+    window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1000)
+    window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2000)
+    window.setTimeout(function () { $('body').css('overflow-y', 'auto') }, 2200)
   }
-
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Create Response Object
