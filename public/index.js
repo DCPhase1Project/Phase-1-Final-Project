@@ -22,6 +22,7 @@ window.MYAPP = window.MYAPP || {}
   document.addEventListener('DOMContentLoaded', function () {
     console.log('initializing index.js v3.0')
     requestResponseObject()
+    hideSplashScreen()
   })// DOMContentLoaded
 
   document.getElementById('searchButton').addEventListener('click', function (evt) {
@@ -33,6 +34,18 @@ window.MYAPP = window.MYAPP || {}
     evt.preventDefault()
     submitSearch()
   })
+
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Splash Screen Functions
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  function hideSplashScreen (){
+    window.setTimeout(function(){$('#splashLogo').fadeOut(2000)},1000)
+    window.setTimeout(function(){$('#splashScreen').fadeOut(1000)},2000)
+    window.setTimeout(function(){$('body').css('overflow-y','auto')},2200)
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Create Response Object
