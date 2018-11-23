@@ -1,6 +1,4 @@
-// window.MYAPP = window.MYAPP || {}
 
-// ;(function () {
 const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
 const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
 const corsHelper = 'https://cors-anywhere.herokuapp.com'
@@ -37,6 +35,8 @@ document.getElementById('search-form').addEventListener('submit', function (evt)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function requestResponseObject (center,radius) {
+  
+  //      SEARCH VALUE
   // if there's no search value then default search value
   if (document.getElementById('search-bar').value) {
     searchTerm = document.getElementById('search-bar').value
@@ -45,7 +45,7 @@ function requestResponseObject (center,radius) {
   }
   console.log('requesting', searchTerm, 'data from the server...')
 
-  // create requestObj
+  // Initialize requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
@@ -58,9 +58,7 @@ function requestResponseObject (center,radius) {
     }
   }
 
-  console.log('lat: ',center.lat,'lng: ',center.lng)
-  console.log(center.lat || center.lng)
-
+  // LOCATION VALUE
   // check if center contains city name or latlng
   if (center.lat == undefined){
     requestObj.data.location = center
@@ -70,7 +68,6 @@ function requestResponseObject (center,radius) {
     requestObj.data.longitude = center.lng
     console.log('adding lat lng to requestObj',requestObj)
   }
-
 
   // ajax request the object
   $.ajax(requestObj)
@@ -100,12 +97,9 @@ function submitSearch () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function updateCoarseSearchAPI (cityState) {
   // cityState as 'City, State'. Also accepts 'city'
-
   console.log('Updating SearchAPI with coarse data...')
   requestResponseObject(cityState)
 }
-
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering
@@ -252,8 +246,3 @@ function renderFavoritesHTML () {
   renderRestaurant(data)
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Export functions so they may be called outside of this module
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// })()// function

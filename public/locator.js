@@ -1,6 +1,3 @@
-// window.MYAPP = window.MYAPP || {}
-
-// ;(function () {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by IP Address -- Coarse
@@ -25,7 +22,7 @@ function getCoarseLocation (updateMapAPI,updateSearchAPI) {
     if (updateSearchAPI = 'updateSearchAPI') {
       // Set Search Properties
       console.log(updateSearchAPI)
-      updateCoarseSearchAPI (currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
+      updateCoarseSearchAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
     }
   })
 }
@@ -74,11 +71,3 @@ function watchCurrentLocation () {
   }
 }
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Export functions so they may be called outside of this module
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-//   window.MYAPP.getCoarseLocation = getCoarseLocation
-//   window.MYAPP.getCurrentLocation = getCurrentLocation
-//   window.MYAPP.watchCurrentLocation = watchCurrentLocation
-// })()

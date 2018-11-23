@@ -1,6 +1,3 @@
-// window.MYAPP = window.MYAPP || {}
-
-// ;(function () {
 var map, infoWindow
 var markers = []
 
@@ -104,13 +101,3 @@ function updateCoarseMapAPI (cityState) {
   })
 }
 
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Export functions so they may be called outside of this module
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-//   window.MYAPP.initMap = initMap
-//   window.MYAPP.createMarkers = createMarkers
-//   window.MYAPP.setMapOnAll = setMapOnAll
-//   window.MYAPP.getCurrentLocation = getCurrentLocation
-// })()
