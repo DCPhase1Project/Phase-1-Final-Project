@@ -18,14 +18,14 @@ function initMap () {
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
-  getCoarseLocation()
+  getCoarseLocation('updateMapAPI','updateSearchAPI')
 
   // check if the map has stopped loading || done scrolling
   // ***************************  INCOMPLETE *******************
-  google.maps.event.addListener('bounds_changed', function(){
-    var bound = google.maps.LatLngBounds.getBounds()
-    console.log('bounds', bound)
-  })
+  // google.maps.event.addListener('bounds_changed', function(){
+  //   var bound = google.maps.LatLngBounds.getBounds()
+  //   console.log('bounds', bound)
+  // })
 } // initMap
 
 
@@ -85,6 +85,25 @@ function setMapOnAll (map) {
     //   markers[i].setIcon(image)
   }
 }
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Map Updating Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function updateCoarseMapAPI (cityState) {
+  // cityState as 'City, State'. Also accepts 'city'
+  var geocoder = new google.maps.Geocoder()
+  console.log('Updating MapAPI with coarse data...')
+  geocoder.geocode({ 'address': cityState }, function (results, status) {
+    if (status === 'OK') {
+      map.setCenter(results[0].geometry.location)
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status)
+    }
+  })
+}
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Export functions so they may be called outside of this module

@@ -6,35 +6,27 @@
 // Get current location by IP Address -- Coarse
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function getCoarseLocation (mapAPI,searchAPI) {
+function getCoarseLocation (updateMapAPI,updateSearchAPI) {
   // This function will be called on init to get location based on IP address
-  // Argument options for 'mapAPI': 'mapAPI' or 'null'
-  // Argument options for 'searchAPI': 'searchAPI' or 'null'
+  // Argument options for 'updateMapAPI': 'mapAPI' or 'null'
+  // Argument options for 'updateSearchAPI': 'searchAPI' or 'null'
   console.log('getting coarse location...')
-  var geocoder = new google.maps.Geocoder()
-  let currentLocationCoarse = {}
+  let currentCoarseLocation = {}
 
   $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
-    currentLocationCoarse = json
-    console.log('coarse location: ', currentLocationCoarse.city,', ',currentLocationCoarse.stateProv, 'full data: ',currentLocationCoarse)
-
-    // Set Map Properties
-
-    // TODO:   Add function in map.js to set center based on the argument sent to it
-    geocoder.geocode({ 'address': currentLocationCoarse.city + ', ' + currentLocationCoarse.stateProv }, function (results, status) {
-      if (status === 'OK') {
-        map.setCenter(results[0].geometry.location)
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status)
-      }
-    })
-
-    // Set Search Properties
-
-    // TODO:    Add function in index.js to set search location based on the argument sent to it
-
-
-
+    currentCoarseLocation = json
+    console.log('coarse location: ', currentCoarseLocation.city,', ',currentCoarseLocation.stateProv, 'full data: ',currentCoarseLocation)
+    console.log(updateMapAPI, updateSearchAPI)
+    if (updateMapAPI = 'updateMapAPI') {
+      console.log(updateMapAPI)
+      // Set Map Properties
+      updateCoarseMapAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
+    }
+    if (updateSearchAPI = 'updateSearchAPI') {
+      // Set Search Properties
+      console.log(updateSearchAPI)
+      updateCoarseSearchAPI (currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
+    }
   })
 }
 

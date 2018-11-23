@@ -20,13 +20,6 @@ let currentLocation = {
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('initializing index.js v3.0')
-  
-    requestResponseObject(currentLocation)
-  
-  
-  
-  
-  
 })// DOMContentLoaded
 
 document.getElementById('searchButton').addEventListener('click', function (evt) {
@@ -57,8 +50,6 @@ function requestResponseObject (center,radius) {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
       term: searchTerm,
-      latitude: center.lat,
-      longitude: center.lng,
       categories: 'food'
     },
     headers: { 'Authorization': token },
@@ -66,6 +57,21 @@ function requestResponseObject (center,radius) {
       console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
     }
   }
+
+  console.log('lat: ',center.lat,'lng: ',center.lng)
+  console.log(center.lat || center.lng)
+
+  // check if center contains city name or latlng
+  if (center.lat == undefined){
+    requestObj.data.location = center
+    console.log('adding cityState to requestObj',requestObj)
+  } else {
+    requestObj.data.latitude = center.lat
+    requestObj.data.longitude = center.lng
+    console.log('adding lat lng to requestObj',requestObj)
+  }
+
+
   // ajax request the object
   $.ajax(requestObj)
     .then(function (response) {
@@ -87,6 +93,19 @@ function submitSearch () {
   console.log('searching for', restaurantSearch)
   requestResponseObject()
 }// submit Search
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Search Updating Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function updateCoarseSearchAPI (cityState) {
+  // cityState as 'City, State'. Also accepts 'city'
+
+  console.log('Updating SearchAPI with coarse data...')
+  requestResponseObject(cityState)
+}
+
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering
