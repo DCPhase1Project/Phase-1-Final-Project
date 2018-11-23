@@ -11,38 +11,38 @@ let currentLocation = {
   lng: -95.339069
 } // default digitalcrafts location
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Event Listeners
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Event Listeners
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  document.addEventListener('DOMContentLoaded', function () {
-    console.log('initializing index.js v4.0')
-    hideSplashScreen()
-  })// DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('initializing index.js v4.0')
+  hideSplashScreen()
+})// DOMContentLoaded
 
-  document.getElementById('searchButton').addEventListener('click', function (evt) {
-    evt.preventDefault()
-    submitSearch()
-  })
-  
-  document.getElementById('search-form').addEventListener('submit', function (evt) {
-    evt.preventDefault()
-    submitSearch()
-  })
+document.getElementById('searchButton').addEventListener('click', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Splash Screen Functions
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+document.getElementById('search-form').addEventListener('submit', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
 
-  function hideSplashScreen () {
-    window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1000)
-    window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2000)
-    window.setTimeout(function () { $('body').css('overflow-y', 'auto') }, 2200)
-  }
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Splash Screen Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Create Response Object
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function hideSplashScreen () {
+  window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1000)
+  window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2000)
+  window.setTimeout(function () { $('body').css('overflow-y', 'auto') }, 2200)
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Create Response Object
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function requestResponseObject (center, radius) {
   // SEARCH VALUE
