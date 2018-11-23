@@ -6,15 +6,21 @@
 // Get current location by IP Address -- Coarse
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function getCoarseLocation () {
+function getCoarseLocation (mapAPI,searchAPI) {
+  // This function will be called on init to get location based on IP address
+  // Argument options for 'mapAPI': 'mapAPI' or 'null'
+  // Argument options for 'searchAPI': 'searchAPI' or 'null'
   console.log('getting coarse location...')
   var geocoder = new google.maps.Geocoder()
   let currentLocationCoarse = {}
 
   $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
     currentLocationCoarse = json
+    console.log('coarse location: ', currentLocationCoarse.city,', ',currentLocationCoarse.stateProv, 'full data: ',currentLocationCoarse)
 
     // Set Map Properties
+
+    // TODO:   Add function in map.js to set center based on the argument sent to it
     geocoder.geocode({ 'address': currentLocationCoarse.city + ', ' + currentLocationCoarse.stateProv }, function (results, status) {
       if (status === 'OK') {
         map.setCenter(results[0].geometry.location)
@@ -22,8 +28,13 @@ function getCoarseLocation () {
         alert('Geocode was not successful for the following reason: ' + status)
       }
     })
-    return currentLocationCoarse
+
     // Set Search Properties
+
+    // TODO:    Add function in index.js to set search location based on the argument sent to it
+
+
+
   })
 }
 

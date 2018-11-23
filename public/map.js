@@ -21,6 +21,7 @@ function initMap () {
   getCoarseLocation()
 
   // check if the map has stopped loading || done scrolling
+  // ***************************  INCOMPLETE *******************
   google.maps.event.addListener('bounds_changed', function(){
     var bound = google.maps.LatLngBounds.getBounds()
     console.log('bounds', bound)
@@ -28,15 +29,14 @@ function initMap () {
 } // initMap
 
 
-
-
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function createMarkers (locationsForMap) {
-  // Function accepts array of objects with name, lat, & long
+function createMarkers (locationsForMap, Center) {
+  // 'locationsForMap' accepts array of objects with name, lat, & long
+  // 'Center' accepts the strings: 'onCenter' or 'onBounds'
+  // If 'Center' is not defined it will not move.
   setMapOnAll(null)
 
   console.log('creating new markers...')
@@ -45,6 +45,8 @@ function createMarkers (locationsForMap) {
   for (var i = 0; i < locationsForMap.length; i++) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
+
+  
   // map.fitBounds(bounds)
   // map.panToBounds(bounds)
   return markers
