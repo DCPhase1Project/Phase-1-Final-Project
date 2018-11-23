@@ -34,8 +34,7 @@ document.getElementById('search-form').addEventListener('submit', function (evt)
 // Create Response Object
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function requestResponseObject (center,radius) {
-  
+function requestResponseObject (center, radius) {
   //      SEARCH VALUE
   // if there's no search value then default search value
   if (document.getElementById('search-bar').value) {
@@ -60,13 +59,13 @@ function requestResponseObject (center,radius) {
 
   // LOCATION VALUE
   // check if center contains city name or latlng
-  if (center.lat == undefined){
+  if (center.lat === undefined) {
     requestObj.data.location = center
-    console.log('adding cityState to requestObj',requestObj)
+    console.log('adding cityState to requestObj', requestObj)
   } else {
     requestObj.data.latitude = center.lat
     requestObj.data.longitude = center.lng
-    console.log('adding lat lng to requestObj',requestObj)
+    console.log('adding lat lng to requestObj', requestObj)
   }
 
   // ajax request the object
@@ -90,7 +89,6 @@ function submitSearch () {
   console.log('searching for', restaurantSearch)
   requestResponseObject()
 }// submit Search
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Search Updating Functions
@@ -245,4 +243,3 @@ function renderFavoritesHTML () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
   renderRestaurant(data)
 }
-

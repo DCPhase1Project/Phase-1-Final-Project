@@ -15,7 +15,7 @@ function initMap () {
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
-  getCoarseLocation('updateMapAPI','updateSearchAPI')
+  getCoarseLocation('updateMapAPI', 'updateSearchAPI')
 
   // check if the map has stopped loading || done scrolling
   // ***************************  INCOMPLETE *******************
@@ -24,7 +24,6 @@ function initMap () {
   //   console.log('bounds', bound)
   // })
 } // initMap
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
@@ -43,7 +42,6 @@ function createMarkers (locationsForMap, Center) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
 
-  
   // map.fitBounds(bounds)
   // map.panToBounds(bounds)
   return markers
@@ -83,7 +81,6 @@ function setMapOnAll (map) {
   }
 }
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Map Updating Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,4 +97,3 @@ function updateCoarseMapAPI (cityState) {
     }
   })
 }
-

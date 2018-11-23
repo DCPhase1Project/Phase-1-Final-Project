@@ -3,7 +3,7 @@
 // Get current location by IP Address -- Coarse
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function getCoarseLocation (updateMapAPI,updateSearchAPI) {
+function getCoarseLocation (updateMapAPI, updateSearchAPI) {
   // This function will be called on init to get location based on IP address
   // Argument options for 'updateMapAPI': 'mapAPI' or 'null'
   // Argument options for 'updateSearchAPI': 'searchAPI' or 'null'
@@ -12,7 +12,7 @@ function getCoarseLocation (updateMapAPI,updateSearchAPI) {
 
   $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
     currentCoarseLocation = json
-    console.log('coarse location: ', currentCoarseLocation.city,', ',currentCoarseLocation.stateProv, 'full data: ',currentCoarseLocation)
+    console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
     console.log(updateMapAPI, updateSearchAPI)
     if (updateMapAPI = 'updateMapAPI') {
       console.log(updateMapAPI)
@@ -70,4 +70,3 @@ function watchCurrentLocation () {
     console.alert('Browser does not support Geolocation')
   }
 }
-
