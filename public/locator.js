@@ -26,7 +26,7 @@ function getCoarseLocation (updateMapAPI, updateSearchAPI) {
     }
   })
 }
-
+ 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by Geolocation -- Fine
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
