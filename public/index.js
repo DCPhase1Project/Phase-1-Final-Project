@@ -128,6 +128,10 @@ function renderRestaurant (restaurant) {
             <div class="card bg-dark text-white hover-card">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
+                <div class="top-right">
+                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn button-topright">Fav</button>
+                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn button-topright">Wish</button>
+                </div>
             </div>
         `
     return restaurantHTMLString

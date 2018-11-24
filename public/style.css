@@ -96,6 +96,36 @@ body {
     max-height: 100%;
 }
 
+.top-right {
+    top: 0;
+    position: absolute;
+    right: 0;
+    margin: 0.25em;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-topright {
+    transition: 0.2s ease-out;
+    background: rgba(66, 66, 66, 0.2);
+    padding: 0.25em;
+    text-align: center;
+    margin: 0px;
+    border-radius: 50%;
+    display: flex;
+    /* Animated parameters */
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0);
+    font-size:1vw;
+}
+
+.button-topright:hover {
+    border: 2px solid rgba(255, 255, 255, 1);
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .card {
     break-inside: avoid;
     margin-bottom:0.5rem;
