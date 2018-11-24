@@ -13,20 +13,18 @@ function getCoarseLocation (updateMapAPI, updateSearchAPI) {
   $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
     currentCoarseLocation = json
     console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
-    console.log(updateMapAPI, updateSearchAPI)
+
     if (updateMapAPI = 'updateMapAPI') {
-      console.log(updateMapAPI)
       // Set Map Properties
       updateCoarseMapAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
     }
     if (updateSearchAPI = 'updateSearchAPI') {
       // Set Search Properties
-      console.log(updateSearchAPI)
       updateCoarseSearchAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
     }
   })
 }
- 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by Geolocation -- Fine
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

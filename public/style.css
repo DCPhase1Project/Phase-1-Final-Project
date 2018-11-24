@@ -7,10 +7,12 @@
     height: 100vh;
     width: 100vw;
     position: fixed;
+    top: 0px;
     scroll-behavior: unset;
     z-index: 100;
     background-image:radial-gradient(rgb(255, 187, 0), rgb(239, 141, 33));
     display: flex;
+    margin:0px;
 }
 #splashLogo {
     margin:auto;
@@ -18,6 +20,7 @@
     height: 150px;
     animation: pulse 3s ease infinite;
 }
+
 @keyframes pulse {
 0% {
     transform: scale(1);
@@ -28,6 +31,13 @@
 100% {
     transform: scale(1);
   }
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          Tab settings                */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+.nav-link {
+    font-size:1.5vw;
 }
 
 
@@ -45,7 +55,85 @@
 body {
     padding: 0px;
     overflow-x:hidden;
-    overflow-y:hidden;
 }
 
  
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*                Cards                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.container-fluid {
+    padding: 0.5rem;
+}
+
+.no-pad {
+    padding: 0px;
+    margin: 0px;
+}
+
+.hover-card .top {
+    transition: 0.2s ease-out;
+    bottom: 0;
+    /* background: rgba(66, 66, 66, 0.56); */
+    padding: 0.25em;
+    position: absolute;
+    left: 0;
+    text-align: left;
+    width: 100%;
+    margin: 0px;
+    height: auto;
+    /* Animated parameters */
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0);
+    overflow: hidden;
+    max-height: 30px;
+    font-size:2vw;
+}
+
+.card:hover .top{
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    max-height: 100%;
+}
+
+.card {
+    break-inside: avoid;
+    margin-bottom:0.5rem;
+}
+
+.card-columns {
+    margin-bottom:0.5rem;
+    column-gap: 0.5rem;
+}
+
+@media (max-width: 321px) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 321px) {
+    .card-columns {
+        -webkit-column-count: 3;
+        -moz-column-count: 3;
+        column-count: 3;
+    }
+}
+
+@media (min-width: 575px) {
+    .card-columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
+}
+
+@media (min-width: 960px) {
+    .card-columns {
+        -webkit-column-count: 5;
+        -moz-column-count: 5;
+        column-count: 5;
+    }
+}

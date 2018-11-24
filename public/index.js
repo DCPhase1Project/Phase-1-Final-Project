@@ -17,7 +17,7 @@ let currentLocation = {
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('initializing index.js v4.0')
-  hideSplashScreen()
+  loadPageAnimations()
 })// DOMContentLoaded
 
 document.getElementById('searchButton').addEventListener('click', function (evt) {
@@ -34,10 +34,13 @@ document.getElementById('search-form').addEventListener('submit', function (evt)
 // Splash Screen Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function hideSplashScreen () {
-  window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1000)
-  window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2000)
-  window.setTimeout(function () { $('body').css('overflow-y', 'auto') }, 2200)
+function loadPageAnimations () {
+  window.setTimeout(function () { $('#jumbotron-section').hide() })
+  window.setTimeout(function () { $('#search-section').hide() })
+  window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1500)
+  window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2500)
+  window.setTimeout(function () { $('#jumbotron-section').fadeIn(1000) }, 3500)
+  window.setTimeout(function () { $('#search-section').fadeIn(1000) }, 4000)
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,15 +125,9 @@ function renderRestaurant (restaurant) {
   let restaurantHTML = restaurant.map(function (currentRestaurant) {
     // TODO: Save current resturant to firebase????
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white">
+            <div class="card bg-dark text-white hover-card">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
-                <div class="card-body">
-                    <div class="row">
-                        <h5 class="card-title">${currentRestaurant.name}</h5>
-                    </div>
-                    <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Favorite's list</button>
-                    <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Restaurant list</button>
-                </div>
+                <h5 class="top">${currentRestaurant.name}</h5>
             </div>
         `
     return restaurantHTMLString
