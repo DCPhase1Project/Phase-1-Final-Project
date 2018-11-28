@@ -1,4 +1,4 @@
-const mapStyle =
+var mapStyle =
   [
     {
       'elementType': 'geometry',

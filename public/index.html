@@ -15,10 +15,16 @@
     <title>Web App Design</title>
 </head>
 <body>
+    <!--    Splash Screen    -->
+    <div id="splashScreen">
+        <img id="splashLogo" src="img/burgerIcon2.png">
+    </div>
+     
+    
     <!--    Page Header    -->
     <div>
         <div class="row d-flex" style="margin: 5px;">
-            <a href=""><img src="../img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
+            <a href=""><img src="img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
             <h3 class="mr-auto p-2">AppName</h3>
             <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" data-toggle="modal" data-target="#login-modal">Account Login</button>
             <button class="btn btn-primary p-2 align-self-start mr-1" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Create an Account</button>
@@ -86,14 +92,14 @@
         <div class="jumbotron-section" style="height: 60vh;">
             <!--     Tabs       -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active show" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="map" aria-selected="true">Map</a>
+                <li class="nav-item" onclick="renderNearByRestaurants(), renderNearByHTML() ">
+                    <a class="nav-link active show" id="map-tab" data-toggle="tab" href="#map" role="tab" aria-controls="map" aria-selected="true">Near By Restaurants</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="favorite-tab" data-toggle="tab" href="#favorite" role="tab" aria-controls="favorite" aria-selected="false">Favorite Restaurants</a>
+                <li class="nav-item" onclick="renderFavorites(), renderFavoritesHTML()">
+                    <a class="nav-link" data-toggle="tab" href="#favorite" role="tab" aria-controls="favorite" aria-selected="false">Favorite Restaurants</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="visit-tab" data-toggle="tab" href="#visit" role="tab" aria-controls="visit" aria-selected="false">Restaurants to Visit</a>
+                <li class="nav-item" onclick="renderToVisit(), renderToVisitListHTML()">
+                    <a class="nav-link"data-toggle="tab" href="#visit" role="tab" aria-controls="visit" aria-selected="false">Restaurants to Visit</a>
                 </li>
             </ul>
 
@@ -104,18 +110,18 @@
                         <div id="map"></div> <!--   Map Goes here   -->
                     </div>
                 </div>
-                <div class="tab-pane fade" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">
+                <!-- <div class="tab-pane fade" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">
                     <div class="jumbotron" style="height: 55vh; margin: 5px;">
                         <h1 class="display-4">Favorite Restaurants Section</h1>
-                        <p class="lead">A list of the user's favorite restaurants will go here</p>
+                        <div id="map-favorites"></div> 
                     </div>
                 </div>
                 <div class="tab-pane fade" id="visit" role="tabpanel" aria-labelledby="visit-tab">
                     <div class="jumbotron" style="height: 55vh; margin: 5px;">
                         <h1 class="display-4">Restaurants to Visit Section</h1>
-                        <p class="lead">A list of the restaurants the user wants to try</p>
+                        <div id="map-to-visit"></div> 
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
