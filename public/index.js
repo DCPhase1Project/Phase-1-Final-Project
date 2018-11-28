@@ -102,8 +102,7 @@ window.MYAPP = window.MYAPP || {}
 function renderRestaurant (restaurant) {
   renderMap(restaurant)
   console.log(restaurant)
-  // saveToFavoriteRestaurant(restaurant)
-  // saveToRestaurantToVisitList(restaurant)
+
   console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.map(function (currentRestaurant) {
     // TODO: Save current resturant to firebase????
@@ -121,7 +120,7 @@ function renderRestaurant (restaurant) {
         `
     return restaurantHTMLString
   })// map function
-
+// console.log(restaurantHTML.join(''))
   return restaurantHTML.join('')
 }// renderRestaurant
 
@@ -231,11 +230,52 @@ function renderToVisit () {
 
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
+  console.log(data)
   renderMap(data)
-}// rerenderMap
+}// rerender nearby favorites
+
+function renderNearByHTML () {
+let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
+
+}//renderNearByHTML
 
 function renderFavoritesHTML () {
-  console.log('renderFavorites')
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-  renderRestaurant(data)
-}
+  console.log('render favorites list cards')
+
+  // read data from firebase
+  firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
+    let myData = snapshot.val()
+    // setting firebaseFavoritesList to localStorage
+    if (myData) {
+      favorites = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
+    } else {
+      console.log('entered')
+    } // if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+}//renderFavoritesHTML
+
+function renderToVisitListHTML () {
+  console.log('render to visit cards')
+
+  // read data from firebase
+  firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
+    let myData = snapshot.val()
+    // setting firebaseFavoritesList to localStorage
+    if (myData) {
+      toVisit = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(toVisit) + '</div>'
+    } else {
+      console.log('entered')
+    } // if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+
+}//renderToVisitList
+
+//TODO: Nearby Restaurants does not rerender
