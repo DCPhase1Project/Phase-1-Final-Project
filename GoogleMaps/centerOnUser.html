@@ -24,7 +24,11 @@
           zoom: 12
         });
         infoWindow = new google.maps.InfoWindow;
-
+        
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // If user clicks 'Favorite Restaurants' or 'Restaurants To Visit', run below
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -49,7 +53,6 @@
         for (var i = 0;i < markers.length; i++){
             addMarker(markers[i]);
         }
-
         // Add Marker Function
         function addMarker (props){
             var marker = new google.maps.Marker({
@@ -76,7 +79,10 @@
             });
             }
         }
-      
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // If user clicks 'Favorite Restaurants' or 'Restaurants To Visit', run above
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }
 
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
