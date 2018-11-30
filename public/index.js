@@ -66,7 +66,7 @@ function requestResponseObject (center, radius) {
     },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
-      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)    
+      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
     }
   }
 
@@ -180,7 +180,7 @@ function saveToFavoriteRestaurant (restaurantID) {
   })// restaurant
   console.log(clickedRestaurantData)
 
-  //printing information to firebase
+  // printing information to firebase
   const update = {}
   // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
   const userID = localStorage.getItem('userID')
@@ -200,7 +200,7 @@ function saveToRestaurantToVisitList (restaurantID) {
   })
   console.log(clickedRestaurantData)
 
-  //setting information to Firebase
+  // setting information to Firebase
   const update = {}
   // const newVisitKey = firebase.database().ref().child('toVisit').push().key
   const userID = localStorage.getItem('userID')
@@ -255,11 +255,10 @@ function renderNearByRestaurants () {
 }// rerender nearby favorites
 
 function renderNearByHTML () {
-let data = JSON.parse(localStorage.getItem('restaurantData'))
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
 
-document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
-
-}//renderNearByHTML
+  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
+}// renderNearByHTML
 
 function renderFavoritesHTML () {
   console.log('render favorites list cards')
@@ -277,7 +276,7 @@ function renderFavoritesHTML () {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
-}//renderFavoritesHTML
+}// renderFavoritesHTML
 
 function renderToVisitListHTML () {
   console.log('render to visit cards')
@@ -300,16 +299,15 @@ function renderToVisitListHTML () {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
-
-}//renderToVisitList
+}// renderToVisitList
 
 function userLogInStatus () {
-  var user = firebase.auth().currentUser;
-console.log('ENTERED LOG IN STATUS')
-Console.log(user)
+  var user = firebase.auth().currentUser
+  console.log('ENTERED LOG IN STATUS')
+  Console.log(user)
   if (user) {
     console.log(user, 'is signed in')
   } else {
     console.log('No one is signed in')
   }
-}//userLogInStatus
+}// userLogInStatus
