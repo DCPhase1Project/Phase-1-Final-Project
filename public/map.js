@@ -111,57 +111,57 @@ window.MYAPP = window.MYAPP || {}
     return marker
   }
 
-  // function setMapOnAll (map) {
-  //   if (map = null) { console.log('clearing old markers...') }
-  //   for (var i = 0; i < markers.length; i++) {
-  //     markers[i].setMap(map)
-  //   //   markers[i].setIcon(image)
-  //   }
-  // }
+  function setMapOnAll (map) {
+    if (map == null) { console.log('clearing old markers...') }
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map)
+    //   markers[i].setIcon(image)
+    }
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Add 'Center on Me' Button
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  function CenterControl(controlDiv, map) {
+  // function CenterControl(controlDiv, map) {
 
-    // Set CSS for the control border.
-    var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = '#fff';
-    controlUI.style.border = '2px solid #fff';
-    controlUI.style.borderRadius = '3px';
-    controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to recenter the map';
-    controlDiv.appendChild(controlUI);
+  //   // Set CSS for the control border.
+  //   var controlUI = document.createElement('div');
+  //   controlUI.style.backgroundColor = '#fff';
+  //   controlUI.style.border = '2px solid #fff';
+  //   controlUI.style.borderRadius = '3px';
+  //   controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+  //   controlUI.style.cursor = 'pointer';
+  //   controlUI.style.marginBottom = '22px';
+  //   controlUI.style.textAlign = 'center';
+  //   controlUI.title = 'Click to recenter the map';
+  //   controlDiv.appendChild(controlUI);
 
-    // Set CSS for the control interior.
-    var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '16px';
-    controlText.style.lineHeight = '38px';
-    controlText.style.paddingLeft = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.innerHTML = 'Center on Me';
-    controlUI.appendChild(controlText);
+  //   // Set CSS for the control interior.
+  //   var controlText = document.createElement('div');
+  //   controlText.style.color = 'rgb(25,25,25)';
+  //   controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+  //   controlText.style.fontSize = '16px';
+  //   controlText.style.lineHeight = '38px';
+  //   controlText.style.paddingLeft = '5px';
+  //   controlText.style.paddingRight = '5px';
+  //   controlText.innerHTML = 'Center on Me';
+  //   controlUI.appendChild(controlText);
 
-    // Setup the click event listeners: simply set the map to Chicago.
-    controlUI.addEventListener('click', function() {
-      map.setCenter(pos);
-    });
+  //   // Setup the click event listeners: simply set the map to Chicago.
+  //   controlUI.addEventListener('click', function() {
+  //     map.setCenter(pos);
+  //   });
 
-  }
+  // }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Center on all Markers
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
-  bounds  = new google.maps.LatLngBounds();
-  map.fitBounds(bounds);
-  map.panToBounds(bounds);
+  // bounds  = new google.maps.LatLngBounds();
+  // map.fitBounds(bounds);
+  // map.panToBounds(bounds);
   // export the initMap function so it may be called outside of this module
   window.MYAPP.initMap = initMap
   window.MYAPP.createMarkers = createMarkers
