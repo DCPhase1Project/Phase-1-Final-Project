@@ -18,26 +18,27 @@ async searchAPI(city,categoryID){
     // city url
     const cityURL = `https://developers.zomato.com/api/v2.1/cities?q=${city}`
     console.log(cityURL)
-    // restaurant url
-    const restaurantURL = `https://developers.zomato.com/api/v2.1/search?entity_id=${city}&entity_type=city&category=${categoryID}&sort=rating`
-
+    
     // category data
     const categoryInfo = await fetch(cors_helper + '/' + categoryURL,this.header)
     const categoryJSON = await categoryInfo.json()
     const categories = await categoryJSON.categories
-
+    
     // search city
     const cityInfo = await fetch(cors_helper + '/' + cityURL,this.header)
     const cityJSON = await cityInfo.json()
     const cityLocation = await cityJSON.location_suggestions
     
     let cityID = 0
-
+    
     if(cityLocation.length>0){
         cityID = await cityLocation[0].id
-        console.log(cityLocation[0])
+        console.log(cityID)
     }
-
+    
+    // restaurant url
+    const restaurantURL = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityID}&entity_type=city&category=${categoryID}&sort=rating`
+    
     // search restaurant
     const restaurantInfo = await fetch(cors_helper + '/' + restaurantURL,this.header)
     const restaurantJSON = await restaurantInfo.json()
@@ -79,6 +80,7 @@ class UI {
     }
     getRestaurants(restaurants){
         this.hideLoader()
+        console.log(restaurants)
         if(restaurants.length === 0){
             this.showFeedback('no such categories in the selected city')
         } else {
@@ -86,7 +88,7 @@ class UI {
             restaurants.forEach((restaurant) =>{
                 console.log(restaurant.restaurant.name)
                 const {thumb:img,name,location:{address},user_rating:{aggregate_rating},cousines,average_cost_for_two:cost,menu_url,url} = restaurant.restaurant
-                if(img === ''){
+                if(img !== ''){
                     this.showRestaurant(img,name,address,aggregate_rating,cousines,cost,menu_url,url)
                 }
             })
