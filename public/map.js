@@ -105,7 +105,7 @@ window.MYAPP = window.MYAPP || {}
   }
 
   function setMapOnAll (map) {
-    if (map = null) { console.log('clearing old markers...') }
+    if (map == null) { console.log('clearing old markers...') }
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(map)
     //   markers[i].setIcon(image)
