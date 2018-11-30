@@ -200,7 +200,9 @@ function renderFavorites () {
     if (myData) {
       favorites = Object.values(myData)
       console.log(favorites)
+
       renderMap(favorites)
+      
     } else {
       renderMap([])
     } // if

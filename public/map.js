@@ -77,6 +77,8 @@ window.MYAPP = window.MYAPP || {}
 
     console.log('creating new markers...')
     var bounds = new google.maps.LatLngBounds()
+    // map.fitBounds(bounds);
+    // map.panToBounds(bounds);
     // Loop through markers array
     for (var i = 0; i < locationsForMap.length; i++) {
       markers.push(addMarker(locationsForMap[i], bounds))
@@ -158,4 +160,5 @@ window.MYAPP = window.MYAPP || {}
   window.MYAPP.createMarkers = createMarkers
   window.MYAPP.setMapOnAll = setMapOnAll
   window.MYAPP.getCurrentLocation = getCurrentLocation
+
 })()
