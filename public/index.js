@@ -6,10 +6,10 @@ var restaurantData = []
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-let currentLocation = {
-  lat: 29.752948,
-  lng: -95.339069
-} // default digitalcrafts location
+// let currentLocation = {
+//   lat: 29.752948,
+//   lng: -95.339069
+// } // default digitalcrafts location
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
@@ -100,7 +100,7 @@ function requestResponseObject (center, radius) {
 function submitSearch () {
   let restaurantSearch = document.getElementById('search-bar').value
   console.log('searching for', restaurantSearch)
-  requestResponseObject()
+  requestResponseObject(currentLocation)
 }// submit Search
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
