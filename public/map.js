@@ -29,14 +29,13 @@ function createMarkers (locationsForMap, Center) {
   // 'Center' accepts the strings: 'onCenter' or 'onBounds'
   // If 'Center' is not defined it will not move.
   setMapOnAll(null)
-
+  
   console.log('creating new markers...')
   var bounds = new google.maps.LatLngBounds()
   // Loop through markers array
   for (var i = 0; i < locationsForMap.length; i++) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
-
   // map.fitBounds(bounds)
   // map.panToBounds(bounds)
   return markers
