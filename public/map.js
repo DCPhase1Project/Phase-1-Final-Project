@@ -51,7 +51,7 @@ window.MYAPP = window.MYAPP || {}
         : 'Error: Your browser doesn\'t support geolocation.')
       infoWindow.open(map)
     }
-  }
+  }//get location
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Add & Remove Markers

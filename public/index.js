@@ -58,12 +58,16 @@ window.MYAPP = window.MYAPP || {}
     }
     console.log('requesting', searchTerm, 'data from the server...')
 
+
+
+    //using navagator and then calling API inside 
+
     // create requestObj
     let requestObj = {
       'url': corsHelper + '/' + yelpSearchURL,
       'data': {
         term: searchTerm,
-        latitude: currentLocation.lat,
+        latitude: currentLocation.lat, //TODO: Need to pass current users location
         longitude: currentLocation.lng,
         categories: 'food'
       },
@@ -105,7 +109,6 @@ function renderRestaurant (restaurant) {
 
   console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.map(function (currentRestaurant) {
-    // TODO: Save current resturant to firebase????
     let restaurantHTMLString = `
             <div class="card bg-dark text-white">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
@@ -120,7 +123,6 @@ function renderRestaurant (restaurant) {
         `
     return restaurantHTMLString
   })// map function
-// console.log(restaurantHTML.join(''))
   return restaurantHTML.join('')
 }// renderRestaurant
 
@@ -161,9 +163,9 @@ function saveToFavoriteRestaurant (restaurantID) {
   })// restaurant
   console.log(clickedRestaurantData)
 
-  // updated firebase
+  //printing information to firebase
   const update = {}
-  const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
   const userID = localStorage.getItem('userID')
   if (userID) {
     update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
@@ -181,8 +183,9 @@ function saveToRestaurantToVisitList (restaurantID) {
   })
   console.log(clickedRestaurantData)
 
+  //setting information to Firebase
   const update = {}
-  const newVisitKey = firebase.database().ref().child('toVisit').push().key
+  // const newVisitKey = firebase.database().ref().child('toVisit').push().key
   const userID = localStorage.getItem('userID')
   if (userID) {
     update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
@@ -262,6 +265,11 @@ function renderFavoritesHTML () {
 function renderToVisitListHTML () {
   console.log('render to visit cards')
 
+  // firebase.database().ref().on('value', function (snapshot) {
+  //   let myData = snapshot.val()
+  //   console.log(myData)
+  // })
+
   // read data from firebase
   firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
     let myData = snapshot.val()
@@ -278,4 +286,13 @@ function renderToVisitListHTML () {
 
 }//renderToVisitList
 
-//TODO: Nearby Restaurants does not rerender
+function userLogInStatus () {
+  var user = firebase.auth().currentUser;
+console.log('ENTERED LOG IN STATUS')
+Console.log(user)
+  if (user) {
+    console.log(user, 'is signed in')
+  } else {
+    console.log('No one is signed in')
+  }
+}//userLogInStatus
