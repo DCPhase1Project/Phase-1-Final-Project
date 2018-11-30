@@ -39,7 +39,8 @@ function getCurrentLocation () {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }
-      return currentLocationFine
+      updateFineSearchAPI(currentLocationFine)
+      updateFineMapAPI(currentLocationFine)
     })
   } else {
     // Browser doesn't support Geolocation

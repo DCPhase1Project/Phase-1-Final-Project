@@ -15,14 +15,9 @@ function initMap () {
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
-  getCoarseLocation('updateMapAPI', 'updateSearchAPI')
+  // getCoarseLocation('updateMapAPI', 'updateSearchAPI')
+  getCurrentLocation()
 
-  // check if the map has stopped loading || done scrolling
-  // ***************************  INCOMPLETE *******************
-  // google.maps.event.addListener('bounds_changed', function(){
-  //   var bound = google.maps.LatLngBounds.getBounds()
-  //   console.log('bounds', bound)
-  // })
 } // initMap
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -96,4 +91,8 @@ function updateCoarseMapAPI (cityState) {
       alert('Geocode was not successful for the following reason: ' + status)
     }
   })
+}
+
+function updateFineMapAPI (latlng) {
+  map.setCenter(latlng)
 }

@@ -112,6 +112,12 @@ function updateCoarseSearchAPI (cityState) {
   requestResponseObject(cityState)
 }
 
+function updateFineSearchAPI (latlng) {
+  // cityState as 'City, State'. Also accepts 'city'
+  console.log('Updating SearchAPI with coarse data...')
+  requestResponseObject(latlng)
+}
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
