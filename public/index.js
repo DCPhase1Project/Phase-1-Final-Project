@@ -1,103 +1,122 @@
-window.MYAPP = window.MYAPP || {}
+const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
+const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
+const corsHelper = 'https://cors-anywhere.herokuapp.com'
+var restaurantData = []
 
-;(function () {
-  const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
-  const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
-  const corsHelper = 'https://cors-anywhere.herokuapp.com'
-  var returnData = ''
-  var restaurantData = []
+const defaultSearch = 'food'
+let searchTerm = defaultSearch // initial search term
 
-  const defaultSearch = 'food'
-  let searchTerm = defaultSearch // initial search term
+let currentLocation = {
+  lat: 29.752948,
+  lng: -95.339069
+} // default digitalcrafts location
 
-  let currentLocation = {
-    lat: 29.752948,
-    lng: -95.339069
-  } // default digitalcrafts location
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Event Listeners
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Event Listeners
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('initializing index.js v4.0')
+  loadPageAnimations()
+})// DOMContentLoaded
 
-  document.addEventListener('DOMContentLoaded', function () {
-    console.log('initializing index.js v3.0')
-    requestResponseObject()
-    hideSplashScreen()
-  })// DOMContentLoaded
+document.getElementById('searchButton').addEventListener('click', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
 
-  document.getElementById('searchButton').addEventListener('click', function (evt) {
-    evt.preventDefault()
-    submitSearch()
-  })
+document.getElementById('search-form').addEventListener('submit', function (evt) {
+  evt.preventDefault()
+  submitSearch()
+})
 
-  document.getElementById('search-form').addEventListener('submit', function (evt) {
-    evt.preventDefault()
-    submitSearch()
-  })
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Splash Screen Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Splash Screen Functions
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function loadPageAnimations () {
+  window.setTimeout(function () { $('#jumbotron-section').hide() })
+  window.setTimeout(function () { $('#search-section').hide() })
+  window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1500)
+  window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2500)
+  window.setTimeout(function () { $('#jumbotron-section').fadeIn(1000) }, 3500)
+  window.setTimeout(function () { $('#search-section').fadeIn(1000) }, 4000)
+}
 
-  function hideSplashScreen () {
-    window.setTimeout(function () { $('#splashLogo').fadeOut(2000) }, 1000)
-    window.setTimeout(function () { $('#splashScreen').fadeOut(1000) }, 2000)
-    window.setTimeout(function () { $('body').css('overflow-y', 'auto') }, 2200)
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Create Response Object
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function requestResponseObject (center, radius) {
+  // SEARCH VALUE
+  // if there's no search value then default search value
+  if (document.getElementById('search-bar').value) {
+    searchTerm = document.getElementById('search-bar').value
+  } else {
+    searchTerm = defaultSearch
+  }
+  console.log('requesting', searchTerm, 'data from the server...')
+
+  // Initialize requestObj
+  let requestObj = {
+    'url': corsHelper + '/' + yelpSearchURL,
+    'data': {
+      term: searchTerm,
+      categories: 'food'
+    },
+    headers: { 'Authorization': token },
+    error: function (jqXHR, testStatus, errorThrown) {
+      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)    
+    }
   }
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Create Response Object
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // LOCATION VALUE
+  // check if center contains city name or latlng
+  if (center.lat === undefined) {
+    requestObj.data.location = center
+    console.log('adding cityState to requestObj', requestObj)
+  } else {
+    requestObj.data.latitude = center.lat
+    requestObj.data.longitude = center.lng
+    console.log('adding lat lng to requestObj', requestObj)
+  }
 
-  function requestResponseObject () {
-  // if there's no search value then default search value
-    if (document.getElementById('search-bar').value) {
-      searchTerm = document.getElementById('search-bar').value
-    } else {
-      searchTerm = defaultSearch
-    }
-    console.log('requesting', searchTerm, 'data from the server...')
+  // ajax request the object
+  $.ajax(requestObj)
+    .then(function (response) {
+      restaurantData = response.businesses
+      console.log(restaurantData)
+      // setting object in local storage
+      localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
+      return response.businesses
+    })
+    .then(renderRestaurant)
+    .then(renderFinal)
+}// requestResponseObject
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Search Functionality
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function submitSearch () {
+  let restaurantSearch = document.getElementById('search-bar').value
+  console.log('searching for', restaurantSearch)
+  requestResponseObject()
+}// submit Search
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Search Updating Functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function updateCoarseSearchAPI (cityState) {
+  // cityState as 'City, State'. Also accepts 'city'
+  console.log('Updating SearchAPI with coarse data...')
+  requestResponseObject(cityState)
+}
 
-    //using navagator and then calling API inside 
-
-    // create requestObj
-    let requestObj = {
-      'url': corsHelper + '/' + yelpSearchURL,
-      'data': {
-        term: searchTerm,
-        latitude: currentLocation.lat, //TODO: Need to pass current users location
-        longitude: currentLocation.lng,
-        categories: 'food'
-      },
-      headers: { 'Authorization': token },
-      error: function (jqXHR, testStatus, errorThrown) {
-        console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
-      }
-    }
-    // ajax request the object
-    $.ajax(requestObj)
-      .then(function (response) {
-        restaurantData = response.businesses
-        console.log(restaurantData)
-        // setting object in local storage
-        localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
-        return response.businesses
-      })
-      .then(renderRestaurant)
-      .then(renderFinal)
-  }// requestResponseObject
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Search Functionality
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  function submitSearch () {
-    let restaurantSearch = document.getElementById('search-bar').value
-    console.log('searching for', restaurantSearch)
-    requestResponseObject()
-  }// submit Search
-})()// function
+function updateFineSearchAPI (latlng) {
+  // cityState as 'City, State'. Also accepts 'city'
+  console.log('Updating SearchAPI with coarse data...')
+  requestResponseObject(latlng)
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering
@@ -110,14 +129,12 @@ function renderRestaurant (restaurant) {
   console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.map(function (currentRestaurant) {
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white">
+            <div class="card bg-dark text-white hover-card">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
-                <div class="card-body">
-                    <div class="row">
-                        <h5 class="card-title">${currentRestaurant.name}</h5>
-                    </div>
-                    <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Favorite's list</button>
-                    <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn btn-primary btn-lg btn-block">Add to Restaurant list</button>
+                <h5 class="top">${currentRestaurant.name}</h5>
+                <div class="top-right">
+                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn button-topright">Fav</button>
+                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn button-topright">Wish</button>
                 </div>
             </div>
         `
@@ -146,7 +163,7 @@ function renderMap (response) {
     return filterDataObject
   })
   console.log('sending filtered data to render map...')
-  window.MYAPP.createMarkers(filteredRestuarantData)
+  createMarkers(filteredRestuarantData)
   return response
 }
 

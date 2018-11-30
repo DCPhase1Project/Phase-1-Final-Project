@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -23,7 +23,7 @@
     
     <!--    Page Header    -->
     <div>
-        <div class="row d-flex" style="margin: 5px;">
+        <div class="row d-flex" style="margin: 5px 5px 0px 5px;">
             <a href=""><img src="img/burger-icon.png" width=48px height=48px title="logo" alt="logo"></a>
             <h3 class="mr-auto p-2">AppName</h3>
             <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" data-toggle="modal" data-target="#login-modal">Account Login</button>
@@ -89,7 +89,7 @@
         </div>
 
         <!--    Jumbotron Section    -->
-        <div class="jumbotron-section" style="height: 60vh;">
+        <div id="jumbotron-section" style="height: 60vh;">
             <!--     Tabs       -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" onclick="renderNearByRestaurants(), renderNearByHTML() ">
@@ -125,11 +125,11 @@
             </div>
         </div>
 
-        <!--     Search Form      -->
-        <div class="search-section" style="background-color: lightgray; padding: 5px;">
-            <div>
+        <!--     Search Section      -->
+        <div class="container-fluid" id="search-section" style="background-color: lightgray; padding: 5px;">
+            <div class="col">
                 <div class="row justify-content-center" style="padding-top: 20px;">
-                    <h1 class="display-4">What Looks Good Today?</h1>
+                    <h1 style="font-size:4vw;">What Looks Good Today?</h1>
                 </div>
                 <div class="row">
                     <div class="col-12 search" style="padding: 20px;">
@@ -141,14 +141,13 @@
                         </form>
                     </div>
                 </div>
+            </div>
+            <!--      Results Container      -->
+            <div class="container-fluid no-pad">
+                <div class="row">
+                    <div class="col-12" id="restaurant-container">
+                        <div class="restaurant row justify-content-center no-pad">
 
-                <!--      Results Container      -->
-                <div class="row renderingContainer">
-                    <div class="col-12 results">
-                        <div id="restaurant-container" style="padding: 20px;">
-                            <div class="restaurant row justify-content-center">
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -156,12 +155,15 @@
         </div>
     </div>
     
-    <script src="mapStyle.js"></script>
     <script src="map.js"></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiILepcPT5d4cdCJBc7MVtYaPl5ZsHiQs&callback=initMap">
+    </script>
+    <script src="mapStyle.js"></script>
+    <script src="locator.js"></script>
+    
     <script src="index.js"></script>
     <script src="firebase.js"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiILepcPT5d4cdCJBc7MVtYaPl5ZsHiQs&callback=MYAPP.initMap">
-    </script>
+    
 </body>
 </html>
