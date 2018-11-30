@@ -22,12 +22,11 @@ window.MYAPP = window.MYAPP || {}
 
     centerControlDiv.index = 1
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv)
-  } // initMap
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Get Current Location
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
   function getCurrentLocation () {
     console.log('getting current location...')
     // Try HTML5 geolocation.
@@ -37,12 +36,9 @@ window.MYAPP = window.MYAPP || {}
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }
-        // infoWindow.setPosition(pos)
-        infoWindow.setContent('Location found')
-        infoWindow.open(map)
         map.setCenter(pos)
         var icon = {
-          url: 'data:image/svg+xml;charset=UTF-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2246%22%20height%3D%2246%22%3E%0A%20%20%20%20%20%20%20%20%3Cg%20opacity%3D%220.5%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ccircle%20fill%3D%22%23A5D8F5%22%20cx%3D%2218%22%20cy%3D%2218%22%20r%3D%2216.5%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20fill%3D%22%230073bb%22%20cx%3D%2218%22%20cy%3D%2218%22%20r%3D%226%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M18%2C25a7%2C7%2C0%2C1%2C1%2C7-7A7%2C7%2C0%2C0%2C1%2C18%2C25Zm0-12a5%2C5%2C0%2C1%2C0%2C5%2C5A5%2C5%2C0%2C0%2C0%2C18%2C13Z%22%2F%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A',
+          url: iconURL,
           size: new google.maps.Size(50, 50),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(25, 25)
@@ -70,9 +66,8 @@ window.MYAPP = window.MYAPP || {}
       infoWindow.open(map)
     }
   }
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Add & Remove Markers
+  // Add Markers
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   function createMarkers (locationsForMap) {
@@ -116,13 +111,13 @@ window.MYAPP = window.MYAPP || {}
     return marker
   }
 
-  function setMapOnAll (map) {
-    if (map == null) { console.log('clearing old markers...') }
-    for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(map)
-    //   markers[i].setIcon(image)
-    }
-  }
+  // function setMapOnAll (map) {
+  //   if (map = null) { console.log('clearing old markers...') }
+  //   for (var i = 0; i < markers.length; i++) {
+  //     markers[i].setMap(map)
+  //   //   markers[i].setIcon(image)
+  //   }
+  // }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // Add 'Center on Me' Button
@@ -160,6 +155,13 @@ window.MYAPP = window.MYAPP || {}
 
   }
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Center on all Markers
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  bounds  = new google.maps.LatLngBounds();
+  map.fitBounds(bounds);
+  map.panToBounds(bounds);
   // export the initMap function so it may be called outside of this module
   window.MYAPP.initMap = initMap
   window.MYAPP.createMarkers = createMarkers
