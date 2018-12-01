@@ -6,10 +6,10 @@ var restaurantData = []
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-let currentLocation = {
-  lat: 29.752948,
-  lng: -95.339069
-} // default digitalcrafts location
+// let currentLocation = {
+//   lat: 29.752948,
+//   lng: -95.339069
+// } // default digitalcrafts location
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
@@ -66,7 +66,7 @@ function requestResponseObject (center, radius) {
     },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
-      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)    
+      console.log('Ajax error, jqXHR = ', jqXHR, ', testStatus = ', testStatus, ', errorThrown = ', errorThrown)
     }
   }
 
@@ -100,7 +100,7 @@ function requestResponseObject (center, radius) {
 function submitSearch () {
   let restaurantSearch = document.getElementById('search-bar').value
   console.log('searching for', restaurantSearch)
-  requestResponseObject()
+  requestResponseObject(currentLocation)
 }// submit Search
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -185,7 +185,7 @@ function saveToFavoriteRestaurant (restaurantID) {
   })// restaurant
   console.log(clickedRestaurantData)
 
-  //printing information to firebase
+  // printing information to firebase
   const update = {}
   // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
   const userID = localStorage.getItem('userID')
@@ -210,7 +210,7 @@ function saveToRestaurantToVisitList (restaurantID) {
   })
   console.log(clickedRestaurantData)
 
-  //setting information to Firebase
+  // setting information to Firebase
   const update = {}
   // const newVisitKey = firebase.database().ref().child('toVisit').push().key
   const userID = localStorage.getItem('userID')
@@ -234,7 +234,9 @@ function renderFavorites () {
     if (myData) {
       favorites = Object.values(myData)
       console.log(favorites)
+
       renderMap(favorites)
+      
     } else {
       renderMap([])
     } // if
@@ -276,15 +278,15 @@ function renderNearByRestaurants () {
 }// rerender nearby favorites
 
 function renderNearByHTML () {
-let data = JSON.parse(localStorage.getItem('restaurantData'))
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
 
-document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
-
-}//renderNearByHTML
+  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
+}// renderNearByHTML
 
 function renderFavoritesHTML () {
   console.log('render favorites list cards')
 
+<<<<<<< HEAD
   if (userLogInStatus() === true) {
 // read data from firebase
 firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
@@ -312,6 +314,22 @@ firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value
 
   
 }//renderFavoritesHTML
+=======
+  // read data from firebase
+  firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
+    let myData = snapshot.val()
+    // setting firebaseFavoritesList to localStorage
+    if (myData) {
+      favorites = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
+    } else {
+      console.log('entered')
+    } // if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+}// renderFavoritesHTML
+>>>>>>> b1d740c52b2295ca9c80063f21013b2b84a9c0da
 
 function renderToVisitListHTML () {
   console.log('render to visit cards')
@@ -332,6 +350,7 @@ function renderToVisitListHTML () {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
+<<<<<<< HEAD
   } else {
     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
@@ -348,6 +367,14 @@ function userLogInStatus () {
   var user = firebase.auth().currentUser;
 console.log('ENTERED LOG IN STATUS')
 console.log(user)
+=======
+}// renderToVisitList
+
+function userLogInStatus () {
+  var user = firebase.auth().currentUser
+  console.log('ENTERED LOG IN STATUS')
+  Console.log(user)
+>>>>>>> b1d740c52b2295ca9c80063f21013b2b84a9c0da
   if (user) {
     console.log(user, 'is signed in')
     return true
@@ -355,4 +382,4 @@ console.log(user)
     console.log('No one is signed in')
     return false
   }
-}//userLogInStatus
+}// userLogInStatus

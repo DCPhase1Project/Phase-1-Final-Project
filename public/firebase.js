@@ -28,8 +28,7 @@ btnLogin.addEventListener('click', e => {
   const auth = firebase.auth()
 
   const promise = auth.signInWithEmailAndPassword(email, pass)
-  promise.catch(e => alert(e.message,' Please try again!'))
-  
+  promise.catch(e => alert(e.message, ' Please try again!'))
 })
 
 // Signup event
@@ -40,7 +39,6 @@ btnNewAcct.addEventListener('click', e => {
 
   const promise = auth.createUserWithEmailAndPassword(email, pass)
   promise.catch(e => console.log(e.message))
-  
 })
 
 // Logout event

@@ -17,7 +17,6 @@ function initMap () {
   infoWindow = new google.maps.InfoWindow()
   // getCoarseLocation('updateMapAPI', 'updateSearchAPI')
   getCurrentLocation()
-
 } // initMap
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -29,7 +28,7 @@ function createMarkers (locationsForMap, Center) {
   // 'Center' accepts the strings: 'onCenter' or 'onBounds'
   // If 'Center' is not defined it will not move.
   setMapOnAll(null)
-  
+
   console.log('creating new markers...')
   var bounds = new google.maps.LatLngBounds()
   // Loop through markers array
