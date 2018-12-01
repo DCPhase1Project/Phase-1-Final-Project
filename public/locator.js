@@ -39,6 +39,7 @@ function getCurrentLocation () {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }
+      window.currentLocation = currentLocationFine
       updateFineSearchAPI(currentLocationFine)
       updateFineMapAPI(currentLocationFine)
     })
