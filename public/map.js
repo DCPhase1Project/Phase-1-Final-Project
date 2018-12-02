@@ -15,8 +15,28 @@ function initMap () {
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
-  // getCoarseLocation('updateMapAPI', 'updateSearchAPI')
-  getCurrentLocation()
+
+  // loop until location variable is updated
+  var locationLoop = setInterval(searchForLocation, 1000)
+  var locationTimeout = setTimeout(backupLocation, 4000); // if geolocation doesnt kick in, get coarse location
+
+  function searchForLocation () {
+    if (window.currentLocation == undefined) {
+      console.log('searching for location...', window.currentLocation)
+    } else {
+      clearInterval(locationLoop)
+      clearTimeout(locationTimeout)
+      console.log('location found...', window.currentLocation)
+      updateMapAPI(window.currentLocation)
+      updateSearchAPI(window.currentLocation)
+    }
+  }
+  function backupLocation () {
+    if (window.currentLocation == undefined) {
+      getCoarseLocation()
+    }
+  }
+
 } // initMap
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,19 +98,30 @@ function setMapOnAll (map) {
 // Map Updating Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function updateCoarseMapAPI (cityState) {
+function updateMapAPI (location) {
+  console.log('Updating MapAPI location data...', location)
+  if (location.lat === undefined){
+    geocodeAndCenter(location.cityState)
+  } else {
+    map.setCenter(location)
+  }
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Geocoder functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function geocodeAndCenter (cityState) {
   // cityState as 'City, State'. Also accepts 'city'
   var geocoder = new google.maps.Geocoder()
-  console.log('Updating MapAPI with coarse data...')
+  console.log('geocoding cityState...')
   geocoder.geocode({ 'address': cityState }, function (results, status) {
     if (status === 'OK') {
+      console.log('centering on cityState...')
       map.setCenter(results[0].geometry.location)
     } else {
       alert('Geocode was not successful for the following reason: ' + status)
     }
   })
-}
-
-function updateFineMapAPI (latlng) {
-  map.setCenter(latlng)
 }

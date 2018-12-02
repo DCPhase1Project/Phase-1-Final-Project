@@ -1,15 +1,11 @@
+
 const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
 const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
 const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
-
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-// let currentLocation = {
-//   lat: 29.752948,
-//   lng: -95.339069
-// } // default digitalcrafts location
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
@@ -17,6 +13,7 @@ let searchTerm = defaultSearch // initial search term
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('initializing index.js v4.0')
+  getCurrentLocation()
   loadPageAnimations()
 })// DOMContentLoaded
 
@@ -55,9 +52,8 @@ function requestResponseObject (center, radius) {
   } else {
     searchTerm = defaultSearch
   }
-  console.log('requesting', searchTerm, 'data from the server...')
-
-  // Initialize requestObj
+  
+  // initialize requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
@@ -70,10 +66,11 @@ function requestResponseObject (center, radius) {
     }
   }
 
+  console.log('requestObj: ',requestObj)
   // LOCATION VALUE
-  // check if center contains city name or latlng
+  // check if center contains cityState or latlng
   if (center.lat === undefined) {
-    requestObj.data.location = center
+    requestObj.data.location = center.cityState
     console.log('adding cityState to requestObj', requestObj)
   } else {
     requestObj.data.latitude = center.lat
@@ -81,6 +78,7 @@ function requestResponseObject (center, radius) {
     console.log('adding lat lng to requestObj', requestObj)
   }
 
+  console.log('requesting', requestObj.data.term, 'data from the server...')
   // ajax request the object
   $.ajax(requestObj)
     .then(function (response) {
@@ -106,16 +104,11 @@ function submitSearch () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Search Updating Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function updateCoarseSearchAPI (cityState) {
-  // cityState as 'City, State'. Also accepts 'city'
-  console.log('Updating SearchAPI with coarse data...')
-  requestResponseObject(cityState)
-}
 
-function updateFineSearchAPI (latlng) {
-  // cityState as 'City, State'. Also accepts 'city'
-  console.log('Updating SearchAPI with coarse data...')
-  requestResponseObject(latlng)
+function updateSearchAPI (location) {
+  // accepts 'City, State','city', or 'latlng'
+  console.log('Updating SearchAPI location data...', location)
+  requestResponseObject(location)
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,49 +160,6 @@ function renderMap (response) {
   return response
 }
 
-function saveToFavoriteRestaurant (restaurantID) {
-  console.log('saving restaurant to favorite list...')
-  // console.log(JSON.parse(restaurant))
-  console.log(restaurantID)
-
-  // calling restaurant objects in local storage
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-  let clickedRestaurantData = data.find(function (currentRestaurant) {
-    return currentRestaurant.id === restaurantID
-  })// restaurant
-  console.log(clickedRestaurantData)
-
-  // printing information to firebase
-  const update = {}
-  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
-  const userID = localStorage.getItem('userID')
-  if (userID) {
-    update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-    firebase.database().ref().update(update)
-  }// if
-}// saveToRestaurantList
-
-function saveToRestaurantToVisitList (restaurantID) {
-  console.log('saving restaurant to visit list...')
-
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-  let clickedRestaurantData = data.find(function (currentRestaurant) {
-    return currentRestaurant.id === restaurantID
-  })
-  console.log(clickedRestaurantData)
-
-  // setting information to Firebase
-  const update = {}
-  // const newVisitKey = firebase.database().ref().child('toVisit').push().key
-  const userID = localStorage.getItem('userID')
-  if (userID) {
-    update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-    firebase.database().ref().update(update)
-  }// if
-}// Visit List
-
 function renderFavorites () {
   let favorites = []
 
@@ -222,7 +172,6 @@ function renderFavorites () {
       console.log(favorites)
 
       renderMap(favorites)
-      
     } else {
       renderMap([])
     } // if
@@ -303,13 +252,49 @@ function renderToVisitListHTML () {
   })// read Data
 }// renderToVisitList
 
-function userLogInStatus () {
-  var user = firebase.auth().currentUser
-  console.log('ENTERED LOG IN STATUS')
-  Console.log(user)
-  if (user) {
-    console.log(user, 'is signed in')
-  } else {
-    console.log('No one is signed in')
-  }
-}// userLogInStatus
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Saving to lists
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function saveToFavoriteRestaurant (restaurantID) {
+  console.log('saving restaurant to favorite list...')
+  // console.log(JSON.parse(restaurant))
+  console.log(restaurantID)
+
+  // calling restaurant objects in local storage
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+  let clickedRestaurantData = data.find(function (currentRestaurant) {
+    return currentRestaurant.id === restaurantID
+  })// restaurant
+  console.log(clickedRestaurantData)
+
+  // printing information to firebase
+  const update = {}
+  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+  const userID = localStorage.getItem('userID')
+  if (userID) {
+    update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+    firebase.database().ref().update(update)
+  }// if
+}// saveToRestaurantList
+
+function saveToRestaurantToVisitList (restaurantID) {
+  console.log('saving restaurant to visit list...')
+
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+  let clickedRestaurantData = data.find(function (currentRestaurant) {
+    return currentRestaurant.id === restaurantID
+  })
+  console.log(clickedRestaurantData)
+
+  // setting information to Firebase
+  const update = {}
+  // const newVisitKey = firebase.database().ref().child('toVisit').push().key
+  const userID = localStorage.getItem('userID')
+  if (userID) {
+    update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+    firebase.database().ref().update(update)
+  }// if
+}// Visit List
