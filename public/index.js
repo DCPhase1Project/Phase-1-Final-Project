@@ -6,7 +6,6 @@ var restaurantData = []
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,7 +51,7 @@ function requestResponseObject (center, radius) {
   } else {
     searchTerm = defaultSearch
   }
-  
+
   // initialize requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
@@ -66,7 +65,7 @@ function requestResponseObject (center, radius) {
     }
   }
 
-  console.log('requestObj: ',requestObj)
+  console.log('requestObj: ', requestObj)
   // LOCATION VALUE
   // check if center contains cityState or latlng
   if (center.lat === undefined) {
@@ -160,7 +159,6 @@ function renderMap (response, center) {
   return response
 }
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering -- Lists
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,49 +175,47 @@ function renderNearByHTML () {
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
 }// renderNearByHTML
 
-
 function renderList (listName) {
   let list = []
-  
+
   console.log(`render ${listName} list on map`)
   if (userLogInStatus === true) {
   // read data from firebase
-  firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
-   let myData = snapshot.val()
-    // setting firebaseList to localStorage
-    if (myData) {
-      list = Object.values(myData)
-      console.log(list)
-      renderMap(list, 'onBounds')
-    } else {
-      renderMap([], 'onCenter')
-    }// if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
- } else {
+    firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
+      let myData = snapshot.val()
+      // setting firebaseList to localStorage
+      if (myData) {
+        list = Object.values(myData)
+        console.log(list)
+        renderMap(list, 'onBounds')
+      } else {
+        renderMap([], 'onCenter')
+      }// if
+    }, function (error) {
+      console.log('Error: ' + error.code)
+    })// read Data
+  } else {
     renderMap([], 'onCenter')
-  }//if userLogInStatus
+  }// if userLogInStatus
 }
-
 
 function renderListHTML (listName) {
   console.log(`render ${listName} list cards`)
 
   if (userLogInStatus() === true) {
-// read data from firebase
-  firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
-        let myData = snapshot.val()
-    // setting firebaseList to localStorage
-        if (myData) {
-      list = Object.values(myData)
-      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
-    } else {
-      console.log('entered')
-          } // if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
+    // read data from firebase
+    firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
+      let myData = snapshot.val()
+      // setting firebaseList to localStorage
+      if (myData) {
+        list = Object.values(myData)
+        document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
+      } else {
+        console.log('entered')
+      } // if
+    }, function (error) {
+      console.log('Error: ' + error.code)
+    })// read Data
   } else {
     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
@@ -228,7 +224,7 @@ function renderListHTML (listName) {
                                                                   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                                                                   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                                                                 </div>`
-  }//else statement
+  }// else statement
 }// renderListHTML
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,80 +232,76 @@ function renderListHTML (listName) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function saveToFavoriteRestaurant (restaurantID) {
-
-  //check to see if user is signed
+  // check to see if user is signed
 
   console.log('saving restaurant to favorite list...')
   // console.log(JSON.parse(restaurant))
   console.log(restaurantID)
 
-
   if (userLogInStatus() === true) {
   // calling restaurant objects in local storage
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
+    let data = JSON.parse(localStorage.getItem('restaurantData'))
 
-  let clickedRestaurantData = data.find(function (currentRestaurant) {
-    return currentRestaurant.id === restaurantID
-  })// restaurant
-  console.log(clickedRestaurantData)
+    let clickedRestaurantData = data.find(function (currentRestaurant) {
+      return currentRestaurant.id === restaurantID
+    })// restaurant
+    console.log(clickedRestaurantData)
 
-  // printing information to firebase
-  const update = {}
-  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
-  const userID = localStorage.getItem('userID')
-  if (userID) {
-    update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-    firebase.database().ref().update(update)
-  }// if
+    // printing information to firebase
+    const update = {}
+    // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+    const userID = localStorage.getItem('userID')
+    if (userID) {
+      update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+      firebase.database().ref().update(update)
+    }// if
   } else {
-    console.log('call login modal') //CALL LOG IN MODAL
+    console.log('call login modal') // CALL LOG IN MODAL
     // return document.getElementById('myModal').innerHTML = ``
-  }//else
+  }// else
 }// saveToRestaurantList
 
 function saveToRestaurantToVisitList (restaurantID) {
   console.log('saving restaurant to visit list...')
 
   if (userLogInStatus() === true) {
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
+    let data = JSON.parse(localStorage.getItem('restaurantData'))
 
-  let clickedRestaurantData = data.find(function (currentRestaurant) {
-    return currentRestaurant.id === restaurantID
-  })
-  console.log(clickedRestaurantData)
+    let clickedRestaurantData = data.find(function (currentRestaurant) {
+      return currentRestaurant.id === restaurantID
+    })
+    console.log(clickedRestaurantData)
 
-  // setting information to Firebase
-  const update = {}
-  // const newVisitKey = firebase.database().ref().child('toVisit').push().key
-  const userID = localStorage.getItem('userID')
-  if (userID) {
-    update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-    firebase.database().ref().update(update)
-  }// if
+    // setting information to Firebase
+    const update = {}
+    // const newVisitKey = firebase.database().ref().child('toVisit').push().key
+    const userID = localStorage.getItem('userID')
+    if (userID) {
+      update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+      firebase.database().ref().update(update)
+    }// if
   } else {
-    console.log('call login modal') //CALL LOG IN MODAL
-  }//else
+    console.log('call login modal') // CALL LOG IN MODAL
+  }// else
 }// Visit List
 
 function renderToVisitListHTML () {
   console.log('render to visit cards')
 
-
   if (userLogInStatus() === true) {
-
   // read data from firebase
-  firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
-    // setting firebaseFavoritesList to localStorage
-    if (myData) {
-      toVisit = Object.values(myData)
-      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(toVisit) + '</div>'
-    } else {
-      console.log('entered')
-    } // if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
+    firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
+      let myData = snapshot.val()
+      // setting firebaseFavoritesList to localStorage
+      if (myData) {
+        toVisit = Object.values(myData)
+        document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(toVisit) + '</div>'
+      } else {
+        console.log('entered')
+      } // if
+    }, function (error) {
+      console.log('Error: ' + error.code)
+    })// read Data
   } else {
     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
@@ -318,14 +310,13 @@ function renderToVisitListHTML () {
                                                                   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
                                                                   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                                                                 </div>`
-  }  
-
-}//renderToVisitList
+  }
+}// renderToVisitList
 
 function userLogInStatus () {
-  var user = firebase.auth().currentUser;
-console.log('ENTERED LOG IN STATUS')
-console.log(user)
+  var user = firebase.auth().currentUser
+  console.log('ENTERED LOG IN STATUS')
+  console.log(user)
   if (user) {
     console.log(user, 'is signed in')
     return true
