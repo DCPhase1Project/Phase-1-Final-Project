@@ -46,6 +46,7 @@ function getCurrentLocation () {
   } else {
     // Browser doesn't support Geolocation
     console.alert('Browser does not support Geolocation')
+    // getCoarseLocation
   }
 }
 
