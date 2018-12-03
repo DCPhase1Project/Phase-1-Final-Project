@@ -141,7 +141,7 @@ function renderFinal (htmlString) {
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
 }// renderFinal
 
-function renderMap (response) {
+function renderMap (response, center) {
   console.log('filtering restaurant data...')
 
   let filteredRestuarantData = response.map(function (filterData) {
@@ -156,7 +156,7 @@ function renderMap (response) {
     return filterDataObject
   })
   console.log('sending filtered data to render map...')
-  createMarkers(filteredRestuarantData)
+  createMarkers(filteredRestuarantData, center)
   return response
 }
 
@@ -168,7 +168,7 @@ function renderMap (response) {
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
   console.log(data)
-  renderMap(data)
+  renderMap(data, 'onCenter')
 }// rerender nearby favorites
 
 function renderNearByHTML () {
@@ -180,7 +180,7 @@ function renderNearByHTML () {
 
 function renderList (listName) {
   let list = []
-
+  
   console.log(`render ${listName} list on map`)
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
@@ -189,9 +189,9 @@ function renderList (listName) {
     if (myData) {
       list = Object.values(myData)
       console.log(list)
-      renderMap(list)
+      renderMap(list, 'onBounds')
     } else {
-      renderMap([])
+      renderMap([], 'onCenter')
     }// if
   }, function (error) {
     console.log('Error: ' + error.code)
