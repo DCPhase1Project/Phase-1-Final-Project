@@ -65,3 +65,14 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     userGreeting.classList.add('d-none')
   }
 })
+
+function userLogInStatus () {
+  var user = firebase.auth().currentUser
+  console.log('ENTERED LOG IN STATUS')
+  Console.log(user)
+  if (user) {
+    console.log(user, 'is signed in')
+  } else {
+    console.log('No one is signed in')
+  }
+}// userLogInStatus
