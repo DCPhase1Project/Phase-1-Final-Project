@@ -182,9 +182,10 @@ function renderList (listName) {
   let list = []
   
   console.log(`render ${listName} list on map`)
+  if (userLogInStatus === true) {
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
+   let myData = snapshot.val()
     // setting firebaseList to localStorage
     if (myData) {
       list = Object.values(myData)
@@ -196,24 +197,38 @@ function renderList (listName) {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
-}// renderList
+ } else {
+    renderMap([], 'onCenter')
+  }//if userLogInStatus
+}
+
 
 function renderListHTML (listName) {
   console.log(`render ${listName} list cards`)
 
-  // read data from firebase
+  if (userLogInStatus() === true) {
+// read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
-    // setting firebaseFavoritesList to localStorage
-    if (myData) {
-      favorites = Object.values(myData)
-      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
+        let myData = snapshot.val()
+    // setting firebaseList to localStorage
+        if (myData) {
+      list = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
     } else {
       console.log('entered')
-    } // if
+          } // if
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
+  } else {
+    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
+                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                                  <hr class="my-4">
+                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                                                                </div>`
+  }//else statement
 }// renderListHTML
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,10 +236,15 @@ function renderListHTML (listName) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function saveToFavoriteRestaurant (restaurantID) {
+
+  //check to see if user is signed
+
   console.log('saving restaurant to favorite list...')
   // console.log(JSON.parse(restaurant))
   console.log(restaurantID)
 
+
+  if (userLogInStatus() === true) {
   // calling restaurant objects in local storage
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
@@ -241,11 +261,16 @@ function saveToFavoriteRestaurant (restaurantID) {
     update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
     firebase.database().ref().update(update)
   }// if
+  } else {
+    console.log('call login modal') //CALL LOG IN MODAL
+    // return document.getElementById('myModal').innerHTML = ``
+  }//else
 }// saveToRestaurantList
 
 function saveToRestaurantToVisitList (restaurantID) {
   console.log('saving restaurant to visit list...')
 
+  if (userLogInStatus() === true) {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
   let clickedRestaurantData = data.find(function (currentRestaurant) {
@@ -261,4 +286,51 @@ function saveToRestaurantToVisitList (restaurantID) {
     update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
     firebase.database().ref().update(update)
   }// if
+  } else {
+    console.log('call login modal') //CALL LOG IN MODAL
+  }//else
 }// Visit List
+
+function renderToVisitListHTML () {
+  console.log('render to visit cards')
+
+
+  if (userLogInStatus() === true) {
+
+  // read data from firebase
+  firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
+    let myData = snapshot.val()
+    // setting firebaseFavoritesList to localStorage
+    if (myData) {
+      toVisit = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(toVisit) + '</div>'
+    } else {
+      console.log('entered')
+    } // if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+  } else {
+    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
+                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                                  <hr class="my-4">
+                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                                                                </div>`
+  }  
+
+}//renderToVisitList
+
+function userLogInStatus () {
+  var user = firebase.auth().currentUser;
+console.log('ENTERED LOG IN STATUS')
+console.log(user)
+  if (user) {
+    console.log(user, 'is signed in')
+    return true
+  } else {
+    console.log('No one is signed in')
+    return false
+  }
+}// userLogInStatus
