@@ -1,3 +1,11 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          full app settings           */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+body {
+    padding: 0px;
+    overflow-x:hidden;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /* Splash screen settings and animations*/
@@ -13,7 +21,7 @@
     background-image:radial-gradient(rgb(255, 187, 0), rgb(239, 141, 33));
     display: flex;
     margin:0px;
-}
+} 
 #splashLogo {
     margin:auto;
     width: 150px;
@@ -34,11 +42,39 @@
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          Page Header                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#pageHeader {
+    z-index: 10;
+}
+
+#logo {
+    width: 48px;
+    height: 48px;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*          Tab settings                */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 .nav-link {
-    font-size:1.5vw;
+    font-size:24px;
+    border-radius: 50%;
 }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*           Tab Content                */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/* #myTabContent {
+    position: fixed;
+    z-index: -100;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
+} */
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -51,19 +87,25 @@
     height: 100%;
     width: 100%;
 }
+ 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          Search Area                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-body {
-    padding: 0px;
-    overflow-x:hidden;
+
+#search-section {
+    padding: 5px;
 }
 
- 
+
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*                Cards                 */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 .container-fluid {
     padding: 0.5rem;
+    z-index: 1;
 }
 
 .no-pad {
