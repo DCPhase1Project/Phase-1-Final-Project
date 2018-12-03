@@ -182,6 +182,8 @@ function renderList (listName) {
   let list = []
   
   console.log(`render ${listName} list on map`)
+
+  if (userLogInStatus() === true) {
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
     let myData = snapshot.val()
@@ -196,11 +198,15 @@ function renderList (listName) {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
+  } else {
+    renderMap([], 'onCenter')
+  }
 }// renderList
 
 function renderListHTML (listName) {
   console.log(`render ${listName} list cards`)
 
+  if (userLogInStatus() === true) {
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
     let myData = snapshot.val()
@@ -214,6 +220,15 @@ function renderListHTML (listName) {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
+  } else {
+    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
+                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                                  <hr class="my-4">
+                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                                                                </div>`
+}
 }// renderListHTML
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -225,6 +240,7 @@ function saveToFavoriteRestaurant (restaurantID) {
   // console.log(JSON.parse(restaurant))
   console.log(restaurantID)
 
+  if (userLogInStatus() === true) {
   // calling restaurant objects in local storage
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
@@ -241,11 +257,30 @@ function saveToFavoriteRestaurant (restaurantID) {
     update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
     firebase.database().ref().update(update)
   }// if
+  } else {
+    alert('Please login before saving resturants to lists.')
+    // $('#loginModal').modal()
+    // $('#myModal').modal()
+    // document.getElementById('myModal').innerHTML = `<div class="modal fade" id="exampleModalCenter myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    //                                                 <div class="modal-dialog modal-dialog-centered" role="document">
+    //                                                         <div class="modal-content">
+    //                                                           <div class="modal-header">
+    //                                                             <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+    //                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    //                                                               <span aria-hidden="true">&times;</span>
+    //                                                             </button>
+    //                                                           </div>
+    //                                                     </div>
+    //                                                     </div>
+    //                                                     </div>`
+    // alert('Please Sign In before creating a resturant list')
+  }
 }// saveToRestaurantList
 
 function saveToRestaurantToVisitList (restaurantID) {
   console.log('saving restaurant to visit list...')
 
+  if (userLogInStatus() === true) {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
   let clickedRestaurantData = data.find(function (currentRestaurant) {
@@ -261,4 +296,8 @@ function saveToRestaurantToVisitList (restaurantID) {
     update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
     firebase.database().ref().update(update)
   }// if
+} else {
+  alert('Please login before saving resturants to lists.')
+}
 }// Visit List
+
