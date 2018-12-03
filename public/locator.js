@@ -53,7 +53,6 @@ function getCurrentLocation () {
   }
 }
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by IP Address -- Backup -- Coarse
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,11 +67,10 @@ function getCoarseLocation () {
     console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
 
     window.currentLocation = {}
-    window.currentLocation.cityState = currentCoarseLocation.city +', '+ currentCoarseLocation.stateProv
+    window.currentLocation.cityState = currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv
     console.log(window.currentLocation)
   })
 }
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by Watch Geolocation -- Ultra Fine

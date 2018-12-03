@@ -22,7 +22,7 @@ function initMap () {
 
   // loop until location variable is updated
   var locationLoop = setInterval(searchForLocation, 1000)
-  var locationTimeout = setTimeout(backupLocation, 4000); // if geolocation doesnt kick in, get coarse location
+  var locationTimeout = setTimeout(backupLocation, 4000) // if geolocation doesnt kick in, get coarse location
 
   function searchForLocation () {
     if (window.currentLocation == undefined) {
@@ -40,9 +40,7 @@ function initMap () {
       getCoarseLocation()
     }
   }
-
 } // initMap
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
@@ -60,16 +58,16 @@ function createMarkers (locationsForMap, center) {
   for (var i = 0; i < locationsForMap.length; i++) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
-  
-  if (center === 'onBounds'){
+
+  if (center === 'onBounds') {
     map.fitBounds(bounds)
     map.panToBounds(bounds)
     // set max zoom as 16
-    google.maps.event.addListenerOnce(map, 'zoom_changed', function() {
+    google.maps.event.addListenerOnce(map, 'zoom_changed', function () {
       var oldZoom = map.getZoom()
-      if (oldZoom > 15) {map.setZoom(oldZoom-1)}
+      if (oldZoom > 15) { map.setZoom(oldZoom - 1) }
     })
-  } else if (center === 'onCenter'){
+  } else if (center === 'onCenter') {
     updateMapCenter(window.currentLocation)
     map.setZoom(defaultZoom)
   }
@@ -116,13 +114,12 @@ function setMapOnAll (map) {
 
 function updateMapCenter (location) {
   console.log('Updating MapAPI location data...', location)
-  if (location.lat === undefined){
+  if (location.lat === undefined) {
     geocodeAndCenter(location.cityState)
   } else {
     map.setCenter(location)
   }
 }
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Geocoder functions

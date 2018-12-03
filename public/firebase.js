@@ -69,7 +69,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 function userLogInStatus () {
   var user = firebase.auth().currentUser
   console.log('ENTERED LOG IN STATUS')
-  Console.log(user)
+  console.log(user)
   if (user) {
     console.log(user, 'is signed in')
   } else {
