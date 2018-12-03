@@ -1,32 +1,8 @@
+// Declare global location variable
+var currentLocation
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Get current location by IP Address -- Coarse
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-function getCoarseLocation (updateMapAPI, updateSearchAPI) {
-  // This function will be called on init to get location based on IP address
-  // Argument options for 'updateMapAPI': 'mapAPI' or 'null'
-  // Argument options for 'updateSearchAPI': 'searchAPI' or 'null'
-  console.log('getting coarse location...')
-  let currentCoarseLocation = {}
-
-  $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
-    currentCoarseLocation = json
-    console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
-
-    if (updateMapAPI = 'updateMapAPI') {
-      // Set Map Properties
-      updateCoarseMapAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
-    }
-    if (updateSearchAPI = 'updateSearchAPI') {
-      // Set Search Properties
-      updateCoarseSearchAPI(currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv)
-    }
-  })
-}
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Get current location by Geolocation -- Fine
+// Get current location by Geolocation -- Main -- Fine
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function getCurrentLocation () {
@@ -34,21 +10,69 @@ function getCurrentLocation () {
 
   // Use HTML5 geolocation
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      var currentLocationFine = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      }
-      window.currentLocation = currentLocationFine
-      updateFineSearchAPI(currentLocationFine)
-      updateFineMapAPI(currentLocationFine)
-    })
+    navigator.geolocation.getCurrentPosition(getPosition, showError)
   } else {
     // Browser doesn't support Geolocation
     console.alert('Browser does not support Geolocation')
-    // getCoarseLocation
+    console.log('using IP location...')
+    getCoarseLocation()
+  }
+
+  function getPosition (position) {
+    console.log(position)
+    var currentLocationFine = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+      acc: position.coords.accuracy
+    }
+    // Set global location
+    window.currentLocation = {}
+    window.currentLocation = currentLocationFine
+    console.log('Setting global current location to: ', window.currentLocation)
+  }
+
+  function showError (error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        console.log('User denied the request for Geolocation.')
+        getCoarseLocation()
+        break
+      case error.POSITION_UNAVAILABLE:
+        console.log('Location information is unavailable.')
+        getCoarseLocation()
+        break
+      case error.TIMEOUT:
+        console.log('The request to get user location timed out.')
+        getCoarseLocation()
+        break
+      case error.UNKNOWN_ERROR:
+        console.log('An unknown error occurred.')
+        getCoarseLocation()
+        break
+    }
   }
 }
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Get current location by IP Address -- Backup -- Coarse
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function getCoarseLocation () {
+  // This function gets location based on IP address
+  console.log('getting coarse location...')
+  let currentCoarseLocation = {}
+
+  $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
+    currentCoarseLocation = json
+    console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
+
+    window.currentLocation = {}
+    window.currentLocation.cityState = currentCoarseLocation.city +', '+ currentCoarseLocation.stateProv
+    console.log(window.currentLocation)
+  })
+}
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by Watch Geolocation -- Ultra Fine

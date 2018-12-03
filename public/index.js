@@ -1,15 +1,11 @@
+
 const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKpWBzy7KTE9qs90W4Tw15Jau3bbhgTCa2n3-AMBugVl6ChhBRpjxCv-OQNNyjXvlI9LsW3Yx'
 const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
 const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
-
 const defaultSearch = 'food'
 let searchTerm = defaultSearch // initial search term
 
-// let currentLocation = {
-//   lat: 29.752948,
-//   lng: -95.339069
-// } // default digitalcrafts location
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
@@ -17,6 +13,7 @@ let searchTerm = defaultSearch // initial search term
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('initializing index.js v4.0')
+  getCurrentLocation()
   loadPageAnimations()
 })// DOMContentLoaded
 
@@ -55,9 +52,8 @@ function requestResponseObject (center, radius) {
   } else {
     searchTerm = defaultSearch
   }
-  console.log('requesting', searchTerm, 'data from the server...')
-
-  // Initialize requestObj
+  
+  // initialize requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
@@ -70,10 +66,11 @@ function requestResponseObject (center, radius) {
     }
   }
 
+  console.log('requestObj: ',requestObj)
   // LOCATION VALUE
-  // check if center contains city name or latlng
+  // check if center contains cityState or latlng
   if (center.lat === undefined) {
-    requestObj.data.location = center
+    requestObj.data.location = center.cityState
     console.log('adding cityState to requestObj', requestObj)
   } else {
     requestObj.data.latitude = center.lat
@@ -81,6 +78,7 @@ function requestResponseObject (center, radius) {
     console.log('adding lat lng to requestObj', requestObj)
   }
 
+  console.log('requesting', requestObj.data.term, 'data from the server...')
   // ajax request the object
   $.ajax(requestObj)
     .then(function (response) {
@@ -106,20 +104,15 @@ function submitSearch () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Search Updating Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function updateCoarseSearchAPI (cityState) {
-  // cityState as 'City, State'. Also accepts 'city'
-  console.log('Updating SearchAPI with coarse data...')
-  requestResponseObject(cityState)
-}
 
-function updateFineSearchAPI (latlng) {
-  // cityState as 'City, State'. Also accepts 'city'
-  console.log('Updating SearchAPI with coarse data...')
-  requestResponseObject(latlng)
+function updateSearchAPI (location) {
+  // accepts 'City, State','city', or 'latlng'
+  console.log('Updating SearchAPI location data...', location)
+  requestResponseObject(location)
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Rendering
+// Rendering -- General
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function renderRestaurant (restaurant) {
@@ -148,7 +141,7 @@ function renderFinal (htmlString) {
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
 }// renderFinal
 
-function renderMap (response) {
+function renderMap (response, center) {
   console.log('filtering restaurant data...')
 
   let filteredRestuarantData = response.map(function (filterData) {
@@ -163,9 +156,84 @@ function renderMap (response) {
     return filterDataObject
   })
   console.log('sending filtered data to render map...')
-  createMarkers(filteredRestuarantData)
+  createMarkers(filteredRestuarantData, center)
   return response
 }
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Rendering -- Lists
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function renderNearByRestaurants () {
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
+  console.log(data)
+  renderMap(data, 'onCenter')
+}// rerender nearby favorites
+
+function renderNearByHTML () {
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
+}// renderNearByHTML
+
+
+function renderList (listName) {
+  let list = []
+  
+  console.log(`render ${listName} list on map`)
+  if (userLogInStatus === true) {
+  // read data from firebase
+  firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
+   let myData = snapshot.val()
+    // setting firebaseList to localStorage
+    if (myData) {
+      list = Object.values(myData)
+      console.log(list)
+      renderMap(list, 'onBounds')
+    } else {
+      renderMap([], 'onCenter')
+    }// if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+ } else {
+    renderMap([], 'onCenter')
+  }//if userLogInStatus
+}
+
+
+function renderListHTML (listName) {
+  console.log(`render ${listName} list cards`)
+
+  if (userLogInStatus() === true) {
+// read data from firebase
+  firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
+        let myData = snapshot.val()
+    // setting firebaseList to localStorage
+        if (myData) {
+      list = Object.values(myData)
+      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
+    } else {
+      console.log('entered')
+          } // if
+  }, function (error) {
+    console.log('Error: ' + error.code)
+  })// read Data
+  } else {
+    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
+                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                                  <hr class="my-4">
+                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+                                                                </div>`
+  }//else statement
+}// renderListHTML
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Saving to lists
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function saveToFavoriteRestaurant (restaurantID) {
 
@@ -223,114 +291,6 @@ function saveToRestaurantToVisitList (restaurantID) {
   }//else
 }// Visit List
 
-function renderFavorites () {
-  let favorites = []
-
-  if (userLogInStatus === true) {
-  // read data from firebase
-  firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
-    // setting firebaseFavoritesList to localStorage
-    if (myData) {
-      favorites = Object.values(myData)
-      console.log(favorites)
-
-      renderMap(favorites)
-      
-    } else {
-      renderMap([])
-    } // if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
-  } else {
-    renderMap([])
-  }//if userLogInStatus
-}// favorites
-
-function renderToVisit () {
-  let toVisit = []
-
-  if (userLogInStatus === true) {
-  // read data from firebase
-  firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
-    // setting firebaseFavoritesList to localStorage
-    if (myData) {
-      toVisit = Object.values(myData)
-      console.log(toVisit)
-      renderMap(toVisit)
-    } else {
-      renderMap([])
-    }// if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
-} else {
-  renderMap([])
-}
-}// Visit
-
-function renderNearByRestaurants () {
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-  console.log(data)
-  renderMap(data)
-}// rerender nearby favorites
-
-function renderNearByHTML () {
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
-}// renderNearByHTML
-
-function renderFavoritesHTML () {
-  console.log('render favorites list cards')
-
-<<<<<<< HEAD
-  if (userLogInStatus() === true) {
-// read data from firebase
-firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-  let myData = snapshot.val()
-  // setting firebaseFavoritesList to localStorage
-  if (myData) {
-    favorites = Object.values(myData)
-    document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
-  } else {
-    console.log('entered')
-  } // if
-}, function (error) {
-  console.log('Error: ' + error.code)
-})// read Data
-  } else {
-    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
-                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
-                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                                                                  <hr class="my-4">
-                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-                                                                </div>`
-
-  }//else statement
-
-  
-}//renderFavoritesHTML
-=======
-  // read data from firebase
-  firebase.database().ref('favorites/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-    let myData = snapshot.val()
-    // setting firebaseFavoritesList to localStorage
-    if (myData) {
-      favorites = Object.values(myData)
-      document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
-    } else {
-      console.log('entered')
-    } // if
-  }, function (error) {
-    console.log('Error: ' + error.code)
-  })// read Data
-}// renderFavoritesHTML
->>>>>>> b1d740c52b2295ca9c80063f21013b2b84a9c0da
-
 function renderToVisitListHTML () {
   console.log('render to visit cards')
 
@@ -350,7 +310,6 @@ function renderToVisitListHTML () {
   }, function (error) {
     console.log('Error: ' + error.code)
   })// read Data
-<<<<<<< HEAD
   } else {
     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
@@ -367,14 +326,6 @@ function userLogInStatus () {
   var user = firebase.auth().currentUser;
 console.log('ENTERED LOG IN STATUS')
 console.log(user)
-=======
-}// renderToVisitList
-
-function userLogInStatus () {
-  var user = firebase.auth().currentUser
-  console.log('ENTERED LOG IN STATUS')
-  Console.log(user)
->>>>>>> b1d740c52b2295ca9c80063f21013b2b84a9c0da
   if (user) {
     console.log(user, 'is signed in')
     return true

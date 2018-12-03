@@ -1,5 +1,7 @@
 var map, infoWindow
 var markers = []
+const defaultZoom = 13
+var mapZoom
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Init Map
@@ -11,19 +13,42 @@ function initMap () {
     center: {
       lat: 0, lng: 0
     },
-    zoom: 13,
+    zoom: defaultZoom,
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
-  // getCoarseLocation('updateMapAPI', 'updateSearchAPI')
-  getCurrentLocation()
+
+  // zoomEventListener ('start')
+
+  // loop until location variable is updated
+  var locationLoop = setInterval(searchForLocation, 1000)
+  var locationTimeout = setTimeout(backupLocation, 4000); // if geolocation doesnt kick in, get coarse location
+
+  function searchForLocation () {
+    if (window.currentLocation == undefined) {
+      console.log('searching for location...', window.currentLocation)
+    } else {
+      clearInterval(locationLoop)
+      clearTimeout(locationTimeout)
+      console.log('location found...', window.currentLocation)
+      updateMapCenter(window.currentLocation)
+      updateSearchAPI(window.currentLocation)
+    }
+  }
+  function backupLocation () {
+    if (window.currentLocation == undefined) {
+      getCoarseLocation()
+    }
+  }
+
 } // initMap
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function createMarkers (locationsForMap, Center) {
+function createMarkers (locationsForMap, center) {
   // 'locationsForMap' accepts array of objects with name, lat, & long
   // 'Center' accepts the strings: 'onCenter' or 'onBounds'
   // If 'Center' is not defined it will not move.
@@ -35,8 +60,19 @@ function createMarkers (locationsForMap, Center) {
   for (var i = 0; i < locationsForMap.length; i++) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
-  map.fitBounds(bounds)
-  map.panToBounds(bounds)
+  
+  if (center === 'onBounds'){
+    map.fitBounds(bounds)
+    map.panToBounds(bounds)
+    // set max zoom as 16
+    google.maps.event.addListenerOnce(map, 'zoom_changed', function() {
+      var oldZoom = map.getZoom()
+      if (oldZoom > 15) {map.setZoom(oldZoom-1)}
+    })
+  } else if (center === 'onCenter'){
+    updateMapCenter(window.currentLocation)
+    map.setZoom(defaultZoom)
+  }
   return markers
 }
 
@@ -78,19 +114,30 @@ function setMapOnAll (map) {
 // Map Updating Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function updateCoarseMapAPI (cityState) {
+function updateMapCenter (location) {
+  console.log('Updating MapAPI location data...', location)
+  if (location.lat === undefined){
+    geocodeAndCenter(location.cityState)
+  } else {
+    map.setCenter(location)
+  }
+}
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Geocoder functions
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function geocodeAndCenter (cityState) {
   // cityState as 'City, State'. Also accepts 'city'
   var geocoder = new google.maps.Geocoder()
-  console.log('Updating MapAPI with coarse data...')
+  console.log('geocoding cityState...')
   geocoder.geocode({ 'address': cityState }, function (results, status) {
     if (status === 'OK') {
+      console.log('centering on cityState...')
       map.setCenter(results[0].geometry.location)
     } else {
       alert('Geocode was not successful for the following reason: ' + status)
     }
   })
-}
-
-function updateFineMapAPI (latlng) {
-  map.setCenter(latlng)
 }
