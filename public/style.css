@@ -167,3 +167,19 @@ body {
         column-count: 5;
     }
 }
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          Tooltip settings                */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.tooltip {
+    position: absolute;
+    background: #FFC107;
+    color: black;
+    width: 150px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    padding: 10px;
+    text-align: center;
+}
