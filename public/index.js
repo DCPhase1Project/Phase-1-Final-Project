@@ -258,6 +258,7 @@ function saveToFavoriteRestaurant (restaurantID) {
     firebase.database().ref().update(update)
   }// if
   } else {
+    console.log(userLogInStatus())
     alert('Please login before saving resturants to lists.')
     // $('#loginModal').modal()
     // $('#myModal').modal()

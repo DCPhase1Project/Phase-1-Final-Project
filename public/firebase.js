@@ -72,7 +72,9 @@ function userLogInStatus () {
   console.log(user)
   if (user) {
     console.log(user, 'is signed in')
+    return true
   } else {
     console.log('No one is signed in')
+    return false
   }
 }// userLogInStatus
