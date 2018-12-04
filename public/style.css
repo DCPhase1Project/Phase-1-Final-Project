@@ -183,19 +183,19 @@ body {
     padding: 0.25em;
     text-align: center;
     margin: 0px;
-    border-radius: 50%;
+    border-radius: 10%;
     display: flex;
     /* Animated parameters */
     border: 2px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.5);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 0.75);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     font-size:1vw;
 }
 
 .button-topright:hover {
     border: 2px solid rgba(255, 255, 255, 1);
     color: rgba(255, 255, 255, 1);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .card {
