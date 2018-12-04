@@ -62,7 +62,7 @@ function getCoarseLocation () {
   console.log('getting coarse location...')
   let currentCoarseLocation = {}
 
-  $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
+  $.getJSON('https://api.db-ip.com/v2/free/self', function (json) {
     currentCoarseLocation = json
     console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
 
