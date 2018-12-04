@@ -28,24 +28,40 @@
     <!-- Header & Modal -->
     <div>
         <!--    Page Header    -->
-        <nav id="pageHeader" class="navbar fixed-top nav-bar-dark bg-dark">
+        <nav id="pageHeader" class="navbar navbar-expand-sm fixed-top nav-bar-dark bg-dark">
             <!-- App Logo -->
-            <a class="navbar-brand" href="#"><img src="img/burger-icon.png" id="logo" title="logo" alt="logo">AppName</a>
+            <a class="navbar-brand" href="#"><img src="img/burger-icon.png" id="logo" title="logo" alt="logo"></a>
+            <div class="collapse navbar-collapse">
+                <!-- Expanded App Logo -->
+                <a class="navbar-brand" href="#">AppName</a>
+            </div>
             <!-- Search section -->
             <div class="row align-items-center flex-fill justify-content-center">
-                <form id="search-form" class="form-inline">
-                        <input id="search-bar" class="form-control mr-sm-2" autocomplete="off" placeholder="Search for a restaurant in Houston...">	
-                        <button id="searchButton" class="btn btn-light" type="button"><i class="fas fa-search"></i></button>
-                </form>
+                    <form id="search-form" class="form-inline">
+                            <input id="search-bar" class="form-control mr-sm-2" autocomplete="off" placeholder="Search for a restaurant in Houston...">	
+                            <button id="searchButton" class="btn btn-light" type="button"><i class="fas fa-search"></i></button>
+                    </form>
             </div>
-            <!-- User Section -->
-            <div class="row justify-content-end" id="userLoginSection">
-                <button class="btn btn-primary" id="login-button" data-toggle="modal" data-target="#login-modal">Login</button>
-                <button class="btn btn-primary" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Sign Up</button>
-                <span class="d-none h5" id="user-greeting">Hello User!</span>
-                <button class="btn btn-primary d-none" id="logout-button">Log Out</button>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="far fa-user-circle"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <!-- User Section -->
+                <div class="row justify-content-end" id="userLoginSection">
+                    <button class="btn btn-primary" id="login-button" data-toggle="modal" data-target="#login-modal">Login</button>
+                    <button class="btn btn-primary" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Sign Up</button>
+                    <span class="d-none h5" id="user-greeting">Hello User!</span>
+                    <button class="btn btn-primary d-none" id="logout-button">Log Out</button>
+                </div>
             </div>
+            
         </nav>
+        <nav id="pageHeader" id="navshadow" class="navbar nav-bar-dark bg-dark">
+        <!-- App Logo -->
+            <a class="navbar-brand" href="#"><img src="img/burger-icon.png" id="logo" title="logo" alt="logo"></a>
+        </nav>
+
 
         <!--    Modal Section    -->
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="logInToAccount" aria-hidden="true">
@@ -139,9 +155,7 @@
     <div class="container-fluid no-pad" id="search-section">
         <div class="row">
             <div class="col-12" id="restaurant-container">
-                <div class="restaurant row justify-content-center no-pad">
-
-                </div>
+                <!-- Cards get injected here -->
             </div>
         </div>
     </div>
