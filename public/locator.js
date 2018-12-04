@@ -25,6 +25,7 @@ function getCurrentLocation () {
       lng: position.coords.longitude,
       acc: position.coords.accuracy
     }
+  
     // Set global location
     window.currentLocation = {}
     window.currentLocation = currentLocationFine

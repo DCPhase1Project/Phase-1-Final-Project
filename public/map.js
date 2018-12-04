@@ -38,6 +38,22 @@ function initMap () {
       console.log('location found...', window.currentLocation)
       updateMapCenter(window.currentLocation)
       updateSearchAPI(window.currentLocation)
+      var image = {
+        url: 'data:image/svg+xml;charset=UTF-8,%0A%20%20%20%20%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2036%2036%22%20width%3D%2246%22%20height%3D%2246%22%3E%0A%20%20%20%20%20%20%20%20%3Cg%20opacity%3D%220.5%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Ccircle%20fill%3D%22%23A5D8F5%22%20cx%3D%2218%22%20cy%3D%2218%22%20r%3D%2216.5%22%2F%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3Ccircle%20fill%3D%22%230073bb%22%20cx%3D%2218%22%20cy%3D%2218%22%20r%3D%226%22%2F%3E%0A%20%20%20%20%20%20%20%20%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M18%2C25a7%2C7%2C0%2C1%2C1%2C7-7A7%2C7%2C0%2C0%2C1%2C18%2C25Zm0-12a5%2C5%2C0%2C1%2C0%2C5%2C5A5%2C5%2C0%2C0%2C0%2C18%2C13Z%22%2F%3E%0A%20%20%20%20%3C%2Fsvg%3E%0A',
+        // This marker is 20 pixels wide by 32 pixels high.
+        size: new google.maps.Size(46, 46),
+        // The origin for this image is (0, 0).
+        origin: new google.maps.Point(0, 0),
+        // The anchor for this image is the base of the flagpole at (0, 32).
+        anchor: new google.maps.Point(23, 23)
+      }
+      var iconMaker = new google.maps.Marker({
+        position: { lat: window.currentLocation.lat, lng: window.currentLocation.lng },
+        map: map,
+        icon: image
+      })
+      console.log(window.currentLocation)
+      console.log(iconMaker)
     }
   }
   function backupLocation () {
@@ -45,6 +61,8 @@ function initMap () {
       getCoarseLocation()
     }
   }
+  // var markerCluster = new MarkerClusterer(map, markers, { imagePath: 'img/burger-icon.png' })
+  
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,7 +82,7 @@ function createMarkers (locationsForMap, center) {
   }
 
   if (center == 'onBounds') {
-    console.log('centering',center)
+    console.log('centering', center)
     map.fitBounds(bounds)
     map.panToBounds(bounds)
     // set max zoom as 15
@@ -73,7 +91,7 @@ function createMarkers (locationsForMap, center) {
       if (oldZoom > 15) { map.setZoom(oldZoom - 1) }
     })
   } else if (center == 'onCenter') {
-    console.log('centering',center)
+    console.log('centering', center)
     updateMapCenter(window.currentLocation)
     map.setZoom(defaultZoom)
   }
@@ -96,7 +114,7 @@ function addMarker (props, bounds) {
     '<h1 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h1> <div id="bodyContent">' +
     '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +
     '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/><b>Rating: </b>' + props.rating +
-    '/10<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>')
+    '/5<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>')
     infoWindow.open(map, marker)
   })
 
