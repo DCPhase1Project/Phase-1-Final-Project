@@ -3,7 +3,7 @@ const token = 'Bearer aiGs24xZ8kMmDUOG_HpUhfizqZuFgS2bOUmTt-SudUenzhKIWxJsn6ooKp
 const yelpSearchURL = 'https://api.yelp.com/v3/businesses/search'
 const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
-const defaultSearch = 'food'
+const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -125,8 +125,8 @@ function renderRestaurant (restaurant) {
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
-                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn button-topright">Fav</button>
-                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn button-topright">Wish</button>
+                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright"><i class="fas fa-plus"></i><i class="fas fa-heart"></i></button>
+                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="submit" class="btn button-topright"><i class="fas fa-plus"></i><i class="fas fa-star"></i></button>
                 </div>
             </div>
         `
@@ -174,17 +174,19 @@ function renderNearByRestaurants () {
   renderMap(data, 'onCenter')
 }// rerender nearby favorites
 
+
 function renderNearByHTML () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
 }// renderNearByHTML
 
+
 function renderList (listName) {
   let list = []
 
   console.log(`render ${listName} list on map`)
-  if (userLogInStatus === true) {
+  if (userLogInStatus() === true) {
   // read data from firebase
     firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
       let myData = snapshot.val()
@@ -318,15 +320,4 @@ function renderToVisitListHTML () {
   }
 }// renderToVisitList
 
-function userLogInStatus () {
-  var user = firebase.auth().currentUser
-  console.log('ENTERED LOG IN STATUS')
-  console.log(user)
-  if (user) {
-    console.log(user, 'is signed in')
-    return true
-  } else {
-    console.log('No one is signed in')
-    return false
-  }
-}// userLogInStatus
+
