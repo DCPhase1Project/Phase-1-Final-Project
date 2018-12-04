@@ -72,10 +72,10 @@ function userLogInStatus () {
   console.log('ENTERED LOG IN STATUS')
   console.log(user)
   if (user) {
-    return true
     console.log(user, 'is signed in')
+    return true
   } else {
-    return false
     console.log('No one is signed in')
+    return false
   }
 }// userLogInStatus

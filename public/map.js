@@ -14,12 +14,16 @@ function initMap () {
       lat: 0, lng: 0
     },
     zoom: defaultZoom,
-    styles: mapStyle,
-    disableDefaultUI: true
+    styles: mapStyleDark,
+    disableDefaultUI: true,
+    zoomControl: true,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.RIGHT_BOTTOM
+  },
   })
-  infoWindow = new google.maps.InfoWindow()
-
-  // zoomEventListener ('start')
+  infoWindow = new google.maps.InfoWindow({
+    maxWidth: 250
+  })
 
   // loop until location variable is updated
   var locationLoop = setInterval(searchForLocation, 1000)
@@ -41,7 +45,7 @@ function initMap () {
       getCoarseLocation()
     }
   }
-} // initMap
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
@@ -79,32 +83,23 @@ function createMarkers (locationsForMap, center) {
 function addMarker (props, bounds) {
   var marker = new google.maps.Marker({
     position: props.restaurantCord,
-    content: props.restaurantName,
+    // content: props.restaurantName,
     map: map
-    // icon: props.iconImage
   })
   var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng())
   bounds.extend(loc)
-  //  Check for customIcon
-  if (props.iconImage) {
-    // Set icon image
-    marker.setIcon(props.iconImage)
-  }
-  // Check for content
-  if (props.restaurantName) {
-    var infoWindow = new google.maps.InfoWindow({
-      maxWidth: 250,
-      content: '<div id="content">' +	
-      '<div id="siteNotice">' +	
-      '</div>' +	
-      '<h1 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h1> <div id="bodyContent">' +	
-      '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +	
-      '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/><b>Rating: </b>' + props.rating + '/10<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>'
-    })
-    marker.addListener('click', function () {
-      infoWindow.open(map, marker)
-    })
-  }
+
+  google.maps.event.addListener(marker, 'click', function () {
+    infoWindow.setContent('<div id="content">' +
+    '<div id="siteNotice">' +
+    '</div>' +
+    '<h1 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h1> <div id="bodyContent">' +
+    '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +
+    '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/><b>Rating: </b>' + props.rating +
+    '/10<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>')
+    infoWindow.open(map, marker)
+  })
+
   return marker
 }
 
