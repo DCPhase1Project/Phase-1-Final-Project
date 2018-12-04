@@ -150,12 +150,7 @@ function renderMap (response, center) {
         'lat': filterData.coordinates.latitude,
         'lng': filterData.coordinates.longitude
       },
-      'categories': filterData.categories,
-      'image': filterData.image_url,
-      'address': filterData.location.display_address[0],
-      'cityState': filterData.location.display_address[1],
-      'rating': filterData.rating,
-      'reviewCount': filterData.review_count
+      'categories': filterData.categories
     }
     return filterDataObject
   })
