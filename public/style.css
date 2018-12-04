@@ -189,9 +189,7 @@ a:hover {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 .jumbotron {
-    /* position: fixed;
-    z-index: -100;
-    top: 0px; */
+    margin-bottom: 0px;
     width: 100vw;
     height: 60vh;
 }
