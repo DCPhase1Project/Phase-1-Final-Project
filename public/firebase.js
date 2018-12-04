@@ -57,7 +57,8 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
     newAcctBtn.classList.add('d-none')
     btnLogout.classList.remove('d-none')
     userGreeting.classList.remove('d-none')
-    userGreeting.innerHTML = 'Hello, ' + firebaseUser.email + '!'
+    var username = firebaseUser.email.split('@')
+    userGreeting.innerHTML = 'Hello, '+ username[0] + '!'
   } else {
     console.log('not logged in')
     loginBtn.classList.remove('d-none')

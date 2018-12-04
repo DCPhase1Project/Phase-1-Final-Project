@@ -111,7 +111,7 @@ function addMarker (props, bounds) {
     infoWindow.setContent('<div id="content">' +
     '<div id="siteNotice">' +
     '</div>' +
-    '<h1 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h1> <div id="bodyContent">' +
+    '<h3 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h3> <div id="bodyContent">' +
     '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +
     '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/><b>Rating: </b>' + props.rating +
     '/5<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>')
