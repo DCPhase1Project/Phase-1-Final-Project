@@ -136,8 +136,12 @@ function renderRestaurant (restaurant) {
 }// renderRestaurant
 
 function renderFinal (htmlString) {
+  console.log('hiding restaurant container')
+  $('#restaurant-container').hide()
   console.log('rendering restaurant cards...')
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
+  console.log('showing restaurant container')
+  $('#restaurant-container').fadeIn(500)
 }// renderFinal
 
 function renderMap (response, center) {
@@ -150,7 +154,12 @@ function renderMap (response, center) {
         'lat': filterData.coordinates.latitude,
         'lng': filterData.coordinates.longitude
       },
-      'categories': filterData.categories
+      'categories': filterData.categories,
+      'image': filterData.image_url,	
+      'address': filterData.location.display_address[0],	
+      'cityState': filterData.location.display_address[1],	
+      'rating': filterData.rating,	
+      'reviewCount': filterData.review_count
     }
     return filterDataObject
   })
