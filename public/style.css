@@ -17,7 +17,7 @@ body {
     position: fixed;
     top: 0px;
     scroll-behavior: unset;
-    z-index: 100;
+    z-index: 2000;
     background-image:radial-gradient(rgb(255, 187, 0), rgb(239, 141, 33));
     display: flex;
     margin:0px;
@@ -46,36 +46,72 @@ body {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #pageHeader {
-    z-index: 10;
+    margin: 0px;
+    padding: 0rem 0.5rem 0rem 0.5rem;
 }
 
 #logo {
     width: 48px;
     height: 48px;
+    margin-right: 0.5rem;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          Search Area                 */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#searchButton {
+    font-size: 16px;
 }
 
 
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-/*          Tab settings                */
+/*          Login buttons               */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+#userLoginSection {
+    width: 15rem;
+    padding: 0rem 0.5rem 0rem 0rem;
+}
+
+
+#user-greeting {
+    margin-top: 10px;
+    margin-right: 0.5rem;
+}
+
+#login-button, #new-acct-button, #logout-button {
+    font-size: 16px;
+    margin-right: 0.5rem;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*          List settings               */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.nav {
+    position: fixed;
+    z-index: 1000;
+    right: 0.5rem;
+    top: 4rem;
+}
 
 .nav-link {
     font-size:24px;
-    border-radius: 50%;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*           Tab Content                */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-/* #myTabContent {
-    position: fixed;
+.jumbotron {
+    /* position: fixed;
     z-index: -100;
-    top: 0px;
+    top: 0px; */
     width: 100vw;
-    height: 100vh;
-} */
-
+    height: 60vh;
+}
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*          Map settings                */
@@ -89,19 +125,12 @@ body {
 }
  
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-/*          Search Area                 */
+/*                Cards                 */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 
 #search-section {
     padding: 5px;
 }
-
-
-
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-/*                Cards                 */
-/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 .container-fluid {
     padding: 0.5rem;
@@ -124,17 +153,18 @@ body {
     width: 100%;
     margin: 0px;
     height: auto;
+    font-size:1rem;
     /* Animated parameters */
     color: rgba(255, 255, 255, 0.5);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0);
     overflow: hidden;
-    max-height: 30px;
-    font-size:2vw;
+    max-height: 0px;
+    
 }
 
 .card:hover .top{
     color: rgba(255, 255, 255, 1);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.75);
     max-height: 100%;
 }
 
@@ -170,11 +200,11 @@ body {
 
 .card {
     break-inside: avoid;
-    margin-bottom:0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .card-columns {
-    margin-bottom:0.5rem;
+    margin-bottom: 0.5rem;
     column-gap: 0.5rem;
 }
 

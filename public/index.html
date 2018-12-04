@@ -24,25 +24,27 @@
     
     <!--    Full Webpage    -->
     
-    <!--    Page Header    -->
-    <div id="pageHeader">
-        <div class="row d-flex" style="margin: 5px 5px 0px 5px;">
+    <!-- Header & Modal -->
+    <div>
+        <!--    Page Header    -->
+        <nav id="pageHeader" class="navbar fixed-top nav-bar-dark bg-dark">
             <!-- App Logo -->
-            <a href=""><img src="img/burger-icon.png" id="logo" title="logo" alt="logo"></a>
-            <h3 class="mr-auto p-2">AppName</h3>
+            <a class="navbar-brand" href="#"><img src="img/burger-icon.png" id="logo" title="logo" alt="logo">AppName</a>
             <!-- Search section -->
-            <form id="search-form">
-                    <div class="input-group input-group-lg">
-                        <input id="search-bar" class="form-control" placeholder="Search for a restaurant in Houston...">	
-                        <button id="searchButton" class="btn btn-primary input-group-btn" type="button">Search</button>
-                    </div>
-            </form>
+            <div class="row align-items-center flex-fill justify-content-center">
+                <form id="search-form" class="form-inline">
+                        <input id="search-bar" class="form-control mr-sm-2" autocomplete="off" placeholder="Search for a restaurant in Houston...">	
+                        <button id="searchButton" class="btn btn-light" type="button"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
             <!-- User Section -->
-            <button class="btn btn-primary p-2 align-self-start mr-1" id="login-button" data-toggle="modal" data-target="#login-modal">Account Login</button>
-            <button class="btn btn-primary p-2 align-self-start mr-1" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Create an Account</button>
-            <span class="d-none h5" id="user-greeting" style="margin-top: 10px; margin-right: 15px;">Hello User!</span>
-            <button class="btn btn-primary d-none p-2 align-self-start mr-1" id="logout-button">Log Out</button>
-        </div>
+            <div class="row justify-content-end" id="userLoginSection">
+                <button class="btn btn-primary" id="login-button" data-toggle="modal" data-target="#login-modal">Login</button>
+                <button class="btn btn-primary" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Sign Up</button>
+                <span class="d-none h5" id="user-greeting">Hello User!</span>
+                <button class="btn btn-primary d-none" id="logout-button">Log Out</button>
+            </div>
+        </nav>
 
         <!--    Modal Section    -->
         <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="logInToAccount" aria-hidden="true">
@@ -106,24 +108,24 @@
         <!--     Tabs       -->
         <div class="nav flex-column align-items-end nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active show" id="map-tab" data-toggle="pill" href="#map" role="tab" aria-controls="map" aria-selected="true" onclick="renderNearByRestaurants(), renderNearByHTML()"><i class="fas fa-compass"></i></a>
-                <a class="nav-link" data-toggle="pill" href="#favorite" role="tab" aria-controls="favorite" aria-selected="false" onclick="renderList('favorites'), renderListHTML('favorites')"><i class="fas fa-heart tabIcons"></i></a>
+                <a class="nav-link" data-toggle="pill" href="#favorite" role="tab" aria-controls="favorite" aria-selected="false" onclick="renderList('favorites'), renderListHTML('favorites')"><i class="fas fa-heart"></i></a>
                 <a class="nav-link"data-toggle="pill" href="#visit" role="tab" aria-controls="visit" aria-selected="false" onclick="renderList('RestaurantsToVisit'), renderListHTML('RestaurantsToVisit')"><i class="fas fa-star"></i></a>
         </div>
             <!--     Tabs Content    -->
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade active show" id="mapSection" role="tabpanel" aria-labelledby="map-tab">
-                <div class="jumbotron" style="height: 55vh; padding: 0px !important;">
+                <div class="jumbotron" style="padding: 0px !important;">
                     <div id="map"></div> <!--   Map Goes here   -->
                 </div>
             </div>
             <!-- <div class="tab-pane fade" id="favorite" role="tabpanel" aria-labelledby="favorite-tab">
-                <div class="jumbotron" style="height: 55vh; margin: 5px;">
+                <div class="jumbotron" style="padding: 0px !important;">
                     <h1 class="display-4">Favorite Restaurants Section</h1>
                     <div id="map-favorites"></div> 
                 </div>
             </div>
             <div class="tab-pane fade" id="visit" role="tabpanel" aria-labelledby="visit-tab">
-                <div class="jumbotron" style="height: 55vh; margin: 5px;">
+                <div class="jumbotron" style="padding: 0px !important;">
                     <h1 class="display-4">Restaurants to Visit Section</h1>
                     <div id="map-to-visit"></div> 
                 </div>
