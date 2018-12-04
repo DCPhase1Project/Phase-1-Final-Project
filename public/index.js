@@ -58,7 +58,7 @@ function requestResponseObject (center, radius) {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
       term: searchTerm,
-      categories: 'food'
+      categories: 'restaurant'
     },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
@@ -83,9 +83,12 @@ function requestResponseObject (center, radius) {
   $.ajax(requestObj)
     .then(function (response) {
       restaurantData = response.businesses
-      console.log(restaurantData)
+      console.log(response.businesses[0].id)
       // setting object in local storage
       localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
+      //saving response object to firebase
+      firebase.database().ref('/YelpResponse/').set(response.businesses)
+
       return response.businesses
     })
     .then(renderRestaurant)
@@ -126,8 +129,10 @@ function renderRestaurant (restaurant) {
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
-                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="button" class="btn button-topright">Fav</button>
-                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="button" class="btn button-topright">Wish</button>
+                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright">Fav</button>
+                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="submit" class="btn button-topright">Wish</button>
+                  <button onclick="removeFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright">Remove Fav</button>
+                  <button onclick="removeToVisitRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright">Remove Wish</button>
                 </div>
             </div>
         `
@@ -160,7 +165,6 @@ function renderMap (response, center) {
   return response
 }
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering -- Lists
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +187,7 @@ function renderList (listName) {
   
   console.log(`render ${listName} list on map`)
 
-  if (userLogInStatus() === true) {
+  if (isUserLoggedIn()) {
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
     let myData = snapshot.val()
@@ -206,7 +210,7 @@ function renderList (listName) {
 function renderListHTML (listName) {
   console.log(`render ${listName} list cards`)
 
-  if (userLogInStatus() === true) {
+  if (isUserLoggedIn()) {
   // read data from firebase
   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
     let myData = snapshot.val()
@@ -240,7 +244,7 @@ function saveToFavoriteRestaurant (restaurantID) {
   // console.log(JSON.parse(restaurant))
   console.log(restaurantID)
 
-  if (userLogInStatus() === true) {
+  if (isUserLoggedIn()) {
   // calling restaurant objects in local storage
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
@@ -256,32 +260,18 @@ function saveToFavoriteRestaurant (restaurantID) {
   if (userID) {
     update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
     firebase.database().ref().update(update)
+    
   }// if
   } else {
-    console.log(userLogInStatus())
+    console.log(isUserLoggedIn())
     alert('Please login before saving resturants to lists.')
-    // $('#loginModal').modal()
-    // $('#myModal').modal()
-    // document.getElementById('myModal').innerHTML = `<div class="modal fade" id="exampleModalCenter myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    //                                                 <div class="modal-dialog modal-dialog-centered" role="document">
-    //                                                         <div class="modal-content">
-    //                                                           <div class="modal-header">
-    //                                                             <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-    //                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    //                                                               <span aria-hidden="true">&times;</span>
-    //                                                             </button>
-    //                                                           </div>
-    //                                                     </div>
-    //                                                     </div>
-    //                                                     </div>`
-    // alert('Please Sign In before creating a resturant list')
   }
 }// saveToRestaurantList
 
 function saveToRestaurantToVisitList (restaurantID) {
   console.log('saving restaurant to visit list...')
 
-  if (userLogInStatus() === true) {
+  if (isUserLoggedIn()) {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
 
   let clickedRestaurantData = data.find(function (currentRestaurant) {
@@ -302,3 +292,93 @@ function saveToRestaurantToVisitList (restaurantID) {
 }
 }// Visit List
 
+function removeFavoriteRestaurant (restaurantID) {
+  console.log('saving restaurant to favorite list...')
+  // console.log(JSON.parse(restaurant))
+  console.log(restaurantID)
+
+  if (isUserLoggedIn()) {
+  // calling restaurant objects in local storage
+  firebase.database().ref('/YelpResponse/businesses/0').on('value', function(snapshot) {
+    console.log(snapshot)
+    // localStorage.setItem('restaurantData', snapshot)
+    // let data = JSON.parse(localStorage.getItem('restaurantData'))
+    // console.log(data)
+  })
+  // let data = JSON.parse(localStorage.getItem('restaurantData'))
+  // console.log(data)
+
+
+  let clickedRestaurantData = data.find(function (currentRestaurant) {
+    return currentRestaurant.id === restaurantID
+  })// restaurant
+  console.log(clickedRestaurantData)
+
+  // printing information to firebase
+  const update = {}
+  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+  const userID = localStorage.getItem('userID')
+  if (userID) {
+    // update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+    firebase.database().ref('/favorites/' + userID + '/' + clickedRestaurantData).remove()
+  }// if
+  } else {
+    console.log(isUserLoggedIn())
+    alert('Please login before saving resturants to lists.')
+  }
+}// saveToRestaurantList
+
+function removeToVisitRestaurant (restaurantID) {
+  console.log('saving restaurant to favorite list...')
+  // console.log(JSON.parse(restaurant))
+  console.log(restaurantID)
+
+  if (isUserLoggedIn()) {
+  // calling restaurant objects in local storage
+  let data = JSON.parse(localStorage.getItem('restaurantData'))
+  console.log(data)
+
+  let clickedRestaurantData = data.find(function (currentRestaurant) {
+    return currentRestaurant.id === restaurantID
+  })// restaurant
+  console.log(clickedRestaurantData)
+
+  // printing information to firebase
+  const update = {}
+  // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
+  const userID = localStorage.getItem('userID')
+  if (userID) {
+    // update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+    // firebase.database().ref().update(update)
+    // update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+    firebase.database().ref('/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData).remove()
+  }// if
+  } else {
+    console.log(isUserLoggedIn())
+    alert('Please login before saving resturants to lists.')
+  }
+}// saveToRestaurantList
+
+// if (isUserLoggedIn()) {
+//   // read data from firebase
+//   firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
+//     let myData = snapshot.val()
+//     // setting firebaseFavoritesList to localStorage
+//     if (myData) {
+//       favorites = Object.values(myData)
+//       document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(favorites) + '</div>'
+//     } else {
+//       console.log('entered')
+//     } // if
+//   }, function (error) {
+//     console.log('Error: ' + error.code)
+//   })// read Data
+//   } else {
+//     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+//                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
+//                                                                   <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+//                                                                   <hr class="my-4">
+//                                                                   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+//                                                                   <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+//                                                                 </div>`
+// }

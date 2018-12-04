@@ -66,7 +66,7 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
   }
 })
 
-function userLogInStatus () {
+function isUserLoggedIn () {
   var user = firebase.auth().currentUser
   console.log('ENTERED LOG IN STATUS')
   console.log(user)
