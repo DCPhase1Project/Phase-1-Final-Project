@@ -13,7 +13,7 @@ function initMap () {
     center: {
       lat: 0, lng: 0
     },
-    zoom: defaultZoom,
+    zoom: 15,
     styles: mapStyle
   })
   infoWindow = new google.maps.InfoWindow()
@@ -91,7 +91,13 @@ function addMarker (props, bounds) {
   // Check for content
   if (props.restaurantName) {
     var infoWindow = new google.maps.InfoWindow({
-      content: props.restaurantName
+      maxWidth: 250,
+      content: '<div id="content">' +
+      '<div id="siteNotice">' +
+      '</div>' +
+      '<h1 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h1> <div id="bodyContent">' +
+      '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +
+      '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/><b>Rating: </b>' + props.rating + '/10<br/><b>No. of Reviews: </b>' + props.reviewCount + '<br/>' + '</div>'
     })
     marker.addListener('click', function () {
       infoWindow.open(map, marker)
