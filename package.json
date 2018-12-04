@@ -24,10 +24,15 @@
   },
   "standard": {
     "globals": [
-      "$", "firebase", "google", "localStorage", "mapStyles"
+      "$",
+      "firebase",
+      "google",
+      "localStorage",
+      "mapStyles"
     ]
   },
   "dependencies": {
+    "open-iconic": "^1.1.1",
     "uglify-js": "^3.4.9"
   }
 }

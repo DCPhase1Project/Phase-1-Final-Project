@@ -14,7 +14,8 @@ function initMap () {
       lat: 0, lng: 0
     },
     zoom: defaultZoom,
-    styles: mapStyle
+    styles: mapStyle,
+    disableDefaultUI: true
   })
   infoWindow = new google.maps.InfoWindow()
 
@@ -51,7 +52,6 @@ function createMarkers (locationsForMap, center) {
   // 'Center' accepts the strings: 'onCenter' or 'onBounds'
   // If 'Center' is not defined it will not move.
   setMapOnAll(null)
-
   console.log('creating new markers...')
   var bounds = new google.maps.LatLngBounds()
   // Loop through markers array
@@ -59,15 +59,17 @@ function createMarkers (locationsForMap, center) {
     markers.push(addMarker(locationsForMap[i], bounds))
   }
 
-  if (center === 'onBounds') {
+  if (center == 'onBounds') {
+    console.log('centering',center)
     map.fitBounds(bounds)
     map.panToBounds(bounds)
-    // set max zoom as 16
+    // set max zoom as 15
     google.maps.event.addListenerOnce(map, 'zoom_changed', function () {
       var oldZoom = map.getZoom()
       if (oldZoom > 15) { map.setZoom(oldZoom - 1) }
     })
-  } else if (center === 'onCenter') {
+  } else if (center == 'onCenter') {
+    console.log('centering',center)
     updateMapCenter(window.currentLocation)
     map.setZoom(defaultZoom)
   }
