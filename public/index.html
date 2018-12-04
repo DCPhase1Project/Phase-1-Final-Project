@@ -48,10 +48,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <!-- User Section -->
-                <div class="row justify-content-end" id="userLoginSection">
+                <div class="row justify-content-end align-items-center" id="userLoginSection">
                     <button class="btn btn-primary" id="login-button" data-toggle="modal" data-target="#login-modal">Login</button>
                     <button class="btn btn-primary" id="new-acct-button" data-toggle="modal" data-target="#new-acct-modal">Sign Up</button>
-                    <span class="d-none text-light" id="user-greeting"></span>
+                    <span class="d-none text-light" id="user-greeting" style="display: inline-block; width: 2000px; margin: 10px;"></span>
                     <button class="btn btn-primary d-none" id="logout-button">Log Out</button>
                 </div>
             </div>
@@ -76,8 +76,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="login-email">Username</label>
-                                <input type="text" class="form-control" id="login-email" placeholder="Enter your username">
+                                <label for="login-email">Email</label>
+                                <input type="email" class="form-control" id="login-email" placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
                                 <label for="login-password">Password</label>
@@ -103,8 +103,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="form-group">
-                                <label for="new-acct-email">Username</label>
-                                <input type="text" class="form-control" id="new-acct-email" placeholder="Enter your username">
+                                <label for="new-acct-email">Email</label>
+                                <input type="email" class="form-control" id="new-acct-email" placeholder="Enter your email address">
                             </div>
                             <div class="form-group">
                                 <label for="new-acct-password">Password</label>
