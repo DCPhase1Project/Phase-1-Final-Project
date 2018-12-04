@@ -1,4 +1,4 @@
-var mapStyle =
+var mapStyleDark =
   [
     {
       'elementType': 'geometry',

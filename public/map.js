@@ -14,8 +14,12 @@ function initMap () {
       lat: 0, lng: 0
     },
     zoom: defaultZoom,
-    styles: mapStyle,
-    disableDefaultUI: true
+    styles: mapStyleDark,
+    disableDefaultUI: true,
+    zoomControl: true,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.RIGHT_BOTTOM
+  },
   })
   infoWindow = new google.maps.InfoWindow({
     maxWidth: 250
