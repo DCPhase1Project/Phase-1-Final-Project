@@ -37,3 +37,5 @@ tippy (document.getElementById('search-bar'), {
     size: 'large',
     animation: 'scale',
 })
+
+tippy('.btn')
