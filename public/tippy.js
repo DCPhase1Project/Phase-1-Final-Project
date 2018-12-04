@@ -37,3 +37,25 @@ tippy (document.getElementById('search-bar'), {
     size: 'large',
     animation: 'scale',
 })
+
+tippy (document.getElementById('favorite-icon'), {
+    content: "Add to Favorite Restaurants",
+    delay: 100,
+    arrow: true,
+    arrowType: 'round',
+    size: 'small',
+    animation: 'scale',
+    trigger: 'mouseenter',
+    placement: 'right',
+})
+
+tippy (document.getElementById('saveres-icon'), {
+    content: "Add to Restaurants to Visit",
+    delay: 100,
+    arrow: true,
+    arrowType: 'round',
+    size: 'small',
+    animation: 'scale',
+    trigger: 'mouseenter',
+    placement: 'right',
+})
