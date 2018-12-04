@@ -136,8 +136,12 @@ function renderRestaurant (restaurant) {
 }// renderRestaurant
 
 function renderFinal (htmlString) {
+  console.log('hiding restaurant container')
+  $('#restaurant-container').hide()
   console.log('rendering restaurant cards...')
   document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
+  console.log('showing restaurant container')
+  $('#restaurant-container').fadeIn(500)
 }// renderFinal
 
 function renderMap (response, center) {

@@ -1,3 +1,4 @@
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 /*          full app settings           */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -5,6 +6,35 @@
 body {
     padding: 0px;
     overflow-x:hidden;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+/*      Bootstrap theme replacement     */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+.btn-primary {
+    color: #fff;
+    background-color: #ff7700;
+    border-color: #ff7700;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #ff6600;
+    border-color: #ff6600;
+}
+
+.nav-pills .nav-link.active {
+    color: #fff;
+    background-color: #ff7700;
+}
+
+a {
+    color: #ff7700;
+}
+
+a:hover {
+    color: #ff6600;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -63,7 +93,6 @@ body {
 #searchButton {
     font-size: 16px;
 }
-
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -239,3 +268,5 @@ body {
         column-count: 5;
     }
 }
+
+
