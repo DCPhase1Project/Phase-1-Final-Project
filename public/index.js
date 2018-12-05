@@ -119,9 +119,9 @@ function renderRestaurant (restaurant) {
   console.log(restaurant)
 
   console.log('creating cards innerHTML...')
-  let restaurantHTML = restaurant.map(function (currentRestaurant) {
+  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white hover-card">
+            <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
