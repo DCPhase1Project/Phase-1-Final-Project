@@ -242,10 +242,8 @@ function renderListHTML (listName) {
   } else {
     document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
                                                                   <h1 class="display-4">Hello, Please Sign In</h1>
-                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+                                                                  <p class="lead">You are not currently signed into your Munchies account. Please sign in using the buttons on the top right corner to access your Favorite Restaurants and Restaurants to Visit.</p>
                                                                   <hr class="my-4">
-                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
                                                                 </div>`
   }// else statement
 }// renderListHTML
