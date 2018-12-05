@@ -61,10 +61,15 @@ function initMap () {
       getCoarseLocation()
     }
   }
-  // var markerCluster = new MarkerClusterer(map, markers, { imagePath: 'img/burger-icon.png' })
-  
-}
+  google.maps.event.addListener(map, 'click', function () {
+    infoWindow.close()
+  })
 
+  // var markerCluster = new MarkerClusterer(map, markers, { imagePath: 'img/burger-icon.png' })
+}
+function myClick (id) {
+  google.maps.event.trigger(markers[id], 'click')
+}
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -102,7 +107,8 @@ function addMarker (props, bounds) {
   var marker = new google.maps.Marker({
     position: props.restaurantCord,
     // content: props.restaurantName,
-    map: map
+    map: map,
+    id: props.restaurantName
   })
   var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng())
   bounds.extend(loc)
