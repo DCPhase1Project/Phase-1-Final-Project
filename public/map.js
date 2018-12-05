@@ -52,8 +52,8 @@ function initMap () {
         map: map,
         icon: image
       })
-      console.log(window.currentLocation)
-      console.log(iconMaker)
+      // console.log(window.currentLocation)
+      // console.log(iconMaker)
     }
   }
   function backupLocation () {
@@ -163,7 +163,7 @@ function setMapOnAll (map) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function updateMapCenter (location) {
-  console.log('Updating MapAPI location data...', location)
+  // console.log('Updating MapAPI location data...', location)
   if (location.lat === undefined) {
     geocodeAndCenter(location.cityState)
   } else {

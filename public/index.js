@@ -12,7 +12,7 @@ let searchTerm = defaultSearch // initial search term
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('initializing index.js v4.0')
+  console.log('initializing index.js v5.0')
   getCurrentLocation()
   loadPageAnimations()
 })// DOMContentLoaded
@@ -66,24 +66,24 @@ function requestResponseObject (center, radius) {
     }
   }
 
-  console.log('requestObj: ', requestObj)
+  // console.log('requestObj: ', requestObj)
   // LOCATION VALUE
   // check if center contains cityState or latlng
   if (center.lat === undefined) {
     requestObj.data.location = center.cityState
-    console.log('adding cityState to requestObj', requestObj)
+    // console.log('adding cityState to requestObj', requestObj)
   } else {
     requestObj.data.latitude = center.lat
     requestObj.data.longitude = center.lng
-    console.log('adding lat lng to requestObj', requestObj)
+    // console.log('adding lat lng to requestObj', requestObj)
   }
 
-  console.log('requesting', requestObj.data.term, 'data from the server...')
+  // console.log('requesting', requestObj.data.term, 'data from the server...')
   // ajax request the object
   $.ajax(requestObj)
     .then(function (response) {
       restaurantData = response.businesses
-      console.log(restaurantData)
+      // console.log(restaurantData)
       // setting object in local storage
       localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
       return response.businesses
@@ -107,7 +107,7 @@ function submitSearch () {
 
 function updateSearchAPI (location) {
   // accepts 'City, State','city', or 'latlng'
-  console.log('Updating SearchAPI location data...', location)
+  // console.log('Updating SearchAPI location data...', location)
   requestResponseObject(location)
 }
 
@@ -117,7 +117,7 @@ function updateSearchAPI (location) {
 
 function renderRestaurant (restaurant) {
   renderMap(restaurant)
-  console.log(restaurant)
+  // console.log(restaurant)
 
   // localStorage.setItem(`${listName}`, list)
   // localStorage.getItem()
@@ -181,7 +181,7 @@ function renderMap (response, center) {
 
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
-  console.log(data)
+  // console.log(data)
   renderMap(data, 'onCenter')
 }// rerender nearby favorites
 
@@ -197,7 +197,7 @@ function renderList (listName) {
   let list = []
 
   localStorage.setItem('currentListName', listName)
-  console.log(localStorage.getItem('currentListName'))
+  // console.log(localStorage.getItem('currentListName'))
  
   console.log(`render ${listName} list on map`)
   if (userLogInStatus() === true) {
@@ -209,7 +209,7 @@ function renderList (listName) {
         list = Object.values(myData)
         localStorage.setItem(`${listName}`, list)
 
-        console.log(list)
+        // console.log(list)
         renderMap(list, 'onBounds')
       } else {
         renderMap([], 'onCenter')
@@ -234,7 +234,7 @@ function renderListHTML (listName) {
         list = Object.values(myData)
         document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
       } else {
-        console.log('entered')
+        // console.log('entered')
       } // if
     }, function (error) {
       console.log('Error: ' + error.code)
@@ -257,7 +257,7 @@ function saveToFavoriteRestaurant (restaurantID) {
 
   console.log('saving restaurant to favorite list...')
   // console.log(JSON.parse(restaurant))
-  console.log(restaurantID)
+  // console.log(restaurantID)
 
   if (userLogInStatus() === true) {
   // calling restaurant objects in local storage
@@ -266,7 +266,7 @@ function saveToFavoriteRestaurant (restaurantID) {
     let clickedRestaurantData = data.find(function (currentRestaurant) {
       return currentRestaurant.id === restaurantID
     })// restaurant
-    console.log(clickedRestaurantData)
+    // console.log(clickedRestaurantData)
 
     // printing information to firebase
     const update = {}
@@ -291,7 +291,7 @@ function saveToRestaurantToVisitList (restaurantID) {
     let clickedRestaurantData = data.find(function (currentRestaurant) {
       return currentRestaurant.id === restaurantID
     })
-    console.log(clickedRestaurantData)
+    // console.log(clickedRestaurantData)
 
     // setting information to Firebase
     const update = {}
@@ -324,7 +324,7 @@ function removeFromList (restaurantID, listName) {
     const userID = localStorage.getItem('userID')
     if (userID) {
       update[`/${listName}/` + userID + '/' + restaurantID] = null
-      console.log(update)
+      // console.log(update)
       firebase.database().ref().update(update)
     }// if
   } else {

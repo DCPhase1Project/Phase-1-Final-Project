@@ -19,7 +19,7 @@ function getCurrentLocation () {
   }
 
   function getPosition (position) {
-    console.log(position)
+    // console.log(position)
     var currentLocationFine = {
       lat: position.coords.latitude,
       lng: position.coords.longitude,
