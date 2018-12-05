@@ -6,6 +6,7 @@ var restaurantData = []
 const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -123,9 +124,9 @@ function renderRestaurant (restaurant) {
 
 
   console.log('creating cards innerHTML...')
-  let restaurantHTML = restaurant.map(function (currentRestaurant) {
+  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white hover-card">
+            <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
@@ -207,6 +208,7 @@ function renderList (listName) {
       if (myData) {
         list = Object.values(myData)
         localStorage.setItem(`${listName}`, list)
+
         console.log(list)
         renderMap(list, 'onBounds')
       } else {
@@ -304,6 +306,7 @@ function saveToRestaurantToVisitList (restaurantID) {
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
   }// else
+
 }// Visit List
 
 function removeFromList (restaurantID, listName) {
@@ -329,6 +332,7 @@ function removeFromList (restaurantID, listName) {
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
   }// else
+
 }// Visit List
 
 function renderToVisitListHTML () {
