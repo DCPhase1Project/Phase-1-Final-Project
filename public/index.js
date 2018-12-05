@@ -5,7 +5,8 @@ const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
 const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
- 
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +58,7 @@ function requestResponseObject (center, radius) {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
       term: searchTerm,
-      categories: 'food'
+      categories: 'restuarant'
     },
     headers: { 'Authorization': token },
     error: function (jqXHR, testStatus, errorThrown) {
@@ -118,15 +119,21 @@ function renderRestaurant (restaurant) {
   renderMap(restaurant)
   console.log(restaurant)
 
+  // localStorage.setItem(`${listName}`, list)
+  // localStorage.getItem()
+
+
   console.log('creating cards innerHTML...')
-  let restaurantHTML = restaurant.map(function (currentRestaurant) {
+  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white hover-card">
+            <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
                   <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-plus"></i><i class="fas fa-heart"></i></button>
                   <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-plus"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
+                  <button onclick="removeFromList('${currentRestaurant.id}', '${localStorage.getItem('currentListName')}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-minus"></i><i data-tippy-content="Add to Restaurants to Visit"></i></button>
+
                 </div>
             </div>
         `
@@ -189,6 +196,9 @@ function renderNearByHTML () {
 function renderList (listName) {
   let list = []
 
+  localStorage.setItem('currentListName', listName)
+  console.log(localStorage.getItem('currentListName'))
+ 
   console.log(`render ${listName} list on map`)
   if (userLogInStatus() === true) {
   // read data from firebase
@@ -197,6 +207,8 @@ function renderList (listName) {
       // setting firebaseList to localStorage
       if (myData) {
         list = Object.values(myData)
+        localStorage.setItem(`${listName}`, list)
+
         console.log(list)
         renderMap(list, 'onBounds')
       } else {
@@ -292,6 +304,33 @@ function saveToRestaurantToVisitList (restaurantID) {
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
   }// else
+
+}// Visit List
+
+function removeFromList (restaurantID, listName) {
+  console.log('saving restaurant to visit list...')
+
+  if (userLogInStatus() === true) {
+    // let data = JSON.parse(localStorage.getItem('restaurantData'))
+
+    // let clickedRestaurantData = data.find(function (currentRestaurant) {
+    //   return currentRestaurant.id === restaurantID
+    // })
+    // console.log(clickedRestaurantData)
+
+    // setting information to Firebase
+    const update = {}
+    // const newVisitKey = firebase.database().ref().child('toVisit').push().key
+    const userID = localStorage.getItem('userID')
+    if (userID) {
+      update[`/${listName}/` + userID + '/' + restaurantID] = null
+      console.log(update)
+      firebase.database().ref().update(update)
+    }// if
+  } else {
+    console.log('call login modal') // CALL LOG IN MODAL
+  }// else
+
 }// Visit List
 
 function renderToVisitListHTML () {
