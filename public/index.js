@@ -124,6 +124,11 @@ function renderRestaurant (restaurant) {
 
   console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.map(function (currentRestaurant) {
+    if (localStorage.getItem('currentListName') === 'favorites' || localStorage.getItem('currentListName') === 'RestaurantsToVisit') {
+      let buttonStatus = `style= visibility: visible`
+    } else {
+      let buttonStatus = `style= visibility: hidden`
+    }
     let restaurantHTMLString = `
             <div class="card bg-dark text-white hover-card">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
@@ -308,6 +313,7 @@ function saveToRestaurantToVisitList (restaurantID) {
 
 function removeFromList (restaurantID, listName) {
   console.log('saving restaurant to visit list...')
+  console.log(restaurantID)
 
   if (userLogInStatus() === true) {
     // let data = JSON.parse(localStorage.getItem('restaurantData'))
