@@ -190,7 +190,7 @@ a:hover {
 .jumbotron {
     margin-bottom: 0px;
     width: 100vw;
-    height: 60vh;
+    height: 80vh;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -209,6 +209,9 @@ a:hover {
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 #search-section {
+    /* position: absolute;
+    z-index: 10;
+    top: 90vh; */
     padding: 5px;
 }
 
@@ -262,14 +265,14 @@ a:hover {
     background: rgba(66, 66, 66, 0.2);
     padding: 0.25em;
     text-align: center;
-    margin: 0px;
+    margin-bottom: 1px;
     border-radius: 10%;
     display: flex;
     /* Animated parameters */
     border: 2px solid rgba(255, 255, 255, 0.2);
     color: rgba(255, 255, 255, 0.75);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    font-size:1vw;
+    font-size:12px;
 }
 
 .button-topright:hover {

@@ -5,7 +5,7 @@ const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
 const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
-
+ 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
