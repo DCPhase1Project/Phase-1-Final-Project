@@ -61,15 +61,16 @@ function initMap () {
       getCoarseLocation()
     }
   }
+
   google.maps.event.addListener(map, 'click', function () {
     infoWindow.close()
   })
 
-  // var markerCluster = new MarkerClusterer(map, markers, { imagePath: 'img/burger-icon.png' })
 }
 function myClick (id) {
   google.maps.event.trigger(markers[id], 'click')
 }
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Add & Remove Markers
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -107,11 +108,11 @@ function addMarker (props, bounds) {
   var marker = new google.maps.Marker({
     position: props.restaurantCord,
     // content: props.restaurantName,
-    map: map,
-    id: props.restaurantName
+    map: map
   })
   var loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng())
   bounds.extend(loc)
+
 
   var reviewStars = starMaker(props.rating)
 
@@ -119,10 +120,12 @@ function addMarker (props, bounds) {
     infoWindow.setContent('<div id="content">' +
     '<div id="siteNotice">' +
     '</div>' +
+
     '<h3 id="firstHeading" class="firstHeading">' + props.restaurantName + '</h3> <div id="bodyContent">' +
     '<div style=\'float:left\'><img src=\'' + props.image + '\' style= "max-width: 90px"></div><div style=\'float:middle; padding-left: 100px;\'>' +
     '<b>Address: </b>' + props.address + '<br/>' + props.cityState + '<br/>' + reviewStars +
     '<br/><b><i class="fas fa-users"></i> </b>' + props.reviewCount + '<br/>' + '</div>')
+
     infoWindow.open(map, marker)
   })
 
