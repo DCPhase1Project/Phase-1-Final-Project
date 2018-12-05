@@ -25,6 +25,7 @@ function getCurrentLocation () {
       lng: position.coords.longitude,
       acc: position.coords.accuracy
     }
+  
     // Set global location
     window.currentLocation = {}
     window.currentLocation = currentLocationFine
@@ -53,7 +54,6 @@ function getCurrentLocation () {
   }
 }
 
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by IP Address -- Backup -- Coarse
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,16 +63,15 @@ function getCoarseLocation () {
   console.log('getting coarse location...')
   let currentCoarseLocation = {}
 
-  $.getJSON('http://api.db-ip.com/v2/free/self', function (json) {
+  $.getJSON('https://api.db-ip.com/v2/free/self', function (json) {
     currentCoarseLocation = json
     console.log('coarse location: ', currentCoarseLocation.city, ', ', currentCoarseLocation.stateProv, 'full data: ', currentCoarseLocation)
 
     window.currentLocation = {}
-    window.currentLocation.cityState = currentCoarseLocation.city +', '+ currentCoarseLocation.stateProv
+    window.currentLocation.cityState = currentCoarseLocation.city + ', ' + currentCoarseLocation.stateProv
     console.log(window.currentLocation)
   })
 }
-
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Get current location by Watch Geolocation -- Ultra Fine
