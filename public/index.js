@@ -6,6 +6,7 @@ var restaurantData = []
 const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Event Listeners
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,26 +119,35 @@ function renderRestaurant (restaurant) {
   renderMap(restaurant)
   console.log(restaurant)
 
-  // localStorage.setItem(`${listName}`, list)
-  // localStorage.getItem()
+  var listName = localStorage.getItem('currentListName')
+  var buttonSign = {
+    fav:'plus',
+    visit:'plus'
+  }
 
 
   console.log('creating cards innerHTML...')
-  let restaurantHTML = restaurant.map(function (currentRestaurant) {
-    if (localStorage.getItem('currentListName') === 'favorites' || localStorage.getItem('currentListName') === 'RestaurantsToVisit') {
-      let buttonStatus = `style= visibility: visible`
-    } else {
-      let buttonStatus = `style= visibility: hidden`
+  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
+    var buttonFunctionName = {
+      fav:`saveToFavoriteRestaurant('${currentRestaurant.id}')`,
+      visit:`saveToRestaurantToVisitList('${currentRestaurant.id}')`
+    }
+    if (listName === 'favorites'){
+      console.log('listname:',listName)
+      buttonFunctionName.fav = `removeFromList ('${currentRestaurant.id}','${listName}')`
+      buttonSign.fav = 'minus'
+    } else if (listName === 'RestaurantsToVisit'){
+      console.log('listname:',listName)
+      buttonFunctionName.visit = `removeFromList ('${currentRestaurant.id}','${listName}')`
+      buttonSign.visit = 'minus'
     }
     let restaurantHTMLString = `
-            <div class="card bg-dark text-white hover-card">
+            <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
-                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-plus"></i><i class="fas fa-heart"></i></button>
-                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-plus"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
-                  <button onclick="removeFromList('${currentRestaurant.id}', '${localStorage.getItem('currentListName')}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-minus"></i><i data-tippy-content="Add to Restaurants to Visit"></i></button>
-
+                  <button onclick="${buttonFunctionName.fav}" type="submit" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-${buttonSign.fav}"></i><i class="fas fa-heart"></i></button>
+                  <button onclick="${buttonFunctionName.visit}" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-${buttonSign.visit}"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
                 </div>
             </div>
         `
@@ -186,6 +196,7 @@ function renderMap (response, center) {
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
   console.log(data)
+  localStorage.setItem('currentListName', 'NearBy')
   renderMap(data, 'onCenter')
 }// rerender nearby favorites
 
@@ -212,6 +223,7 @@ function renderList (listName) {
       if (myData) {
         list = Object.values(myData)
         localStorage.setItem(`${listName}`, list)
+
         console.log(list)
         renderMap(list, 'onBounds')
       } else {
@@ -309,6 +321,7 @@ function saveToRestaurantToVisitList (restaurantID) {
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
   }// else
+
 }// Visit List
 
 function removeFromList (restaurantID, listName) {
@@ -335,6 +348,7 @@ function removeFromList (restaurantID, listName) {
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
   }// else
+
 }// Visit List
 
 function renderToVisitListHTML () {
