@@ -119,21 +119,36 @@ function renderRestaurant (restaurant) {
   renderMap(restaurant)
   // console.log(restaurant)
 
-  // localStorage.setItem(`${listName}`, list)
-  // localStorage.getItem()
+  var listName = localStorage.getItem('currentListName')
+  var buttonSign = {
+    fav:'plus',
+    visit:'plus'
+  }
 
 
   console.log('creating cards innerHTML...')
   let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
+    var buttonFunctionName = {
+      fav:`saveToFavoriteRestaurant('${currentRestaurant.id}')`,
+      visit:`saveToRestaurantToVisitList('${currentRestaurant.id}')`
+    }
+
+    if (listName === 'favorites'){
+      console.log('REMOVE FROM LIST listname:',listName)
+      buttonFunctionName.fav = `removeFromList ('${currentRestaurant.id}','${listName}')`
+      buttonSign.fav = 'minus'
+    } else if (listName === 'RestaurantsToVisit'){
+      console.log('listname:',listName)
+      buttonFunctionName.visit = `removeFromList ('${currentRestaurant.id}','${listName}')`
+      buttonSign.visit = 'minus'
+    }
     let restaurantHTMLString = `
             <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
                 <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
                 <h5 class="top">${currentRestaurant.name}</h5>
                 <div class="top-right">
-                  <button onclick="saveToFavoriteRestaurant('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-plus"></i><i class="fas fa-heart"></i></button>
-                  <button onclick="saveToRestaurantToVisitList('${currentRestaurant.id}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-plus"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
-                  <button onclick="removeFromList('${currentRestaurant.id}', '${localStorage.getItem('currentListName')}')" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-minus"></i><i data-tippy-content="Add to Restaurants to Visit"></i></button>
-
+                  <button onclick="${buttonFunctionName.fav}" type="button" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-${buttonSign.fav}"></i><i class="fas fa-heart"></i></button>
+                  <button onclick="${buttonFunctionName.visit}" type="button" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-${buttonSign.visit}"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
                 </div>
             </div>
         `
@@ -142,7 +157,7 @@ function renderRestaurant (restaurant) {
   return restaurantHTML.join('')
 }// renderRestaurant
 
-function renderFinal (htmlString) {
+function renderFinal (htmlString){
   console.log('hiding restaurant container')
   $('#restaurant-container').hide()
   console.log('rendering restaurant cards...')
@@ -182,6 +197,7 @@ function renderMap (response, center) {
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
   // console.log(data)
+  localStorage.setItem('currentListName', 'homeTab')
   renderMap(data, 'onCenter')
 }// rerender nearby favorites
 
@@ -195,6 +211,7 @@ function renderNearByHTML () {
 
 function renderList (listName) {
   let list = []
+  // console.log('Renderlist list name...................', listName)
 
   localStorage.setItem('currentListName', listName)
   // console.log(localStorage.getItem('currentListName'))
@@ -309,6 +326,7 @@ function saveToRestaurantToVisitList (restaurantID) {
 
 function removeFromList (restaurantID, listName) {
   console.log('saving restaurant to visit list...')
+  console.log(restaurantID)
 
   if (userLogInStatus() === true) {
     // let data = JSON.parse(localStorage.getItem('restaurantData'))
