@@ -157,7 +157,7 @@ function renderRestaurant (restaurant) {
   return restaurantHTML.join('')
 }// renderRestaurant
 
-function renderFinal (htmlString) {
+function renderFinal (htmlString){
   console.log('hiding restaurant container')
   $('#restaurant-container').hide()
   console.log('rendering restaurant cards...')
