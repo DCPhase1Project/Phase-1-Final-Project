@@ -5,6 +5,7 @@ const corsHelper = 'https://cors-anywhere.herokuapp.com'
 var restaurantData = []
 const defaultSearch = 'restaurant'
 let searchTerm = defaultSearch // initial search term
+localStorage.setItem('currentListName', 'restaurantData')
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,6 +28,7 @@ document.getElementById('search-form').addEventListener('submit', function (evt)
   submitSearch()
 })
 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Splash Screen Functions
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,20 +42,21 @@ function loadPageAnimations () {
   window.setTimeout(function () { $('#search-section').fadeIn(1000) }, 4000)
 }
 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Create Response Object
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function requestResponseObject (center, radius) {
-  // SEARCH VALUE
-  // if there's no search value then default search value
+  // 'Center' accepts 'City, State','city', or 'latlng'
+  // SEARCH VALUE -- if there's no search value then default search value
   if (document.getElementById('search-bar').value) {
     searchTerm = document.getElementById('search-bar').value
   } else {
     searchTerm = defaultSearch
   }
 
-  // initialize requestObj
+  // INIT requestObj
   let requestObj = {
     'url': corsHelper + '/' + yelpSearchURL,
     'data': {
@@ -66,105 +69,40 @@ function requestResponseObject (center, radius) {
     }
   }
 
-  // console.log('requestObj: ', requestObj)
-  // LOCATION VALUE
-  // check if center contains cityState or latlng
+  // LOCATION VALUE -- check if center contains cityState or latlng
   if (center.lat === undefined) {
     requestObj.data.location = center.cityState
-    // console.log('adding cityState to requestObj', requestObj)
   } else {
     requestObj.data.latitude = center.lat
     requestObj.data.longitude = center.lng
-    // console.log('adding lat lng to requestObj', requestObj)
   }
 
-  // console.log('requesting', requestObj.data.term, 'data from the server...')
-  // ajax request the object
+  // AJAX REQUEST OBJECT
+  console.log('requesting', searchTerm, 'data from the server...')
   $.ajax(requestObj)
     .then(function (response) {
       restaurantData = response.businesses
-      // console.log(restaurantData)
       // setting object in local storage
-      localStorage.setItem('restaurantData', JSON.stringify(response.businesses))
-      return response.businesses
+      localStorage.setItem('restaurantData', JSON.stringify(restaurantData))
+      return restaurantData
     })
     .then(renderRestaurant)
-    .then(renderFinal)
-}// requestResponseObject
+}
+
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Search Functionality
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 function submitSearch () {
-  let restaurantSearch = document.getElementById('search-bar').value
-  console.log('searching for', restaurantSearch)
+  console.log('submitsearch')
   requestResponseObject(currentLocation)
-}// submit Search
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Search Updating Functions
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-function updateSearchAPI (location) {
-  // accepts 'City, State','city', or 'latlng'
-  // console.log('Updating SearchAPI location data...', location)
-  requestResponseObject(location)
 }
 
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Rendering -- General
+// Create Map Object
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-function renderRestaurant (restaurant) {
-  renderMap(restaurant)
-  // console.log(restaurant)
-
-  var listName = localStorage.getItem('currentListName')
-  var buttonSign = {
-    fav:'plus',
-    visit:'plus'
-  }
-
-
-  console.log('creating cards innerHTML...')
-  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
-    var buttonFunctionName = {
-      fav:`saveToFavoriteRestaurant('${currentRestaurant.id}')`,
-      visit:`saveToRestaurantToVisitList('${currentRestaurant.id}')`
-    }
-
-    if (listName === 'favorites'){
-      console.log('REMOVE FROM LIST listname:',listName)
-      buttonFunctionName.fav = `removeFromList ('${currentRestaurant.id}','${listName}')`
-      buttonSign.fav = 'minus'
-    } else if (listName === 'RestaurantsToVisit'){
-      console.log('listname:',listName)
-      buttonFunctionName.visit = `removeFromList ('${currentRestaurant.id}','${listName}')`
-      buttonSign.visit = 'minus'
-    }
-    let restaurantHTMLString = `
-            <div class="card bg-dark text-white hover-card" onclick="myClick(${index});">
-                <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
-                <h5 class="top">${currentRestaurant.name}</h5>
-                <div class="top-right">
-                  <button onclick="${buttonFunctionName.fav}" type="button" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-${buttonSign.fav}"></i><i class="fas fa-heart"></i></button>
-                  <button onclick="${buttonFunctionName.visit}" type="button" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-${buttonSign.visit}"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
-                </div>
-            </div>
-        `
-    return restaurantHTMLString
-  })// map function
-  return restaurantHTML.join('')
-}// renderRestaurant
-
-function renderFinal (htmlString){
-  console.log('hiding restaurant container')
-  $('#restaurant-container').hide()
-  console.log('rendering restaurant cards...')
-  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
-  console.log('showing restaurant container')
-  $('#restaurant-container').fadeIn(500)
-}// renderFinal
 
 function renderMap (response, center) {
   console.log('filtering restaurant data...')
@@ -190,33 +128,74 @@ function renderMap (response, center) {
   return response
 }
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Rendering -- General
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+function renderRestaurant (restaurant) {
+  renderMap(restaurant)
+
+  var listName = localStorage.getItem('currentListName')
+
+  var buttonSign = {
+    fav:'plus',
+    visit:'plus'
+  }
+
+  console.log('creating cards innerHTML...')
+  let restaurantHTML = restaurant.map(function (currentRestaurant, index) {
+    var buttonFunctionName = {
+      fav:`saveToList('${currentRestaurant.id}','favorites')`,
+      visit:`saveToList('${currentRestaurant.id}','RestaurantsToVisit')`
+    }
+    if (listName === 'favorites'){
+      console.log('listname:',listName)
+      buttonFunctionName.fav = `removeFromList('${currentRestaurant.id}','${listName}')`
+      buttonSign.fav = 'minus'
+    } else if (listName === 'RestaurantsToVisit'){
+      console.log('listname:',listName)
+      buttonFunctionName.visit = `removeFromList('${currentRestaurant.id}','${listName}')`
+      buttonSign.visit = 'minus'
+    }
+    let restaurantHTMLString = `
+            <div class="card bg-dark text-white hover-card" onclick="clickOpenInfoWindow(${index});">
+                <img class="card-img-top" src="${currentRestaurant.image_url}" alt="${currentRestaurant.name}">
+                <h5 class="top">${currentRestaurant.name}</h5>
+                <div class="top-right">
+                  <button onclick="${buttonFunctionName.fav};" type="submit" class="btn button-topright" data-tippy-content="Add to Favorite Restaurants"><i class="fas fa-${buttonSign.fav}"></i><i class="fas fa-heart"></i></button>
+                  <button onclick="${buttonFunctionName.visit};" type="submit" class="btn button-topright" data-tippy-content="Add to Restaurants to Visit"><i class="fas fa-${buttonSign.visit}"></i><i class="fas fa-star" data-tippy-content="Add to Restaurants to Visit"></i></button>
+                </div>
+            </div>
+        `
+    return restaurantHTMLString
+  })
+  renderFinal(restaurantHTML.join(''))
+}
+
+function renderFinal (htmlString){
+  $('#restaurant-container').hide()
+  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + htmlString + '</div>'
+  $('#restaurant-container').fadeIn(500)
+}
+
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Rendering -- Lists
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 function renderNearByRestaurants () {
   let data = JSON.parse(localStorage.getItem('restaurantData'))
-  // console.log(data)
-  localStorage.setItem('currentListName', 'homeTab')
+  localStorage.setItem('currentListName', 'restaurantData')
   renderMap(data, 'onCenter')
-}// rerender nearby favorites
-
-
-function renderNearByHTML () {
-  let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-  document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(data) + '</div>'
-}// renderNearByHTML
-
+  renderRestaurant(data)
+}
 
 function renderList (listName) {
   let list = []
-  // console.log('Renderlist list name...................', listName)
-
   localStorage.setItem('currentListName', listName)
-  // console.log(localStorage.getItem('currentListName'))
- 
-  console.log(`render ${listName} list on map`)
+
+  console.log(`render ${listName} list on map & cards`)
   if (userLogInStatus() === true) {
   // read data from firebase
     firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
@@ -224,159 +203,69 @@ function renderList (listName) {
       // setting firebaseList to localStorage
       if (myData) {
         list = Object.values(myData)
-        localStorage.setItem(`${listName}`, list)
-
-        // console.log(list)
+        localStorage.setItem(`${listName}`, JSON.stringify(list))
         renderMap(list, 'onBounds')
+        renderRestaurant(list)
       } else {
         renderMap([], 'onCenter')
-      }// if
+      }
     }, function (error) {
       console.log('Error: ' + error.code)
-    })// read Data
+    })
   } else {
     renderMap([], 'onCenter')
-  }// if userLogInStatus
+    notSignedInHTML()
+  }
 }
 
-function renderListHTML (listName) {
-  console.log(`render ${listName} list cards`)
+function notSignedInHTML () {
+  document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
+                                                              <h1 class="display-4">Hello, Please Sign In</h1>
+                                                              <p class="lead">You are not currently signed into your Munchies account. Please sign in using the buttons on the top right corner to access your Favorite Restaurants and Restaurants to Visit.</p>
+                                                              <hr class="my-4">
+                                                              </div>`
+}
 
-  if (userLogInStatus() === true) {
-    // read data from firebase
-    firebase.database().ref(`${listName}/` + localStorage.getItem('userID')).on('value', function (snapshot) {
-      let myData = snapshot.val()
-      // setting firebaseList to localStorage
-      if (myData) {
-        list = Object.values(myData)
-        document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(list) + '</div>'
-      } else {
-        // console.log('entered')
-      } // if
-    }, function (error) {
-      console.log('Error: ' + error.code)
-    })// read Data
-  } else {
-    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
-                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
-                                                                  <p class="lead">You are not currently signed into your Munchies account. Please sign in using the buttons on the top right corner to access your Favorite Restaurants and Restaurants to Visit.</p>
-                                                                  <hr class="my-4">
-                                                                </div>`
-  }// else statement
-}// renderListHTML
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// Saving to lists
+// Saving lists
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function saveToFavoriteRestaurant (restaurantID) {
-  // check to see if user is signed
-
-  console.log('saving restaurant to favorite list...')
-  // console.log(JSON.parse(restaurant))
-  // console.log(restaurantID)
+function saveToList (restaurantID, listName) {
+  console.log(`saving ${restaurantID} to ${listName}...`)
+  var currentListName = localStorage.getItem('currentListName')
 
   if (userLogInStatus() === true) {
-  // calling restaurant objects in local storage
-    let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-    let clickedRestaurantData = data.find(function (currentRestaurant) {
-      return currentRestaurant.id === restaurantID
-    })// restaurant
-    // console.log(clickedRestaurantData)
-
-    // printing information to firebase
-    const update = {}
-    // const newFavoritesKey = firebase.database().ref().child('favorites').push().key
-    const userID = localStorage.getItem('userID')
-    if (userID) {
-      update['/favorites/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-      firebase.database().ref().update(update)
-    }// if
-  } else {
-    console.log('call login modal') // CALL LOG IN MODAL
-    // return document.getElementById('myModal').innerHTML = ``
-  }// else
-}// saveToRestaurantList
-
-function saveToRestaurantToVisitList (restaurantID) {
-  console.log('saving restaurant to visit list...')
-
-  if (userLogInStatus() === true) {
-    let data = JSON.parse(localStorage.getItem('restaurantData'))
-
+    let data = JSON.parse(localStorage.getItem(`${currentListName}`))
     let clickedRestaurantData = data.find(function (currentRestaurant) {
       return currentRestaurant.id === restaurantID
     })
-    // console.log(clickedRestaurantData)
-
-    // setting information to Firebase
-    const update = {}
-    // const newVisitKey = firebase.database().ref().child('toVisit').push().key
-    const userID = localStorage.getItem('userID')
-    if (userID) {
-      update['/RestaurantsToVisit/' + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
-      firebase.database().ref().update(update)
-    }// if
+      // setting information to Firebase
+      const update = {}
+      const userID = localStorage.getItem('userID')
+      if (userID) {
+        update[`/${listName}/` + userID + '/' + clickedRestaurantData.id] = clickedRestaurantData
+        firebase.database().ref().update(update)
+      }
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
-  }// else
+  }
+}
 
-}// Visit List
 
 function removeFromList (restaurantID, listName) {
-  console.log('saving restaurant to visit list...')
-  console.log(restaurantID)
+  console.log(`removing ${restaurantID} from ${listName}...`)
 
   if (userLogInStatus() === true) {
-    // let data = JSON.parse(localStorage.getItem('restaurantData'))
-
-    // let clickedRestaurantData = data.find(function (currentRestaurant) {
-    //   return currentRestaurant.id === restaurantID
-    // })
-    // console.log(clickedRestaurantData)
-
     // setting information to Firebase
     const update = {}
-    // const newVisitKey = firebase.database().ref().child('toVisit').push().key
     const userID = localStorage.getItem('userID')
     if (userID) {
       update[`/${listName}/` + userID + '/' + restaurantID] = null
-      // console.log(update)
       firebase.database().ref().update(update)
-    }// if
+    }
   } else {
     console.log('call login modal') // CALL LOG IN MODAL
-  }// else
-
-}// Visit List
-
-function renderToVisitListHTML () {
-  console.log('render to visit cards')
-
-  if (userLogInStatus() === true) {
-  // read data from firebase
-    firebase.database().ref('RestaurantsToVisit/' + localStorage.getItem('userID')).on('value', function (snapshot) {
-      let myData = snapshot.val()
-      // setting firebaseFavoritesList to localStorage
-      if (myData) {
-        toVisit = Object.values(myData)
-        document.getElementById('restaurant-container').innerHTML = '<div class="card-columns">' + renderRestaurant(toVisit) + '</div>'
-      } else {
-        console.log('entered')
-      } // if
-    }, function (error) {
-      console.log('Error: ' + error.code)
-    })// read Data
-  } else {
-    document.getElementById('restaurant-container').innerHTML = `<div class="jumbotron">
-                                                                  <h1 class="display-4">Hello, Please Sign In</h1>
-                                                                  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                                                                  <hr class="my-4">
-                                                                  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                                                                  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-                                                                </div>`
   }
-}// renderToVisitList
-
+}
 
